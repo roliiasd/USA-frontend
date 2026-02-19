@@ -1,0 +1,147 @@
+
+
+
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5rem;
+  padding: 0 5vw;
+  background: radial-gradient(
+    circle at top,
+    #052e40 0,
+    #020617 55%,
+    #020617 100%
+  );
+  color: #e5e7eb;
+
+}
+
+.login-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-page h1 {
+  color: #e5e7eb;
+  font-size: 4.2rem;
+  font-weight: 900;
+  font-style: italic;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 0 24px rgba(0, 0, 0, 0.8);
+}
+
+.login-box {
+  display: flex;
+  flex-direction: column;
+  background: rgba(2, 9, 27, 0.96);
+  padding: 2.3rem 2.5rem;
+  width: 430px;
+  gap: 0.9rem;
+  border-radius: 32px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.75);
+}
+
+.login-box input {
+  width: 100%;
+  padding: 0.9rem 1.2rem;
+  border: 1px solid #1f2937;
+  border-radius: 999px;
+  background: #e5e7eb;
+  font-size: 1rem;
+  outline: none;
+}
+.login-box input::placeholder {
+  color: #9ca3af;
+}
+
+.message {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #f97373;
+}
+
+.login-Btn {
+  margin-top: 0.7rem;
+  padding: 0.9rem 1.2rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #059669, #16a34a);
+  color: #f9fafb;
+  text-align: center;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+}
+
+.log-reg {
+  margin-top: 0.8rem;
+  text-align: center;
+  color: #9ca3af;
+  font-size: 0.9rem;
+}
+.log-reg span {
+  color: #22c55e;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.img-div img {
+  width: 260px;
+  height: 260px;
+  display: block;
+}
+
+
+
+@media (max-width: 600px) {
+  .login-page {
+    flex-direction: column;        
+    align-items: stretch;
+    min-height: 100vh;
+    padding: 3.5rem 1.5rem 2.5rem; 
+    gap: 0;
+  }
+
+  .login-content {
+    order: 1;                     
+    width: 100%;
+    max-width: 420px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .login-page h1 {
+    margin-top: 7rem;
+    font-size: 2.6rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .login-box {
+    width: 100%;
+    padding: 1.6rem 1.4rem;
+    border-radius: 24px;
+  }
+
+  .log-reg {
+    margin-top: 0.9rem;
+    font-size: 0.85rem;
+  }
+
+  .img-div {
+    margin-bottom: 5rem;
+    order: 2;                      
+    margin-top: auto;              
+    padding-bottom: 1.5rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  .img-div img {
+    width: 150px;
+    height: 150px;
+  }
+}
