@@ -2,6 +2,7 @@ import { useState } from "react";
 
 import { Link } from "react-router";
 import "../styles/Registration.css";
+import { register } from "../users";
 
 export default function Registration() {
   const [username, setUsername] = useState("");
@@ -9,35 +10,27 @@ export default function Registration() {
   const [psw, setPsw] = useState("");
   const [confirmPsw, setConfirmPsw] = useState("");
   const [message, setMessage] = useState("");
-  
+  const [errorM, setErrorM] = useState("");
+
   const handleRegister = async () => {
+    setErrorM('')
+    setMessage('')
     if (!username || !email || !psw) {
-      setMessage("Minden mezőt ki kell tölteni");
+      setErrorM("Minden mezőt ki kell tölteni");
       return;
     }
     if (psw !== confirmPsw) {
-      setMessage("A jelszavak nem egyeznek");
+      setErrorM("A jelszavak nem egyeznek");
       return;
     }
     try {
-      const response = await fetch("http://127.0.0.1:4000/users/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, email, psw }),
-      });
-      const data = await response.json();
-      if (response.ok) {
-        setMessage("Sikeres regisztráció");
-        setUsername("");
-        setEmail("");
-        setPsw("");
-        setConfirmPsw("");
-      } else {
-        setMessage(data.message || "Hiba történt");
+      const data = await register(email, username, psw);
+      if (data.error) {
+        setErrorM(data.error)
       }
+      setMessage(data.message)
     } catch (err) {
-      console.log(err);
-      setMessage("Nem sikerült kapcsolódni a szerverhez!");
+      setErrorM('Nem sikerult kapcsolodni a bukkitszerverhez!')
     }
   };
 
@@ -45,7 +38,7 @@ export default function Registration() {
     <>
       <div className="reg-page">
         <Link to={"/"} className="img-div">
-            <img src="/src/assets/logo.png" alt="UsedAnimals logo" />
+          <img src="/src/assets/logo.png" alt="UsedAnimals logo" />
         </Link>
 
         <div className="reg-content">
@@ -77,7 +70,8 @@ export default function Registration() {
               onChange={(e) => setConfirmPsw(e.target.value)}
             />
 
-            {message && <p className="message">{message}</p>}
+            {errorM && <div className="alert alert-danger text-center my-2">{errorM}</div>}
+            {message && <div className="alert alert-success text-center my-2">{message}</div>}
 
             <div className="reg-Btn" onClick={handleRegister}>
               Regisztráció

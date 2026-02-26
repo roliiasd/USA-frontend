@@ -1,37 +1,30 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/Login.css";
+import { login } from "../users";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [psw, setPsw] = useState("");
-  const [message, setMessage] = useState("");
+  const [errorM, setErrorM] = useState("");
 
   const navigate = useNavigate();
 
   const handleLogin = async () => {
     if (!email || !psw) {
-      setMessage("Minden mezot tölts ki!");
+      setErrorM("Minden mezot tölts ki!");
       return;
     }
     try {
-      const response = await fetch("http://127.0.0.1:4000/users/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ email, psw }),
-      });
-      const data = await response.json();
-      if (response.ok) {
-        setMessage("Sikeresen beléptél!");
-        setEmail("");
-        setPsw("");
+      const data = await login(email, psw);
+      if (data.error) {
+        setErrorM(data.error);
+      }
+      if (data.message === "YIPPIE") {
         navigate("/");
-      } else {
-        setMessage(data.message || "Hiba történt");
       }
     } catch (err) {
-      setMessage("Nem sikerült kapcsolódni a szerverhez!");
+      setErrorM("Nem sikerult kapcsolodni a bukkitszerverhez!");
     }
   };
   return (
@@ -58,7 +51,11 @@ export default function Login() {
               onChange={(e) => setPsw(e.target.value)}
             />
 
-            {message && <p className="message">{message}</p>}
+            {errorM && (
+              <div className="alert alert-danger text-center my-2">
+                {errorM}
+              </div>
+            )}
 
             <div className="login-Btn" onClick={handleLogin}>
               Bejelentkezés
