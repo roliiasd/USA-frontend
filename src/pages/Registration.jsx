@@ -1,10 +1,11 @@
 import { useState } from "react";
 
-import { Link } from "react-router";
+import { Link,useNavigate } from "react-router";
 import "../styles/Registration.css";
-import { register } from "../users";
+import { login, register } from "../users";
 
 export default function Registration() {
+  const navigate = useNavigate()
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [psw, setPsw] = useState("");
@@ -26,9 +27,12 @@ export default function Registration() {
     try {
       const data = await register(email, username, psw);
       if (data.error) {
-        setErrorM(data.error)
+        return setErrorM(data.error)
       }
+
       setMessage(data.message)
+      login(email,psw)
+      setTimeout(() => navigate('/'),600)
     } catch (err) {
       setErrorM('Nem sikerult kapcsolodni a bukkitszerverhez!')
     }
