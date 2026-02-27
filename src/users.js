@@ -1,4 +1,4 @@
-const BACKEND_URL = "http://127.0.0.1:4000/users";
+const BACKEND_URL = "http://localhost:4000/users";
 
 export async function register(email, username, psw) {
   const res = await fetch(`${BACKEND_URL}/register`, {
@@ -26,4 +26,16 @@ export async function login(email, psw) {
     return data
   }
   return data
+}
+export async function logout() {
+  const res = await fetch(`${BACKEND_URL}/logout`, {
+    method: "POST",
+    credentials: "include"
+  })
+
+  if (!res.ok) {
+    throw new Error("Logout hiba")
+  }
+
+  return await res.json()
 }
