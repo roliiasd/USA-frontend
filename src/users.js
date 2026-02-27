@@ -17,7 +17,9 @@ export async function login(email, psw) {
   const res = await fetch(`${BACKEND_URL}/login`, {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
+    credentials: 'include',
     body: JSON.stringify({email, psw})
+    
   });
   const data = await res.json()
   if (data.error) {
