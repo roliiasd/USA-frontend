@@ -1,7 +1,8 @@
 import logoImg from "/src/assets/logo.png";
 import { Link, NavLink, useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowAltCircleRight } from "@fortawesome/free-regular-svg-icons";
 import "/src/styles/Home.css";
-import { useState } from "react";
 import { logout } from "../users";
 export default function Navbar({ homePage, FAQ, aboutUs }) {
   const navigate = useNavigate();
@@ -15,40 +16,29 @@ export default function Navbar({ homePage, FAQ, aboutUs }) {
   }
   return (
     <>
-      <div className="logoContainer">
+      <div className="nav-left">
         <Link to={"/"} className="navbar-brand">
           <img src={logoImg} alt="UsedAnimals Logo" />
         </Link>
-        <Link to={"/"} className="text-decoration-none">
+        <Link to={"/"} className="text-decoration-none brand-text">
           <p>USEDANIMALS.HU</p>
         </Link>
       </div>
 
-      <ul className="navbar-nav ms-auto">
-        <li className="nav-item">
-          <NavLink to={homePage} className="nav-link">
-            Főoldal
-          </NavLink>
-        </li>
-        <li className="nav-item">
-          <NavLink to={FAQ} className="nav-link">
-            GYÍK
-          </NavLink>
-        </li>
-        <li className="nav-item">
-          <NavLink to={aboutUs} className="nav-link">
-            Rólunk
-          </NavLink>
-        </li>
-        <li className="nav-item">
-          <button
-            className="btn btn-danger float-end"
-            onClick={() => handleLogout()}
-          >
-            logout
-          </button>
-        </li>
-      </ul>
+      <div className="nav-center">
+        <NavLink to={homePage} className="nav-link">
+          Főoldal
+        </NavLink>
+        <NavLink to={FAQ} className="nav-link">
+          GYÍK
+        </NavLink>
+        <NavLink to={aboutUs} className="nav-link">
+          Rólunk
+        </NavLink>
+      </div>
+      <div className="nav-item btn btn-danger">
+        <FontAwesomeIcon icon={faArrowAltCircleRight} onClick={() => handleLogout()}/>
+      </div>
     </>
   );
 }
