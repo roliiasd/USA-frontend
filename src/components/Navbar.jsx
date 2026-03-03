@@ -1,11 +1,12 @@
 import logoImg from "/src/assets/logo.png";
-import { Link, NavLink, useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowAltCircleRight } from "@fortawesome/free-regular-svg-icons";
-import "/src/styles/Home.css";
+import { Link, useNavigate } from "react-router-dom";
 import { logout } from "../users";
-export default function Navbar({ homePage, FAQ, aboutUs }) {
+import Btn from "./Btn";
+export default function Navbar({ user, homePage, FAQ, aboutUs }) {
   const navigate = useNavigate();
+
+  const isLoggedIn = !!user;
+
   async function handleLogout() {
     try {
       await logout();
@@ -15,30 +16,52 @@ export default function Navbar({ homePage, FAQ, aboutUs }) {
     }
   }
   return (
-    <>
-      <div className="nav-left">
-        <Link to={"/"} className="navbar-brand">
-          <img src={logoImg} alt="UsedAnimals Logo" />
-        </Link>
-        <Link to={"/"} className="text-decoration-none brand-text">
-          <p>USEDANIMALS.HU</p>
-        </Link>
-      </div>
+    <div className="container-fluid px-4">
+    <div className="d-flex align-items-center justify-content-between py-3">
+      <img
+        src={logoImg}
+        alt="logo"
+        className="img img-fluid"
+        style={{ height: 50, width: 50 }}
+      />
+      {/* /home */}
 
-      <div className="nav-center">
-        <NavLink to={homePage} className="nav-link">
-          Főoldal
-        </NavLink>
-        <NavLink to={FAQ} className="nav-link">
-          GYÍK
-        </NavLink>
-        <NavLink to={aboutUs} className="nav-link">
-          Rólunk
-        </NavLink>
+      <div className="d-flex  align-items-center gap-3">
+        <Link
+          to={"/"}
+          className="px-3 py-1 text-decoration-none text-dark rounded"
+          style={{ fontSize: 20, background: "lightgray" }}
+        >
+          Kezdőoldal
+        </Link>
+        {isLoggedIn ? (
+          <>
+            {/* /Kepeim */}
+            <Link
+              to={"/mygallery"}
+              className="px-3 py-1 text-decoration-none text-dark rounded"
+              style={{ fontSize: 20 }}
+            >
+              GYÍK
+            </Link>
+            {/* /Fiokom */}
+            <Link
+              to={"/abouto"}
+              className="px-3 py-1 text-decoration-none text-dark rounded"
+              style={{ fontSize: 20 }}
+            >
+              Rólunk
+            </Link>
+            {/* /loginlogout/ */}
+            <Btn btnClass={"btn btn-dark px-4"} btnContent={'Kijelentkezés'} onClick={()=>handleLogout()} />
+          </>
+        ) : (
+          <Link to={'/login'} className={'btn btn-dark px-4'}>Belépés</Link>
+        )}
+        
       </div>
-      <div className="nav-item btn btn-danger">
-        <FontAwesomeIcon icon={faArrowAltCircleRight} onClick={() => handleLogout()}/>
-      </div>
-    </>
+    </div>
+    <hr className="m-0"/>
+  </div>
   );
 }
