@@ -1,0 +1,160 @@
+/* FŐ LAYOUT – bal filter, jobb posztok */
+.ua-layout {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 260px minmax(0, 1fr);
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.ua-filter {
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 12px;
+  padding: 1rem;
+  color: #e5e7eb;
+}
+
+.ua-posts {
+  width: 100%;
+}
+
+/* Oldal háttér */
+.ua-page {
+  background: radial-gradient(circle at top, #052338 0, #000 70%);
+  min-height: 100vh;
+  padding: 2rem 0;
+}
+
+/* KÁRTYÁK GRIDJE A JOBB OLDALON */
+.ua-cards-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  justify-items: center;            /* kártyák középre a saját oszlopukban */
+}
+
+/* ---- KÁRTYA ---- */
+.ua-card {
+  background: radial-gradient(circle at bottom, #052338 0, #000 70%);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.45);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 260px;                 /* <<< EZ A LÉNYEG: NE NŐJÖN 260PX FÖLÉ */
+}
+
+/* Felső szürke fejléc */
+.ua-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.45rem 0.75rem;
+  background: #bdbdbd;
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.ua-card-avatar-circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.ua-card-avatar-circle i {
+  color: #fff;
+}
+
+.ua-card-username {
+  white-space: nowrap;
+}
+
+/* Kép – négyzet (de már egy max 260px széles kártyán) */
+.ua-card-image {
+  width: 100%;
+  aspect-ratio: 1 / 1;             /* 1:1 – ha magasabbat akarsz: 4 / 5 stb. */
+  overflow: hidden;
+}
+
+.ua-card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Alsó sárga blokk */
+.ua-card-footer {
+  background: #e0d63a;
+  padding: 0.5rem 0.75rem 0.6rem;
+  font-size: 0.78rem;
+}
+
+.ua-card-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.35rem;
+}
+
+.ua-pet-name {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.ua-edit-btn {
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.ua-note-label {
+  font-size: 0.7rem;
+  margin-bottom: 0.15rem;
+}
+
+.ua-note-box {
+  background: rgba(255, 255, 255, 0.55);
+  border-radius: 6px;
+  min-height: 42px;
+  margin-bottom: 0.4rem;
+  padding: 0.25rem 0.35rem;
+}
+
+.ua-location-row {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.7rem;
+  opacity: 0.9;
+}
+
+.ua-location-row i {
+  font-size: 0.75rem;
+}
+
+/* Mobilon (opcionális): 1 oszlop, kártyák teljes szélességben */
+@media (max-width: 768px) {
+  .ua-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .ua-cards-grid {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .ua-card {
+    max-width: 100%;
+  }
+}
