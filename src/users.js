@@ -1,4 +1,4 @@
-const BACKEND_URL = "http://localhost:4000/users";
+const BACKEND_URL = "/users";
 
 export async function register(email, username, psw) {
   const res = await fetch(`${BACKEND_URL}/register`, {
@@ -38,4 +38,17 @@ export async function logout() {
   }
 
   return await res.json()
+}
+
+export async function whoami() {
+  const res = await fetch(`${BACKEND_URL}/whoami`, {
+    method: "GET",
+    credentials: "include",
+  });
+
+  if (!res.ok) {
+    const data = await res.json();
+    return { error: data?.error };
+  }
+  return await res.json();
 }
