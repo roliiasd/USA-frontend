@@ -1,4 +1,4 @@
-/* FŐ LAYOUT – bal filter, jobb posztok */
+
 .ua-layout {
   max-width: 1200px;
   margin: 0 auto;
@@ -19,22 +19,21 @@
   width: 100%;
 }
 
-/* Oldal háttér */
+
 .ua-page {
   background: radial-gradient(circle at top, #052338 0, #000 70%);
   min-height: 100vh;
   padding: 2rem 0;
 }
 
-/* KÁRTYÁK GRIDJE A JOBB OLDALON */
+
 .ua-cards-grid {
   display: grid;
   gap: 1.5rem;
   grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  justify-items: center;            /* kártyák középre a saját oszlopukban */
+  justify-items: center;           
 }
 
-/* ---- KÁRTYA ---- */
 .ua-card {
   background: radial-gradient(circle at bottom, #052338 0, #000 70%);
   border-radius: 16px;
@@ -43,10 +42,10 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 260px;                 /* <<< EZ A LÉNYEG: NE NŐJÖN 260PX FÖLÉ */
+  max-width: 280px;               
 }
 
-/* Felső szürke fejléc */
+
 .ua-card-header {
   display: flex;
   align-items: center;
@@ -77,10 +76,10 @@
   white-space: nowrap;
 }
 
-/* Kép – négyzet (de már egy max 260px széles kártyán) */
+
 .ua-card-image {
   width: 100%;
-  aspect-ratio: 1 / 1;             /* 1:1 – ha magasabbat akarsz: 4 / 5 stb. */
+  aspect-ratio: 1 / 1;             
   overflow: hidden;
 }
 
@@ -91,7 +90,7 @@
   display: block;
 }
 
-/* Alsó sárga blokk */
+
 .ua-card-footer {
   background: #e0d63a;
   padding: 0.5rem 0.75rem 0.6rem;
@@ -143,7 +142,7 @@
   font-size: 0.75rem;
 }
 
-/* Mobilon (opcionális): 1 oszlop, kártyák teljes szélességben */
+
 @media (max-width: 768px) {
   .ua-layout {
     grid-template-columns: 1fr;

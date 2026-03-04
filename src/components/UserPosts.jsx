@@ -1,22 +1,20 @@
-// src/components/UserPostCard.jsx
-import pfp from "../assets/sddefault.jpg";
-import ceca from "../assets/download.jpg";
+import { useState } from "react";
 
-export default function UserPosts() {
+export default function UserPosts({username, petImg, petName, note, countyCity}) {
   return (
     <article className="ua-card">
       <header className="ua-card-header">
         <div className="ua-card-avatar-circle">
           <i className="bi bi-person-fill" />
         </div>
-        <span className="ua-card-username">Jocóka</span>
+        <span className="ua-card-username">{username}</span>
       </header>
       <div className="ua-card-image">
-        <img src={ceca} alt="ceca" />
+        <img src={petImg} alt="ceca" />
       </div>
       <footer className="ua-card-footer">
         <div className="ua-card-title-row">
-          <div className="ua-pet-name">Öcsipók</div>
+          <div className="ua-pet-name">{petName}</div>
           <button
             className="ua-edit-btn"
             type="button"
@@ -26,10 +24,10 @@ export default function UserPosts() {
           </button>
         </div>
         <div className="ua-note-label">Megjegyzés:</div>
-        <div className="ua-note-box">ciciciiciciciicica</div>
+        <div className="ua-note-box">{note}</div>
         <div className="ua-location-row">
           <i className="bi bi-geo-alt-fill" />
-          <span>Hajdú-Bihar megye, Debrecen</span>
+          <span>{countyCity}</span>
         </div>
       </footer>
     </article>
