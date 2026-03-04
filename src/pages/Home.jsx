@@ -2,21 +2,49 @@ import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import "../styles/Home.css";
 import { whoami } from "../users";
+import { loadpost } from "../animals";
 import UserPosts from "../components/UserPosts";
 export default function Home() {
   const [user, setUser] = useState(null);
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [userError, setUserError] = useState(null);
 
   useEffect(() => {
     async function load() {
-      const data = await whoami();
-      if (!data?.error) {
-        setUser(data);
+      try {
+        const data = await whoami();
+        if (!data?.error) {
+          setUser(data);
+        }
+        setUserError(data.error);
+      } catch (err) {
+        setUserError(err.message);
       }
-      setUserError(data);
     }
     load();
   }, []);
+  useEffect(() => {
+    async function fetchPosts() {
+      try {
+        const data = await loadpost();
+        if (data?.error) {
+          setError(data.error);
+        }
+        setPosts(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchPosts();
+  }, []);
+
+  if (loading) return <div>Betöltés....</div>;
+  if (error) return <div>Hiba: {error}</div>;
+
   return (
     <>
       <Navbar user={user} homePage={"/"} FAQ={"/"} aboutUs={"/"} />
@@ -29,10 +57,17 @@ export default function Home() {
 
             <section className="ua-posts">
               <div className="ua-cards-grid">
-                <UserPosts />
-                <UserPosts />
-                <UserPosts />
-                <UserPosts />
+                {posts.map((post) => {
+                  console.log(post);
+                  <UserPosts
+                    key={post.id}
+                    username={post.username}
+                    petImg={post.kep}
+                    petName={post.nev}
+                    countyCity={post.varos}
+                    note={post.megjegyzes}
+                  />;
+                })}
               </div>
             </section>
           </div>
