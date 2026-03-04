@@ -5,9 +5,9 @@ export async function loadpost(){
         credentials: 'include'
     })
     if (!res.ok) {
-        const data = await res
+        const data = await res.json()
         return {error: data?.error}
     }
-    return await res
+    return await res.json()
 
   }
