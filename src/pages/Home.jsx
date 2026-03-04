@@ -28,20 +28,18 @@ export default function Home() {
   useEffect(() => {
     async function fetchPosts() {
       try {
-        const data = await loadpost();
-        if (data?.error) {
-          setError(data.error);
-        }
-        setPosts(data);
+        const result = await loadpost();
+        setPosts(result);
       } catch (err) {
         setError(err.message);
+        setPosts([]);
       } finally {
         setLoading(false);
       }
     }
     fetchPosts();
   }, []);
-
+  console.log("posts state:", posts, Array.isArray(posts));
   if (loading) return <div>Betöltés....</div>;
   if (error) return <div>Hiba: {error}</div>;
 
@@ -57,8 +55,7 @@ export default function Home() {
 
             <section className="ua-posts">
               <div className="ua-cards-grid">
-                {posts.map((post) => {
-                  console.log(post);
+                {(posts ?? []).map((post) => (
                   <UserPosts
                     key={post.id}
                     username={post.username}
@@ -66,8 +63,8 @@ export default function Home() {
                     petName={post.nev}
                     countyCity={post.varos}
                     note={post.megjegyzes}
-                  />;
-                })}
+                  />
+                ))}
               </div>
             </section>
           </div>
