@@ -1,18 +1,46 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Select from "react-select";
-import Btn from './Btn'
+import { ToastContainer, toast } from "react-toastify";
+import Btn from "./Btn";
+import { getCities, getCounties } from "../getCC";
 export default function CreatePost() {
   const [file, setFile] = useState(null);
   const [nev, setNev] = useState("");
   const [kep, setKep] = useState("");
-  const [megye, setMegye] = useState(null); 
-  const [varos, setVaros] = useState(null); 
+  const [megye, setMegye] = useState([]);
+  const [selectedMegye, setSelectedMegye] = useState([]);
+  const [varos, setVaros] = useState([]);
+  const [selectedVaros, setSelectedVaros] = useState([]);
   const [megjegyzes, setMegjegyzes] = useState("");
 
+  useEffect(() => {
+    async function loadData() {
+      try {
+        const countiesData = await getCounties();
+        if (countiesData.error) {
+          return toast.error(countiesData.error);
+        }
 
+        const formattedCounties = countiesData.map((c) => ({
+          label: c.name,
+        }));
+        setMegye(formattedCounties);
 
-
-
+        const citiesData = await getCities();
+        if (citiesData.error) {
+          return toast.error(countiesData.error);
+        }
+        const formattedCities = countiesData.map((c) => ({
+          label: c.name,
+        }));
+        setVaros(formattedCities);
+      } catch (err) {
+        console.error(err);
+        toast.error("Hiba töltént a bukkitszerverror valo lekerdezesnel");
+      }
+    }
+    loadData();
+  }, []);
   const previewUrl = useMemo(() => {
     if (!file) return null;
     return URL.createObjectURL(file);
@@ -40,9 +68,12 @@ export default function CreatePost() {
               <div className="row justify-content-center g-3">
                 {/* Állat neve */}
                 <div className="col-12 col-md-8">
-                  <label className="form-label  text-light">Kisállat neve</label>
+                  <label className="form-label  text-light">
+                    Kisállat neve
+                  </label>
                   <input
                     value={nev}
+                    onChange={""}
                     type="text"
                     className="form-control  border-secondary placeholder-glow  text-light"
                     placeholder={"pl. szigmuszmaximus"}
@@ -50,13 +81,14 @@ export default function CreatePost() {
                   <label className="form-label">Megye</label>
                   <Select
                     options={megye}
-                    value={megye}
-                    onChange={(opt) => {
-                      setMegye(opt);
-                      setVaros(null);
+                    value={selectedMegye}
+                    onChange={(selected) => {
+                      setSelectedMegye(selected);
+                      setSelectedVaros(null);
                     }}
-                    styles={{color:'black'}}
                     placeholder="Válassz megyét..."
+                    isSearchable={true}
+                    isClearable={true}
                   />
                   <label className="form-label">Város</label>
                   <Select
@@ -118,7 +150,10 @@ export default function CreatePost() {
                     >
                       Elvetés
                     </button>
-                    <Btn btnClass={'btn btn-outline-warning text-light mx-lg-5'} btnContent={'Fetöltés'}/>
+                    <Btn
+                      btnClass={"btn btn-outline-warning text-light mx-lg-5"}
+                      btnContent={"Fetöltés"}
+                    />
                   </div>
                 </div>
               </div>

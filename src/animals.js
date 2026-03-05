@@ -14,3 +14,23 @@ export async function loadpost() {
 
   return Array.isArray(data.result) ? data.result : [];
 }
+
+export async function createPost({ nev, varos, megjegyzes, postcode, file }) {
+  const fd = FormData();
+  fd.append("nev", nev);
+  fd.append("varos", varos);
+  fd.append("megjegyzes", megjegyzes);
+  fd.append("postcode", postcode);
+  if (file) fd.append("kep", file);
+  const res = await fetch(`${BACKEND_URL}/addanimal`, {
+    method: "POST",
+    credentials: "include",
+    body: fd,
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    return { result: null, error: data?.error || `HTTP ${res.status}` };
+  }
+
+  return { result: data, error: null };
+}
