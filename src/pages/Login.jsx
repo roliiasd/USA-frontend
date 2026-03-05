@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/Login.css";
 import { login } from "../users";
@@ -6,29 +8,31 @@ import { login } from "../users";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [psw, setPsw] = useState("");
-  const [errorM, setErrorM] = useState("");
-
   const navigate = useNavigate();
 
   const handleLogin = async () => {
     if (!email || !psw) {
-      setErrorM("Minden mezot tölts ki!");
+      toast.error('Minden mezőt tölts ki!')
       return;
     }
     try {
       const data = await login(email, psw);
-      if (data.error) {
-        setErrorM(data.error);
+      if (data?.error) {
+        toast.error(data.error);
       }
-      if (data.message === "YIPPIE") {
-        navigate("/");
+      if (data?.message === "YIPPIE") {
+        toast.success(data.message)
+        setTimeout(() => navigate('/'),2500)
+        return;
       }
     } catch (err) {
-      setErrorM("Nem sikerult kapcsolodni a bukkitszerverhez!");
+      toast.error("Nem sikerult kapcsolodni a bukkitszerverhez!");
     }
   };
+
   return (
     <>
+    <ToastContainer theme="dark" position="top-center" autoClose={2000}/>
       <div className="login-page">
         <div className="img-div">
           <img src="/src/assets/logo.png" alt="" />
@@ -50,12 +54,6 @@ export default function Login() {
               placeholder="Add meg a jelszavad"
               onChange={(e) => setPsw(e.target.value)}
             />
-
-            {errorM && (
-              <div className="alert alert-danger text-center my-2">
-                {errorM}
-              </div>
-            )}
 
             <div className="login-Btn" onClick={handleLogin}>
               Bejelentkezés

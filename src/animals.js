@@ -9,7 +9,7 @@ export async function loadpost() {
   const data = await res.json();
 
   if (!res.ok) {
-    return { error: data?.error || `HTTP ${res.status}` };
+    return { result: data?.error || `HTTP ${res.status}` };
   }
 
   return Array.isArray(data.result) ? data.result : [];

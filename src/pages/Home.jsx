@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
+import { Outlet } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import CreatePost from "../components/CreatePost";
+import { ToastContainer, toast } from "react-toastify";
 import "../styles/Home.css";
 import { whoami } from "../users";
 import { loadpost } from "../animals";
@@ -8,8 +11,6 @@ export default function Home() {
   const [user, setUser] = useState(null);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [userError, setUserError] = useState(null);
 
   useEffect(() => {
     async function load() {
@@ -18,9 +19,9 @@ export default function Home() {
         if (!data?.error) {
           setUser(data);
         }
-        setUserError(data.error);
+        toast.error(data.error);
       } catch (err) {
-        setUserError(err.message);
+        toast.error(err.message);
       }
     }
     load();
@@ -31,7 +32,7 @@ export default function Home() {
         const result = await loadpost();
         setPosts(result);
       } catch (err) {
-        setError(err.message);
+        toast.error(err.message);
         setPosts([]);
       } finally {
         setLoading(false);
@@ -39,13 +40,14 @@ export default function Home() {
     }
     fetchPosts();
   }, []);
-  console.log("posts state:", posts, Array.isArray(posts));
-  if (loading) return <div>Betöltés....</div>;
-  if (error) return <div>Hiba: {error}</div>;
-
+  // console.log("posts state:", posts, Array.isArray(posts))
+  toast.info(loading);
   return (
     <>
+      <ToastContainer theme="dark" position="top-center" autoClose={2500} />
       <Navbar user={user} homePage={"/"} FAQ={"/"} aboutUs={"/"} />
+      <CreatePost />
+      <Outlet />
       <div className="ua-page ">
         <div className="container-fluid px-4">
           <div className="ua-layout ">

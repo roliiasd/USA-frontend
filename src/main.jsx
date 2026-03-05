@@ -3,10 +3,12 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap-icons/font/bootstrap-icons.css"
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import "react-toastify/dist/ReactToastify.css";
 
 import "../src/styles/Navbar.css";
-import '../src/styles/UserPosts.css'
+import "../src/styles/UserPosts.css";
 import Registration from "./pages/Registration";
 import Login from "./pages/Login";
 
@@ -20,5 +22,5 @@ createRoot(document.getElementById("root")).render(
         <Route path="/login" element={<Login />} />
       </Routes>
     </BrowserRouter>
-  </StrictMode>,
+  </StrictMode>
 );
