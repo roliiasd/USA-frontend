@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import { Bounce, ToastContainer, toast } from "react-toastify";
+
 import { Link,useNavigate } from "react-router";
 import "../styles/Registration.css";
 import { login, register } from "../users";
@@ -17,29 +19,30 @@ export default function Registration() {
     setErrorM('')
     setMessage('')
     if (!username || !email || !psw) {
-      setErrorM("Minden mezőt ki kell tölteni");
+      toast.error("Minden mezőt ki kell tölteni");
       return;
     }
     if (psw !== confirmPsw) {
-      setErrorM("A jelszavak nem egyeznek");
+      toast.error("A jelszavak nem egyeznek");
       return;
     }
     try {
       const data = await register(email, username, psw);
       if (data.error) {
-        return setErrorM(data.error)
+        return toast.error(data.error)
       }
 
-      setMessage(data.message)
+      toast.success(data.message)
       login(email,psw)
-      setTimeout(() => navigate('/'),600)
+      setTimeout(() => navigate('/'),3000)
     } catch (err) {
-      setErrorM('Nem sikerult kapcsolodni a bukkitszerverhez!')
+      toast.error('Nem sikerult kapcsolodni a bukkitszerverhez!')
     }
   };
 
   return (
     <>
+    <ToastContainer theme="dark" position="top-center" autoClose={2500}/>
       <div className="reg-page">
         <Link to={"/"} className="img-div">
           <img src="/src/assets/logo.png" alt="UsedAnimals logo" />
@@ -73,9 +76,6 @@ export default function Registration() {
               placeholder="Jelszó megerősítése"
               onChange={(e) => setConfirmPsw(e.target.value)}
             />
-
-            {errorM && <div className="alert alert-danger text-center my-2">{errorM}</div>}
-            {message && <div className="alert alert-success text-center my-2">{message}</div>}
 
             <div className="reg-Btn" onClick={handleRegister}>
               Regisztráció
