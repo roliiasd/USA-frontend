@@ -9,6 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 import "../src/styles/Navbar.css";
 import "../src/styles/UserPosts.css";
+import "../src/styles/CreatPosts.css";
 import Registration from "./pages/Registration";
 import Login from "./pages/Login";
 

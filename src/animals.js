@@ -15,12 +15,20 @@ export async function loadpost() {
   return Array.isArray(data.result) ? data.result : [];
 }
 
-export async function createPost({ nev, varos, megjegyzes, postcode, file }) {
-  const fd = FormData();
+export async function createPost({
+  nev,
+  varos,
+  megjegyzes,
+  postcode,
+  megye,
+  file,
+}) {
+  const fd = new FormData();
   fd.append("nev", nev);
   fd.append("varos", varos);
   fd.append("megjegyzes", megjegyzes);
   fd.append("postcode", postcode);
+  fd.append("megye", megye);
   if (file) fd.append("kep", file);
   const res = await fetch(`${BACKEND_URL}/addanimal`, {
     method: "POST",

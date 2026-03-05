@@ -11,6 +11,7 @@ export default function Home() {
   const [user, setUser] = useState(null);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [refresh, setRefresh] = useState(0)
 
   useEffect(() => {
     async function load() {
@@ -39,14 +40,18 @@ export default function Home() {
       }
     }
     fetchPosts();
-  }, []);
+  }, [refresh]);
+
+  function handleRefresh(){
+    setRefresh((prev)=> prev+1)
+  }
   // console.log("posts state:", posts, Array.isArray(posts))
   toast.info(loading);
   return (
     <>
       <ToastContainer theme="dark" position="top-center" autoClose={2500} />
       <Navbar user={user} homePage={"/"} FAQ={"/"} aboutUs={"/"} />
-      <CreatePost />
+      <CreatePost onSuccess={handleRefresh}/>
       <Outlet />
       <div className="ua-page ">
         <div className="container-fluid px-4">
