@@ -7,6 +7,7 @@ import "../styles/Home.css";
 import { whoami } from "../users";
 import { loadpost } from "../animals";
 import UserPosts from "../components/UserPosts";
+import Filter from "../components/Filter";
 export default function Home() {
   const [user, setUser] = useState(null);
   const [posts, setPosts] = useState([]);
@@ -52,13 +53,10 @@ export default function Home() {
       <ToastContainer theme="dark" position="top-center" autoClose={2500} />
       <Navbar user={user} homePage={"/"} FAQ={"/"} aboutUs={"/"} />
       <CreatePost onSuccess={handleRefresh}/>
-      <Outlet />
       <div className="ua-page ">
-        <div className="container-fluid px-4">
+        <div className=" px-4">
           <div className="ua-layout ">
-            <aside className="ua-filter">
-              <h3>Szűrők</h3>
-            </aside>
+            <Filter/>
 
             <section className="ua-posts">
               <div className="ua-cards-grid">
