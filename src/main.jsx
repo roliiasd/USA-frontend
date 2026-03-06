@@ -7,8 +7,10 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "react-toastify/dist/ReactToastify.css";
 
+import "../src/styles/Home.css";
 import "../src/styles/Navbar.css";
-import "../src/styles/UserPosts.css";
+import "../src/styles/Filter.css";
+import "../src/styles/CreatPosts.css";
 import Registration from "./pages/Registration";
 import Login from "./pages/Login";
 

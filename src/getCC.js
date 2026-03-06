@@ -30,4 +30,17 @@ export async function getCounties() {
   return data;
 }
 
+export async function getCitiesByCounties(id) {
+  const res = await fetch(`${BACKEND_URL}/citiesbycounty/${id}`, {
+    method: "GET",
+    credentials: "include",
+  });
 
+  const data = await res.json();
+
+  if (!res.ok) {
+    return { error: data?.error || `HTTP ${res.status}` };
+  }
+
+  return data;
+}

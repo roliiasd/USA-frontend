@@ -1,0 +1,99 @@
+/* STÍLUS 4 - Zöld akcentus */
+#createPostModal .modal-content {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+}
+
+#createPostModal .modal-header {
+  border-bottom: 1px solid #21262d;
+}
+
+#createPostModal .modal-title {
+  color: #c9d1d9;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+#createPostModal .btn-close {
+  filter: invert(0.7);
+}
+
+#createPostModal .form-label {
+  color: #8b949e;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+#createPostModal .form-control {
+  background: #010409;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  color: #c9d1d9;
+  font-size: 14px;
+}
+
+#createPostModal .form-control:focus {
+  border-color: #238636;
+  box-shadow: 0 0 0 3px rgba(35, 134, 54, 0.3);
+}
+
+#createPostModal .custom-select__control {
+  background: #010409;
+  border: 1px solid #30363d;
+}
+
+#createPostModal .custom-select__control--is-focused {
+  border-color: #238636;
+  box-shadow: 0 0 0 3px rgba(35, 134, 54, 0.3);
+}
+
+#createPostModal .custom-select__single-value {
+  color: #c9d1d9;
+}
+
+#createPostModal .custom-select__menu {
+  background: #161b22;
+  color: white;
+  border: 1px solid #30363d;
+}
+#createPostModal .custom-select__option:hover {
+  background: #32383f;
+}
+
+#createPostModal .btn-outline-danger {
+  background: #21262d;
+  border: 1px solid #30363d;
+  color: #c9d1d9;
+  border-radius: 6px;
+}
+
+#createPostModal .btn-outline-success {
+  background: #238636;
+  border: 1px solid #238636;
+  color: #fff;
+  border-radius: 6px;
+}
+
+#createPostModal .btn-outline-success:hover {
+  background: #2ea043;
+}
+
+#createPostModal .custom-select__option {
+  background: #161b22;
+  color: #c9d1d9;
+}
+
+#createPostModal .custom-select__option--is-focused {
+  background: #21262d;
+}
+
+#createPostModal .custom-select__option--is-selected {
+  background: #238636;
+  color: #fff;
+}
+
+#createPostModal .custom-select__menu-list {
+  background: #161b22;
+  padding: 0;
+}
