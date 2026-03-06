@@ -1,4 +1,3 @@
-/* STÍLUS 4 - Zöld akcentus */
 #createPostModal .modal-content {
   background: #0d1117;
   border: 1px solid #30363d;
@@ -11,7 +10,7 @@
 
 #createPostModal .modal-title {
   color: #c9d1d9;
-  font-size: 14px;
+  font-size: 3rem;
   font-weight: 600;
 }
 
@@ -61,13 +60,6 @@
   background: #32383f;
 }
 
-#createPostModal .btn-outline-danger {
-  background: #21262d;
-  border: 1px solid #30363d;
-  color: #c9d1d9;
-  border-radius: 6px;
-}
-
 #createPostModal .btn-outline-success {
   background: #238636;
   border: 1px solid #238636;
@@ -96,4 +88,7 @@
 #createPostModal .custom-select__menu-list {
   background: #161b22;
   padding: 0;
+}
+#createPostModal .form-control::placeholder {
+  color: white;
 }

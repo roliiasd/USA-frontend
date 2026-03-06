@@ -1,5 +1,5 @@
 .ua-filter {
-  background: rgba(9, 1, 54, 0.35);
+  background: rgba(52, 50, 65, 0.35);
   border-radius: 12px;
   padding: 1rem;
   color: #e5e7eb;
@@ -8,6 +8,129 @@
   min-width: 500px;
 }
 
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  appearance: none;
+  background: #010409;
+  border: 1px solid #30363d;
+  border-radius: 4px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(8, 8, 8, 0.4);
+}
+
+input[type="checkbox"]:checked {
+  background: #238636;
+  border-color: #238636;
+}
+
+input[type="checkbox"]:checked::after {
+  content: '✓';
+  display: block;
+  text-align: center;
+  color: white;
+  font-size: 12px;
+  line-height: 16px;
+}
+
+input[type="checkbox"]:focus {
+  border-color: #238636;
+  box-shadow: 0 0 0 3px rgba(35, 134, 54, 0.3);
+  outline: none;
+}
 
 
+.ua-filter .modal-content {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+}
 
+.ua-filter .modal-header {
+  border-bottom: 1px solid #21262d;
+}
+
+.ua-filter .modal-title {
+  color: #c9d1d9;
+  font-size: 3rem;
+  font-weight: 600;
+}
+
+.ua-filter .btn-close {
+  filter: invert(0.7);
+}
+
+.ua-filter .form-label {
+  color: #8b949e;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.ua-filter .form-control {
+  background: #010409;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  color: #c9d1d9;
+  font-size: 14px;
+}
+
+.ua-filter .form-control:focus {
+  border-color: #238636;
+  box-shadow: 0 0 0 3px rgba(35, 134, 54, 0.3);
+}
+
+.ua-filter .custom-select__control {
+  background: #010409;
+  border: 1px solid #30363d;
+}
+
+.ua-filter .custom-select__control--is-focused {
+  border-color: #238636;
+  box-shadow: 0 0 0 3px rgba(35, 134, 54, 0.3);
+}
+
+.ua-filter .custom-select__single-value {
+  color: #c9d1d9;
+}
+
+.ua-filter .custom-select__menu {
+  background: #161b22;
+  color: white;
+  border: 1px solid #30363d;
+}
+.ua-filter .custom-select__option:hover {
+  background: #32383f;
+}
+
+.ua-filter .btn-outline-success {
+  background: #238636;
+  border: 1px solid #238636;
+  color: #fff;
+  border-radius: 6px;
+}
+
+.ua-filter .btn-outline-success:hover {
+  background: #2ea043;
+}
+
+.ua-filter .custom-select__option {
+  background: #161b22;
+  color: #c9d1d9;
+}
+
+.ua-filter .custom-select__option--is-focused {
+  background: #21262d;
+}
+
+.ua-filter .custom-select__option--is-selected {
+  background: #238636;
+  color: #fff;
+}
+
+.ua-filter .custom-select__menu-list {
+  background: #161b22;
+  padding: 0;
+}
+.ua-filter .form-control::placeholder {
+  color: white;
+}
