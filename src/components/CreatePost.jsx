@@ -210,6 +210,7 @@ export default function CreatePost({onSuccess}) {
                         accept="image/*"
                         className="form-control"
                         onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+                        multiple={true}
                       />
                       <div className="mt-3">
                         {previewUrl ? (
@@ -239,11 +240,11 @@ export default function CreatePost({onSuccess}) {
                     </div>
                   </div>
 
-                  <div className="col-md-6">
-                    <div className="justify-content-start gap-2 m-4">
+                  <div className="">
+                    <div className="gap-2 m-4 d-flex justify-content-around ">
                       <button
                         type="button"
-                        className="btn btn-outline-danger"
+                        className="btn btn-outline-danger justify-content-between"
                         data-bs-dismiss="modal"
                         disabled={isLoading}
                       >
@@ -251,7 +252,7 @@ export default function CreatePost({onSuccess}) {
                       </button>
                       <button
                         type="submit"
-                        className="btn btn-outline-success mx-lg-5"
+                        className="btn btn-outline-success justify-content-betweens"
                         data-bs-dismiss="modal"
                         disabled={isLoading}
                       >
