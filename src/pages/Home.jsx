@@ -21,7 +21,8 @@ export default function Home() {
         if (!data?.error) {
           setUser(data);
         }
-        toast.error(data.error);
+        // console.error(data.error);
+        
       } catch (err) {
         toast.error(err.message);
       }
@@ -34,7 +35,8 @@ export default function Home() {
         const result = await loadpost();
         setPosts(result);
       } catch (err) {
-        toast.error(err.message);
+        console.error(err);
+        
         setPosts([]);
       } finally {
         setLoading(false);

@@ -16,6 +16,7 @@ export default function Navbar({ user, homePage, FAQ, aboutUs }) {
       console.error(err);
     }
   }
+  
   return (
     <header className="navbar align-items-end navbarStyle">
       <div className="container-fluid d-flex align-items-center justify-content-between py-2">

@@ -8,6 +8,7 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import "react-toastify/dist/ReactToastify.css";
 
 import "../src/styles/Home.css";
+import "../src/styles/Profile.css";
 import "../src/styles/Navbar.css";
 import "../src/styles/Filter.css";
 import "../src/styles/CreatPosts.css";
@@ -15,6 +16,7 @@ import Registration from "./pages/Registration";
 import Login from "./pages/Login";
 
 import Home from "./pages/Home";
+import Profile from "./pages/Profile";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
@@ -22,6 +24,7 @@ createRoot(document.getElementById("root")).render(
         <Route path="/" element={<Home />} />
         <Route path="/registration" element={<Registration />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>
