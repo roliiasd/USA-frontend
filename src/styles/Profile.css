@@ -1,0 +1,83 @@
+:root {
+  --platinum: #d7dedcff;
+  --timberwolf: #cfcfcdff;
+  --eggplant: #563440ff;
+  --dark-purple: #241623ff;
+  --sage: #d0cd94ff;
+  --myrtle-green: #3c787eff;
+  --rich-black: #001524;
+  --wenge: #564e58;
+  --onyx: #2e3532;
+  --sunset: #f6d8ae;
+  --imperial-red: #f71735;
+  --tiffany-blue: #98e2c6ff;
+  --cool-gray: #9a98b5ff;
+  --tropical-indigo: #a594f9ff;
+  --xanthous: #f7b32bff;
+}
+
+.profile-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem;
+  background: radial-gradient(
+    circle at top,
+    var(--tropical-indigo) 5%,
+    #000 40%
+  );
+  color: var(--platinum);
+  animation: disco 10s infinite;
+}
+.backtohome {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  border-radius: 15px;
+  background: var(--tropical-indigo);
+  color: var(--dark-purple);
+  font-size: 1.5rem;
+}
+.profile-layout{
+    display: flex;
+    flex-direction: column;
+}
+.backtohome:hover {
+  background: var(--tropical-indigo);
+  color: var(--dark-purple);
+}
+
+@keyframes disco {
+  0%,
+  24% {
+    background: radial-gradient(
+      circle at top,
+      var(--tropical-indigo) 5%,
+      #000 40%
+    );
+  }
+  25%,
+  49% {
+    background: radial-gradient(circle at top, var(--cool-gray) 5%, #000 40%);
+  }
+  50%,
+  74% {
+    background: radial-gradient(circle at top, var(--eggplant) 5%, #000 40%);
+  }
+  75%,
+  100% {
+    background: radial-gradient(circle at top, var(--dark-purple) 5%, #000 40%);
+  }
+}
+@media (max-width: 768px) {
+  .profile-layout {
+    padding: 1.2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .profile-layout {
+    max-width: 600px;
+  }
+}
