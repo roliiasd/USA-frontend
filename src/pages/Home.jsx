@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import CreatePost from "../components/CreatePost";
 import { ToastContainer, toast } from "react-toastify";
@@ -15,8 +14,11 @@ export default function Home() {
   const [refresh, setRefresh] = useState(0);
   const [filters, setFilters] = useState({
     county: null,
-    search : ''
-  })
+    city: null,
+    postcode: null,
+  });
+  // console.log("filters.county:", filters.county);
+  // console.log("first post:", posts?.[0]);
 
   useEffect(() => {
     async function load() {
@@ -47,23 +49,19 @@ export default function Home() {
     }
     fetchPosts();
   }, [refresh]);
-
-  useEffect(() => {
-    async function filteredFetchPost() {
-      try {
-        const result = await filteredFetchPost()
-        setPosts(result)
-      } catch (error) {
-        
-      }
-    }
-  }, []);
   function handleRefresh() {
-    x;
     setRefresh((prev) => prev + 1);
   }
-  // console.log("posts state:", posts, Array.isArray(posts))
-  toast.info(loading);
+
+  const filteredPosts = (posts ?? []).filter((post) => {
+    const countyOk = !filters.county || post.megye === filters.county.label;
+    const cityOk = !filters.city || post.varos === filters.city.value;
+    const postcodeOk =
+      !filters.postcode ||
+      String(post.postcode) === String(filters.postcode.value);
+    return countyOk && cityOk && postcodeOk;
+  });
+console.log(filteredPosts);
   return (
     <>
       <ToastContainer theme="dark" position="top-center" autoClose={2500} />
@@ -72,18 +70,19 @@ export default function Home() {
       <div className="ua-page ">
         <div className=" px-4">
           <div className="ua-layout ">
-            <Filter filters={filters} setFilters={setFilters}/>
+            <Filter filters={filters} setFilters={setFilters} />
 
             <section className="ua-posts">
               <div className="ua-cards-grid">
-                {(posts ?? []).map((post) => (
+                {(filteredPosts ?? []).map((post) => (
                   <UserPosts
                     key={post.id}
                     username={post.username}
                     petImg={post.kep}
                     petName={post.nev}
-                    countyCity={post.varos}
                     note={post.megjegyzes}
+                    county={post.megye}
+                    city={post.varos}
                     postcode={post.postcode}
                     user={user}
                   />

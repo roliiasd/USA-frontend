@@ -3,15 +3,12 @@ import { getCounties, getCitiesByCounties } from "../getCC";
 import { ToastContainer, toast } from "react-toastify";
 import Select from "react-select";
 
-export default function Filter() {
+export default function Filter({ filters, setFilters }) {
   const [megye, setMegye] = useState([]);
-  const [selectedMegye, setSelectedMegye] = useState(null);
   const [varos, setVaros] = useState([]);
-  const [selectedVaros, setSelectedVaros] = useState(null);
   const [varosLoading, setVarosLoading] = useState(false);
-
-  const megyeHasValue = selectedMegye != null;
-  const varosHasValue = selectedVaros != null;
+  const [citiesRaw, setCitiesRaw] = useState([]);
+  const [postcodes, setPostcodes] = useState([]);
 
   // console.log(megye);
   useEffect(() => {
@@ -37,24 +34,26 @@ export default function Filter() {
 
   useEffect(() => {
     async function loadCities() {
-      if (!selectedMegye) {
+      if (!filters.county) {
         setVaros([]);
+        setCitiesRaw([]);
+        setPostcodes([]);
         return;
       }
       setVarosLoading(true);
       try {
-        const citiesData = await getCitiesByCounties(selectedMegye.value);
+        const citiesData = await getCitiesByCounties(filters.county.value);
         // console.log(`citiesdata: ${citiesData}`);
 
         if (citiesData.error) {
           return toast.error(citiesData.error);
         }
+        setCitiesRaw(citiesData.result);
 
-        const formattedCities = citiesData.result.map((c) => ({
-          label: c.city,
-          value: c.city,
-        }));
-        setVaros(formattedCities);
+        const uniqueCities = Array.from(
+          new Set(citiesData.result.map((x) => x.city)),
+        );
+        setVaros(uniqueCities.map((city) => ({ label: city, value: city })));
       } catch (err) {
         console.error(err);
         toast.error("Hiba volt a lekerdezesben bratyeszgatyesz");
@@ -63,7 +62,22 @@ export default function Filter() {
       }
     }
     loadCities();
-  }, [selectedMegye]);
+  }, [filters.county]);
+
+  useEffect(() => {
+    if (!filters.city) {
+      setPostcodes([]);
+      return;
+    }
+
+    const pcs = citiesRaw
+      .filter((x) => x.city === filters.city.value)
+      .map((x) => x.postcode)
+      .filter(Boolean);
+    const uniquePcs = Array.from(new Set(pcs));
+    setPostcodes(uniquePcs.map((pc) => ({ label: pc, value: pc })));
+  }, [filters.city, citiesRaw]);
+
   return (
     <>
       <div className="ua-filter ">
@@ -96,17 +110,26 @@ export default function Filter() {
               </div>
             </div>
             <label className="form-label">Megye</label>
+            {/* ------- */}
+            {/* ------- */}
+            {/* ------- */}
+            {/* ------- */}
+            {/* ------- */}
+            {/* ------- */}
             <Select
               classNamePrefix="custom-select"
               options={megye}
-              value={selectedMegye}
+              value={filters.county}
               onChange={(selected) => {
-                setSelectedMegye(selected);
-                setSelectedVaros(null);
+                setFilters((prev) => ({
+                  ...prev,
+                  county: selected,
+                  city: null,
+                }));
               }}
               placeholder="Válassz megyét..."
-              isSearchable={true}
-              isClearable={true}
+              isSearchable
+              isClearable
             />
 
             {/* ------- */}
@@ -117,25 +140,31 @@ export default function Filter() {
             <Select
               classNamePrefix="custom-select"
               options={varos}
-              value={selectedVaros}
-              onChange={(selected) => {
-                setSelectedVaros(selected);
-                if (selected?.postcode) {
-                  setPostcode(selected.postcode);
-                }
-              }}
-              isDisabled={!selectedMegye}
+              value={filters.city}
+              onChange={(selected) =>
+                setFilters((prev) => ({
+                  ...prev,
+                  city: selected,
+                  postcode: null,
+                }))
+              }
+              isDisabled={!filters.county}
               isLoading={varosLoading}
               placeholder={
-                !selectedMegye
+                !filters.county
                   ? "Előbb válassz megyét..."
-                  : varosLoading
-                    ? "Városok betöltése..."
-                    : "Válassz várost..."
+                  : "Válassz várost..."
               }
-              isSearchable={true}
-              isClearable={true}
+              isClearable
+              isSearchable
             />
+            {/* ------- */}
+            {/* ------- */}
+            {/* ------- */}
+            {/* ------- */}
+            {/* ------- */}
+            {/* ------- */}
+            
           </div>
         </div>
       </div>
