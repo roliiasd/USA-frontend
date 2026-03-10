@@ -3,7 +3,7 @@ import Select from "react-select";
 import { createPost } from "../animals";
 import { ToastContainer, toast } from "react-toastify";
 import { getCounties, getCitiesByCounties } from "../getCC";
-export default function CreatePost({onSuccess}) {
+export default function CreatePost({ onSuccess }) {
   const [file, setFile] = useState(null);
   const [nev, setNev] = useState("");
   const [megye, setMegye] = useState([]);
@@ -94,7 +94,7 @@ export default function CreatePost({onSuccess}) {
       if (error) {
         return toast.error(error);
       }
-      toast.success(result.message);
+
       setNev("");
       setFile(null);
       setSelectedMegye(null);
@@ -102,10 +102,8 @@ export default function CreatePost({onSuccess}) {
       setPostcode("");
       setMegjegyzes("");
 
-      if(onSuccess) onSuccess()
-      const modalElement = document.getElementById("createPostModal");
-      const modal = bootstrap.Modal.getInstance(modalElement);
-      if (modal) modal.hide();
+      if (onSuccess) onSuccess();
+      return toast.success(result.message);
     } catch (err) {
       console.error(err);
       toast.error("Hiba történt a városok lekérdezésénél");
@@ -116,7 +114,7 @@ export default function CreatePost({onSuccess}) {
 
   return (
     <>
-      <ToastContainer theme="dark" position="top-center" autoClose={2500} />
+      <ToastContainer theme="dark" position="top-center" autoClose={2000} />
       <div
         className="modal"
         id="createPostModal"
@@ -141,9 +139,7 @@ export default function CreatePost({onSuccess}) {
                 <div className="row justify-content-center g-3">
                   {/* Állat neve */}
                   <div className="col-12 col-md-8">
-                    <label className="form-label">
-                      Kisállat neve
-                    </label>
+                    <label className="form-label">Kisállat neve</label>
                     <input
                       value={nev}
                       onChange={(e) => setNev(e.target.value)}
@@ -185,8 +181,8 @@ export default function CreatePost({onSuccess}) {
                         !selectedMegye
                           ? "Előbb válassz megyét..."
                           : varosLoading
-                            ? "Városok betöltése..."
-                            : "Válassz várost..."
+                          ? "Városok betöltése..."
+                          : "Válassz várost..."
                       }
                       isSearchable={true}
                       isClearable={true}
@@ -214,10 +210,7 @@ export default function CreatePost({onSuccess}) {
                       />
                       <div className="mt-3">
                         {previewUrl ? (
-                          <img
-                            src={previewUrl}
-                            alt="Előnézet"
-                          />
+                          <img src={previewUrl} alt="Előnézet" />
                         ) : (
                           <>
                             <div className="text-secondary">
