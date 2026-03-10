@@ -1,7 +1,16 @@
-
-export default function UserPosts({username, petImg, petName, note, countyCity}) {
+export default function UserPosts({
+  user,
+  username,
+  petImg,
+  petName,
+  note,
+  countyCity,
+}) {
+  const isLoggedIn = !!user;
   return (
-    <article className="ua-card">
+    <>
+    {isLoggedIn ? (
+      <article className="ua-card">
       <header className="ua-card-header">
         <div className="ua-card-avatar-circle">
           <i className="bi bi-person-fill" />
@@ -30,5 +39,31 @@ export default function UserPosts({username, petImg, petName, note, countyCity})
         </div>
       </footer>
     </article>
+    ): (
+      <article className="ua-card">
+      <header className="ua-card-header">
+        <div className="ua-card-avatar-circle">
+          <i className="bi bi-person-fill" />
+        </div>
+        <span className="ua-card-username">{username}</span>
+      </header>
+      <div className="ua-card-image">
+        <img src={petImg} alt="ceca" />
+      </div>
+      <footer className="ua-card-footer">
+        <div className="ua-card-title-row">
+          <div className="ua-pet-name">{petName}</div>
+          
+        </div>
+        <div className="ua-note-label">Megjegyzés:</div>
+        <div className="ua-note-box">{note}</div>
+        <div className="ua-location-row">
+          <i className="bi bi-geo-alt-fill" />
+          <span>{countyCity}</span>
+        </div>
+      </footer>
+    </article>
+    )}
+    </>
   );
 }
