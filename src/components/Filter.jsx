@@ -9,15 +9,19 @@ export default function Filter() {
   const [varos, setVaros] = useState([]);
   const [selectedVaros, setSelectedVaros] = useState(null);
   const [varosLoading, setVarosLoading] = useState(false);
+
+  const megyeHasValue = selectedMegye != null;
+  const varosHasValue = selectedVaros != null;
+
+  // console.log(megye);
   useEffect(() => {
     async function loadCounties() {
       try {
         const countiesData = await getCounties();
-        // console.log("countiesData:", countiesData);
+        //  console.log("countiesData:", countiesData);
         if (countiesData.error) {
           return toast.error(countiesData.error);
         }
-
         const formattedCounties = countiesData.result.map((c) => ({
           label: c.county,
           value: c.id,
@@ -30,6 +34,7 @@ export default function Filter() {
     }
     loadCounties();
   }, []);
+
   useEffect(() => {
     async function loadCities() {
       if (!selectedMegye) {
@@ -103,6 +108,7 @@ export default function Filter() {
               isSearchable={true}
               isClearable={true}
             />
+
             {/* ------- */}
             {/* ------- */}
             {/* ------- */}
@@ -110,8 +116,6 @@ export default function Filter() {
             <label className="form-label">Város</label>
             <Select
               classNamePrefix="custom-select"
-              className="basic-multi-select"
-              isMulti
               options={varos}
               value={selectedVaros}
               onChange={(selected) => {

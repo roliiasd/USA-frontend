@@ -5,12 +5,13 @@ export default function UserPosts({
   petName,
   note,
   countyCity,
+  postcode
 }) {
   const isLoggedIn = !!user;
   return (
     <>
     {isLoggedIn ? (
-      <article className="ua-card">
+      <div className="ua-card">
       <header className="ua-card-header">
         <div className="ua-card-avatar-circle">
           <i className="bi bi-person-fill" />
@@ -38,7 +39,7 @@ export default function UserPosts({
           <span>{countyCity}</span>
         </div>
       </footer>
-    </article>
+    </div>
     ): (
       <article className="ua-card">
       <header className="ua-card-header">
@@ -59,7 +60,7 @@ export default function UserPosts({
         <div className="ua-note-box">{note}</div>
         <div className="ua-location-row">
           <i className="bi bi-geo-alt-fill" />
-          <span>{countyCity}</span>
+          <span>{`${countyCity}, ${postcode}`}</span>
         </div>
       </footer>
     </article>

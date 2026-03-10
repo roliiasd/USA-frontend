@@ -117,7 +117,9 @@ input[type="checkbox"]:focus {
   background: #161b22;
   color: #c9d1d9;
 }
-
+.ua-filter .custom-select__input-container {
+  color: #c9d1d9;
+}
 .ua-filter .custom-select__option--is-focused {
   background: #21262d;
 }

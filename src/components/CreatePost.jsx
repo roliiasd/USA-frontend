@@ -103,7 +103,6 @@ export default function CreatePost({ onSuccess }) {
       setMegjegyzes("");
 
       if (onSuccess) onSuccess();
-      return toast.success(result.message);
     } catch (err) {
       console.error(err);
       toast.error("Hiba történt a városok lekérdezésénél");
@@ -207,10 +206,11 @@ export default function CreatePost({ onSuccess }) {
                         className="form-control"
                         onChange={(e) => setFile(e.target.files?.[0] ?? null)}
                         multiple={true}
+                        
                       />
                       <div className="mt-3">
                         {previewUrl ? (
-                          <img src={previewUrl} alt="Előnézet" />
+                          <img src={previewUrl} alt="Előnézet" className="previewImg" />
                         ) : (
                           <>
                             <div className="text-secondary">

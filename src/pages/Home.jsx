@@ -12,7 +12,11 @@ export default function Home() {
   const [user, setUser] = useState(null);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [refresh, setRefresh] = useState(0)
+  const [refresh, setRefresh] = useState(0);
+  const [filters, setFilters] = useState({
+    county: null,
+    search : ''
+  })
 
   useEffect(() => {
     async function load() {
@@ -22,9 +26,8 @@ export default function Home() {
           setUser(data);
         }
         // console.error(data.error);
-        
       } catch (err) {
-        toast.error(err.message);
+        console.error(err.message);
       }
     }
     load();
@@ -36,7 +39,7 @@ export default function Home() {
         setPosts(result);
       } catch (err) {
         console.error(err);
-        
+
         setPosts([]);
       } finally {
         setLoading(false);
@@ -45,8 +48,19 @@ export default function Home() {
     fetchPosts();
   }, [refresh]);
 
-  function handleRefresh(){
-    setRefresh((prev)=> prev+1)
+  useEffect(() => {
+    async function filteredFetchPost() {
+      try {
+        const result = await filteredFetchPost()
+        setPosts(result)
+      } catch (error) {
+        
+      }
+    }
+  }, []);
+  function handleRefresh() {
+    x;
+    setRefresh((prev) => prev + 1);
   }
   // console.log("posts state:", posts, Array.isArray(posts))
   toast.info(loading);
@@ -54,11 +68,11 @@ export default function Home() {
     <>
       <ToastContainer theme="dark" position="top-center" autoClose={2500} />
       <Navbar user={user} homePage={"/"} FAQ={"/"} aboutUs={"/"} />
-      <CreatePost onSuccess={handleRefresh}/>
+      <CreatePost onSuccess={handleRefresh} />
       <div className="ua-page ">
         <div className=" px-4">
           <div className="ua-layout ">
-            <Filter/>
+            <Filter filters={filters} setFilters={setFilters}/>
 
             <section className="ua-posts">
               <div className="ua-cards-grid">
@@ -70,6 +84,7 @@ export default function Home() {
                     petName={post.nev}
                     countyCity={post.varos}
                     note={post.megjegyzes}
+                    postcode={post.postcode}
                     user={user}
                   />
                 ))}

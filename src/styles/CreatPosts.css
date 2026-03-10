@@ -50,7 +50,9 @@
 #createPostModal .custom-select__single-value {
   color: #c9d1d9;
 }
-
+#createPostModal .custom-select__input-container {
+  color: #c9d1d9;
+}
 #createPostModal .custom-select__menu {
   background: #161b22;
   color: white;
@@ -91,4 +93,8 @@
 }
 #createPostModal .form-control::placeholder {
   color: rgb(131, 131, 131);
+}
+.previewImg{
+  width: 350px;
+  height: 350px;
 }
