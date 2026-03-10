@@ -11,9 +11,11 @@ export default function CreatePost({ onSuccess }) {
   const [varos, setVaros] = useState([]);
   const [selectedVaros, setSelectedVaros] = useState(null);
   const [megjegyzes, setMegjegyzes] = useState("");
-  const [postcode, setPostcode] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [varosLoading, setVarosLoading] = useState(false);
+  const [citiesRaw, setCitiesRaw] = useState([]);
+  const [postcodes, setPostcodes] = useState([]);
+  const [selectedPostcode, setSelectedPostcode] = useState(null);
 
   useEffect(() => {
     async function loadCounties() {
@@ -41,31 +43,49 @@ export default function CreatePost({ onSuccess }) {
     async function loadCities() {
       if (!selectedMegye) {
         setVaros([]);
+        setCitiesRaw([]);
+        setPostcodes([]);
+        setSelectedVaros(null);
+        setSelectedPostcode(null);
         return;
       }
+
       setVarosLoading(true);
       try {
         const citiesData = await getCitiesByCounties(selectedMegye.value);
-        // console.log(`citiesdata: ${citiesData}`);
+        if (citiesData.error) return toast.error(citiesData.error);
 
-        if (citiesData.error) {
-          return toast.error(citiesData.error);
-        }
+        setCitiesRaw(citiesData.result);
 
-        const formattedCities = citiesData.result.map((c) => ({
-          label: c.city,
-          value: c.city,
-        }));
-        setVaros(formattedCities);
-      } catch (err) {
-        console.error(err);
-        toast.error("Hiba volt a lekerdezesben bratyeszgatyesz");
+        const uniqueCities = Array.from(
+          new Set(citiesData.result.map((x) => x.city)),
+        );
+        setVaros(uniqueCities.map((city) => ({ label: city, value: city })));
+
+        setPostcodes([]);
+        setSelectedPostcode(null);
       } finally {
         setVarosLoading(false);
       }
     }
+
     loadCities();
   }, [selectedMegye]);
+
+  useEffect(() => {
+    if (!selectedVaros) {
+      setPostcodes([]);
+      setSelectedPostcode(null);
+      return;
+    }
+    const pcs = citiesRaw
+      .filter((x) => x.city === selectedVaros.value)
+      .map((x) => x.postcode)
+      .filter(Boolean);
+    const uniquePcs = Array.from(new Set(pcs.map(String)));
+    setPostcodes(uniquePcs.map((pc) => ({ label: pc, value: pc })));
+    setSelectedPostcode(null);
+  }, [selectedVaros, citiesRaw]);
 
   const previewUrl = useMemo(() => {
     if (!file) return null;
@@ -78,17 +98,17 @@ export default function CreatePost({ onSuccess }) {
     if (!nev.trim()) return toast.info("Add meg az állat nevét!");
     if (!file) return toast.info("Válassz képet!");
     if (!selectedMegye) return toast.info("Válassz megyét!");
-    if (!selectedMegye) return toast.info("Válassz várost!");
-    if (!postcode.trim()) return toast.info("Addj meg egy irányítószámot!");
+    if (!selectedVaros) return toast.info("Válassz várost!");
+    if (!selectedPostcode) return toast.info("Válassz irányítószámot!");
     setIsLoading(true);
     try {
       const { result, error } = await createPost({
-        nev: nev,
+        nev,
         varos: selectedVaros.value,
-        megjegyzes: megjegyzes,
-        postcode: postcode,
+        megjegyzes,
+        postcode: selectedPostcode.value,
         megye: selectedMegye.label,
-        file: file,
+        file,
       });
 
       if (error) {
@@ -99,16 +119,15 @@ export default function CreatePost({ onSuccess }) {
       setFile(null);
       setSelectedMegye(null);
       setSelectedVaros(null);
-      setPostcode("");
+      setSelectedPostcode(null);
       setMegjegyzes("");
 
       if (onSuccess) onSuccess();
-      return toast.success(result.message);
     } catch (err) {
       console.error(err);
       toast.error("Hiba történt a városok lekérdezésénél");
     } finally {
-      setVarosLoading(false);
+      setIsLoading(false);
     }
   }
 
@@ -171,9 +190,7 @@ export default function CreatePost({ onSuccess }) {
                       value={selectedVaros}
                       onChange={(selected) => {
                         setSelectedVaros(selected);
-                        if (selected?.postcode) {
-                          setPostcode(selected.postcode);
-                        }
+                        setSelectedPostcode(null);
                       }}
                       isDisabled={!selectedMegye}
                       isLoading={varosLoading}
@@ -181,8 +198,8 @@ export default function CreatePost({ onSuccess }) {
                         !selectedMegye
                           ? "Előbb válassz megyét..."
                           : varosLoading
-                          ? "Városok betöltése..."
-                          : "Válassz várost..."
+                            ? "Városok betöltése..."
+                            : "Válassz várost..."
                       }
                       isSearchable={true}
                       isClearable={true}
@@ -190,14 +207,20 @@ export default function CreatePost({ onSuccess }) {
                     {/* -------------- */}
                     {/* -------------- */}
                     {/* -------------- */}
-                    {/* -------------- */}
                     <label className="form-label mt-3">Irányítószám</label>
-                    <input
-                      value={postcode}
-                      onChange={(e) => setPostcode(e.target.value)}
-                      type="text"
-                      className="form-control"
-                      placeholder="pl. 1234"
+                    <Select
+                      classNamePrefix="custom-select"
+                      options={postcodes}
+                      value={selectedPostcode}
+                      onChange={setSelectedPostcode}
+                      isDisabled={!selectedVaros}
+                      placeholder={
+                        !selectedVaros
+                          ? "Előbb válassz várost..."
+                          : "Válassz irányítószámot..."
+                      }
+                      isSearchable
+                      isClearable
                     />
                     <div className="mt-3">
                       <label className="form-label">Kisállat képe</label>
@@ -210,7 +233,11 @@ export default function CreatePost({ onSuccess }) {
                       />
                       <div className="mt-3">
                         {previewUrl ? (
-                          <img src={previewUrl} alt="Előnézet" />
+                          <img
+                            src={previewUrl}
+                            alt="Előnézet"
+                            className="previewImg"
+                          />
                         ) : (
                           <>
                             <div className="text-secondary">
