@@ -1,4 +1,4 @@
-const BACKEND_URL = "/users";
+const BACKEND_URL = "/users"; //Dani hoki lmao
 
 export async function register(email, username, psw) {
   const res = await fetch(`${BACKEND_URL}/register`, {
