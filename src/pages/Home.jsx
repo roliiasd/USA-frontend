@@ -70,6 +70,7 @@ export default function Home() {
                     petName={post.nev}
                     countyCity={post.varos}
                     note={post.megjegyzes}
+                    user={user}
                   />
                 ))}
               </div>
