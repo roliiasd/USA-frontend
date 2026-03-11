@@ -61,7 +61,7 @@ export default function Home() {
       String(post.postcode) === String(filters.postcode.value);
     return countyOk && cityOk && postcodeOk;
   });
-console.log(filteredPosts);
+// console.log(filteredPosts);
   return (
     <>
       <ToastContainer theme="dark" position="top-center" autoClose={2500} />

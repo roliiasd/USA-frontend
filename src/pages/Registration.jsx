@@ -2,12 +2,12 @@ import { useState } from "react";
 
 import { Bounce, ToastContainer, toast } from "react-toastify";
 
-import { Link,useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import "../styles/Registration.css";
 import { login, register } from "../users";
 
 export default function Registration() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [psw, setPsw] = useState("");
@@ -16,8 +16,8 @@ export default function Registration() {
   const [errorM, setErrorM] = useState("");
 
   const handleRegister = async () => {
-    setErrorM('')
-    setMessage('')
+    setErrorM("");
+    setMessage("");
     if (!username || !email || !psw) {
       toast.error("Minden mezőt ki kell tölteni");
       return;
@@ -29,20 +29,20 @@ export default function Registration() {
     try {
       const data = await register(email, username, psw);
       if (data.error) {
-        return toast.error(data.error)
+        return toast.error(data.error);
       }
 
-      toast.success(data.message)
-      login(email,psw)
-      setTimeout(() => navigate('/'),3000)
+      toast.success(data.message);
+      login(email, psw);
+      setTimeout(() => navigate("/"), 3000);
     } catch (err) {
-      toast.error('Nem sikerult kapcsolodni a bukkitszerverhez!')
+      toast.error("Nem sikerult kapcsolodni a bukkitszerverhez!");
     }
   };
 
   return (
     <>
-    <ToastContainer theme="dark" position="top-center" autoClose={2500}/>
+      <ToastContainer theme="dark" position="top-center" autoClose={2500} />
       <div className="reg-page">
         <Link to={"/"} className="img-div">
           <img src="/src/assets/logo.png" alt="UsedAnimals logo" />
@@ -51,7 +51,13 @@ export default function Registration() {
         <div className="reg-content">
           <h1>Üdvözöljük!</h1>
 
-          <div className="reg-box">
+          <form
+            className="reg-box"
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleRegister();
+            }}
+          >
             <input
               type="text"
               value={username}
@@ -77,10 +83,10 @@ export default function Registration() {
               onChange={(e) => setConfirmPsw(e.target.value)}
             />
 
-            <div className="reg-Btn" onClick={handleRegister}>
+            <button type="submit" className="reg-Btn" onClick={handleRegister}>
               Regisztráció
-            </div>
-          </div>
+            </button>
+          </form>
           <p className="log-reg">
             Ha van fiókod,{" "}
             <Link to={"/login"} style={{ textDecoration: "none" }}>

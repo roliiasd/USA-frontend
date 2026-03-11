@@ -1,14 +1,15 @@
 .ua-filter {
-  background: rgba(52, 50, 65, 0.35);
-  border-radius: 12px;
+  width: 100%; 
+  background: rgba(255, 255, 255, 0.05); 
+  backdrop-filter: blur(10px);
   padding: 1rem;
-  color: #e5e7eb;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   position: sticky;
-  top: 3rem;
-  min-width: 500px;
+  top: 1rem; 
 }
 
-input[type="checkbox"] {
+.ua-filter input[type="checkbox"] {
   width: 18px;
   height: 18px;
   appearance: none;
@@ -17,14 +18,16 @@ input[type="checkbox"] {
   border-radius: 4px;
   cursor: pointer;
   box-shadow: 0 4px 8px rgba(8, 8, 8, 0.4);
+  vertical-align: middle;
+  margin-right: 8px;
 }
 
-input[type="checkbox"]:checked {
+.ua-filter input[type="checkbox"]:checked {
   background: #238636;
   border-color: #238636;
 }
 
-input[type="checkbox"]:checked::after {
+.ua-filter input[type="checkbox"]:checked::after {
   content: '✓';
   display: block;
   text-align: center;
@@ -39,6 +42,25 @@ input[type="checkbox"]:focus {
   outline: none;
 }
 
+.ua-filter .form-label {
+  color: #8b949e;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 5px;
+  display: block;
+}
+.ua-filter .form-control {
+  background: #0d1117;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  color: #c9d1d9;
+  font-size: 14px;
+  padding: 8px 12px;
+  width: 100%;
+}
+.ua-filter .form-control::placeholder {
+  color: #8b949e;
+}
 
 .ua-filter .modal-content {
   background: #0d1117;
@@ -60,19 +82,6 @@ input[type="checkbox"]:focus {
   filter: invert(0.7);
 }
 
-.ua-filter .form-label {
-  color: #8b949e;
-  font-size: 12px;
-  font-weight: 500;
-}
-
-.ua-filter .form-control {
-  background: #010409;
-  border: 1px solid #30363d;
-  border-radius: 6px;
-  color: #c9d1d9;
-  font-size: 14px;
-}
 
 .ua-filter .form-control:focus {
   border-color: #238636;
@@ -107,6 +116,10 @@ input[type="checkbox"]:focus {
   border: 1px solid #238636;
   color: #fff;
   border-radius: 6px;
+  padding: 8px 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
 .ua-filter .btn-outline-success:hover {
@@ -132,7 +145,4 @@ input[type="checkbox"]:focus {
 .ua-filter .custom-select__menu-list {
   background: #161b22;
   padding: 0;
-}
-.ua-filter .form-control::placeholder {
-  color: white;
 }
