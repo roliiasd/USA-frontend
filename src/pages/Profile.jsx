@@ -1,47 +1,125 @@
-import { useNavigate, Link } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import UserPosts from "../components/UserPosts";
+import { whoami } from "../users";
+import { loadpost } from "../animals";
 export default function Profile() {
+  const [user, setUser] = useState(null);
+  const [myPosts, setMyPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState("settings");
+
+  useEffect(()=>{
+    async function loadProfileData() {
+      try {
+        const me = await whoami()
+        if (me.error) {
+          navigate('/login')
+          return
+        }
+        setUser(me)
+
+        const allPosts = await loadpost()
+        setMyPosts(allPosts.filter(post => post.userId === me.id))
+      } catch (err) {
+        console.error(err);
+        
+      }
+      finally{
+        setLoading(false)
+      }
+    }
+    loadProfileData()
+  },[navigate])
+
+
+
+  const handleEdit = (postId) => {
+    console.log("Edit:", postId);
+  };
   return (
     <>
       <div className="profile-page">
-        <button
-          className="btn backtohome position-fixed"
-          style={{ top: 20, left: 20 }}
-          onClick={() => navigate("/")}
-        >
-          <i className="bi bi-arrow-left me-2"></i>
-        </button>
-        <div
-          className=" profile-layout"
-        >
+        
+        <div className="profile-layout">
+          <button
+            className="btn backtohome position-fixed"
+            style={{ top: 20, left: 20 }}
+            onClick={() => navigate("/")}
+          >
+            <i className="bi  bi-house-down me-2" />
+            Vissza a főoldalra
+          </button>
           <h1>Jocoka,</h1>
           <i className="bi bi-person-fill" />
-
-          <label>Felhasználónév megváltoztatása</label>
-          <input
-            type="text"
-            className="form-control-lg mb-4"
-            placeholder="Kivánt név...."
-          />
-
-          <label>Jelszó megváltoztatása</label>
-          <input
-            type="password"
-            placeholder="Új jelszó megadása"
-            className="form-control-lg mb-3"
-          />
-
-          <input
-            type="password"
-            placeholder="Új jelszó megerősitése"
-            className="form-control-lg mb-lg-5"
-          />
-
-          <div className="d-flex flex-row justify-content-around">
-            <button className="btn btn-danger">Elvetés</button>
-            <button className="btn btn-success">Mentés</button>
+          <div className="profile-tabs">
+            <button
+              className={`tab-btn ${activeTab === "settings" ? "active" : ""}`}
+              onClick={() => setActiveTab("settings")}
+            >
+              Beállitások
+            </button>
+            <button
+              className={`tab-btn ${activeTab === "posts" ? "active" : ""}`}
+              onClick={() => setActiveTab("posts")}
+            >
+              Hirdetéseim
+            </button>
           </div>
+          {activeTab === "settings" && (
+            <div className="profile-settings d-flex flex-column">
+              <label>Felhasználónév megváltoztatása</label>
+              <input
+                type="text"
+                className="form-control-lg mb-4"
+                placeholder="Kivánt név....."
+              />
+              <label>Jelszó megváltoztatása</label>
+              <input
+                type="password"
+                className="form-control-lg mb-4"
+                placeholder="Új jelszó megadása"
+              />
+              <input
+                type="password"
+                className="form-control-lg mb-lg-5"
+                placeholder="Új jelszó megerősitése"
+              />
+              <div className="d-flex mx-5 settingsBtn">
+                <button className="btn btn-danger">Elvetés</button>
+                <button className="btn btn-success">Mentés</button>
+              </div>
+            </div>
+          )}
+          {activeTab === "posts" && (
+            <div className="ua-cards-grid">
+              {myPosts.length === 0 ? (
+                <p className="no-posts">Még nincs hirdetésed</p>
+              ) : (
+                myPosts.map((post) => (
+                  <div key={post._id} className="profile-card-wrapper d-flex flex-column gap-2">
+                    <UserPosts
+                      username={user.username}
+                      petImg={user.petImg}
+                      petName={user.petName}
+                      note={user.note}
+                      locationText={[post.megye, post.varos, post.postcode]
+                        .filter(Boolean)
+                        .join(", ")}
+                    />
+                    <button
+                      className="btn btn-outline-primary-mt-2"
+                      onClick={() => handleEdit(post.id)}
+                    >
+                      <i className="bi bi-pencil-fill me-2" />
+                      Szerkesztés
+                    </button>
+                  </div>
+                ))
+              )}
+            </div>
+          )}
         </div>
       </div>
     </>

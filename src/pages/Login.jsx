@@ -12,7 +12,7 @@ export default function Login() {
 
   const handleLogin = async () => {
     if (!email || !psw) {
-      toast.error('Minden mezőt tölts ki!')
+      toast.error("Minden mezőt tölts ki!");
       return;
     }
     try {
@@ -21,8 +21,8 @@ export default function Login() {
         toast.error(data.error);
       }
       if (data?.message === "YIPPIE") {
-        toast.success(data.message)
-        setTimeout(() => navigate('/'),2500)
+        toast.success(data.message);
+        setTimeout(() => navigate("/"), 2500);
         return;
       }
     } catch (err) {
@@ -32,7 +32,7 @@ export default function Login() {
 
   return (
     <>
-    <ToastContainer theme="dark" position="top-center" autoClose={2000}/>
+      <ToastContainer theme="dark" position="top-center" autoClose={2000} />
       <div className="login-page">
         <div className="img-div">
           <img src="/src/assets/logo.png" alt="" />
@@ -41,7 +41,13 @@ export default function Login() {
         <div className="login-content">
           <h1>Üdvözöljük!</h1>
 
-          <div className="login-box">
+          <form
+            className="login-box"
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleLogin();
+            }}
+          >
             <input
               type="email"
               value={email}
@@ -55,10 +61,10 @@ export default function Login() {
               onChange={(e) => setPsw(e.target.value)}
             />
 
-            <div className="login-Btn" onClick={handleLogin}>
+            <button type="submit" className="login-Btn" onClick={handleLogin}>
               Bejelentkezés
-            </div>
-          </div>
+            </button>
+          </form>
 
           <p className="log-reg">
             Ha még nincs fiókod,{" "}
