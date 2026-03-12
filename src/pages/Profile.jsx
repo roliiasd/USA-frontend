@@ -10,30 +10,29 @@ export default function Profile() {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("settings");
 
-  useEffect(()=>{
+  useEffect(() => {
     async function loadProfileData() {
       try {
-        const me = await whoami()
+        const me = await whoami();
         if (me.error) {
-          navigate('/login')
-          return
+          navigate("/login");
+          return;
         }
-        setUser(me)
+        setUser(me);
 
-        const allPosts = await loadpost()
-        setMyPosts(allPosts.filter(post => post.userId === me.id))
+        const allPosts = await loadpost();
+        setMyPosts(allPosts.filter((post) => post.userId === me.id));
       } catch (err) {
         console.error(err);
-        
-      }
-      finally{
-        setLoading(false)
+      } finally {
+        setLoading(false);
       }
     }
-    loadProfileData()
-  },[navigate])
+    loadProfileData();
+  }, [navigate]);
 
-
+  // console.log(user)
+  // console.log(myPosts)
 
   const handleEdit = (postId) => {
     console.log("Edit:", postId);
@@ -41,7 +40,6 @@ export default function Profile() {
   return (
     <>
       <div className="profile-page">
-        
         <div className="profile-layout">
           <button
             className="btn backtohome position-fixed"
@@ -93,18 +91,22 @@ export default function Profile() {
             </div>
           )}
           {activeTab === "posts" && (
-            <div className="ua-cards-grid">
+            <div className="ua-cards-grid d-flex">
               {myPosts.length === 0 ? (
                 <p className="no-posts">Még nincs hirdetésed</p>
               ) : (
                 myPosts.map((post) => (
-                  <div key={post._id} className="profile-card-wrapper d-flex flex-column gap-2">
+                  <div key={post._id} className="profile-card-wrapper gap-2">
                     <UserPosts
                       username={user.username}
-                      petImg={user.petImg}
-                      petName={user.petName}
-                      note={user.note}
-                      locationText={[post.megye, post.varos, post.postcode]
+                      petImg={myPosts.petImg}
+                      petName={myPosts.nev}
+                      note={myPosts.note}
+                      locationText={[
+                        myPosts.megye,
+                        myPosts.varos,
+                        myPosts.postcode,
+                      ]
                         .filter(Boolean)
                         .join(", ")}
                     />
