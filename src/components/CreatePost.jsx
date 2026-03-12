@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import Select from "react-select";
-import { createPost } from "../animals";
+import { createPost, updatePost } from "../animals";
 import { ToastContainer, toast } from "react-toastify";
 import { getCounties, getCitiesByCounties } from "../getCC";
-export default function CreatePost({ onSuccess }) {
+export default function CreatePost({ onSuccess, editData, onClose }) {
   const [file, setFile] = useState(null);
   const [nev, setNev] = useState("");
   const [megye, setMegye] = useState([]);
@@ -16,7 +16,26 @@ export default function CreatePost({ onSuccess }) {
   const [citiesRaw, setCitiesRaw] = useState([]);
   const [postcodes, setPostcodes] = useState([]);
   const [selectedPostcode, setSelectedPostcode] = useState(null);
+  const isEditMode = !!editData;
+  useEffect(() => {
+    if (editData) {
+      setNev(editData.nev || "");
+      setMegjegyzes(editData.megjegyzes || "");
 
+      if (editData.megye) {
+        setSelectedMegye({ label: editData.megye, value: editData.megye });
+      }
+      if (editData.varos) {
+        setSelectedVaros({ label: editData.varos, value: editData.varos });
+      }
+      if (editData.postcode) {
+        setSelectedPostcode({
+          label: String(editData.postcode),
+          value: String(editData.postcode),
+        });
+      }
+    }
+  }, [editData]);
   useEffect(() => {
     async function loadCounties() {
       try {
@@ -52,7 +71,10 @@ export default function CreatePost({ onSuccess }) {
 
       setVarosLoading(true);
       try {
-        const citiesData = await getCitiesByCounties(selectedMegye.value);
+        const countyID = selectedMegye.value;
+        const citiesData = await getCitiesByCounties(
+          typeof megyeID === "number" ? megyeID : selectedMegye.label,
+        );
         if (citiesData.error) return toast.error(citiesData.error);
 
         setCitiesRaw(citiesData.result);
@@ -61,9 +83,6 @@ export default function CreatePost({ onSuccess }) {
           new Set(citiesData.result.map((x) => x.city)),
         );
         setVaros(uniqueCities.map((city) => ({ label: city, value: city })));
-
-        setPostcodes([]);
-        setSelectedPostcode(null);
       } finally {
         setVarosLoading(false);
       }
@@ -91,38 +110,55 @@ export default function CreatePost({ onSuccess }) {
     if (!file) return null;
     return URL.createObjectURL(file);
   }, [file]);
-
+  const resetForm = () => {
+    setNev("");
+    setFile(null);
+    setSelectedMegye(null);
+    setSelectedVaros(null);
+    setSelectedPostcode(null);
+    setMegjegyzes("");
+  };
   async function submitHandler(e) {
     e.preventDefault();
 
     if (!nev.trim()) return toast.info("Add meg az állat nevét!");
-    if (!file) return toast.info("Válassz képet!");
+    if (!isEditMode && !file) return toast.info("Válassz képet!");
     if (!selectedMegye) return toast.info("Válassz megyét!");
     if (!selectedVaros) return toast.info("Válassz várost!");
     if (!selectedPostcode) return toast.info("Válassz irányítószámot!");
     setIsLoading(true);
     try {
-      const { result, error } = await createPost({
-        nev,
-        varos: selectedVaros.value,
-        megjegyzes,
-        postcode: selectedPostcode.value,
-        megye: selectedMegye.label,
-        file,
-      });
+      let result, error;
+
+      if (isEditMode) {
+        ({ result, error } = updatePost({
+          id: editData.id,
+          nev,
+          varos: selectedVaros.value,
+          megjegyzes,
+          postcode: setSelectedPostcode.value,
+          megye: selectedMegye.label,
+          file,
+        }));
+      } else {
+        ({ result, error } = await createPost({
+          nev,
+          varos: selectedVaros.value,
+          megjegyzes,
+          postcode: selectedPostcode.value,
+          megye: selectedMegye.label,
+          file,
+        }));
+      }
 
       if (error) {
         return toast.error(error);
       }
-
-      setNev("");
-      setFile(null);
-      setSelectedMegye(null);
-      setSelectedVaros(null);
-      setSelectedPostcode(null);
-      setMegjegyzes("");
+      toast.success(isEditMode ? "Sikeres módositás!" : "Sikeres feltöltés!");
+      resetForm();
 
       if (onSuccess) onSuccess();
+      if (onClose) onClose();
     } catch (err) {
       console.error(err);
       toast.error("Hiba történt a városok lekérdezésénél");
@@ -133,7 +169,7 @@ export default function CreatePost({ onSuccess }) {
 
   return (
     <>
-      <ToastContainer theme="dark" position="top-center" autoClose={2000} />
+      <ToastContainer position="top-center" autoClose={2000} />
       <div
         className="modal"
         id="createPostModal"
@@ -144,13 +180,14 @@ export default function CreatePost({ onSuccess }) {
           <div className="modal-content">
             <div className="modal-header">
               <h1 className="modal-title text-center w-100">
-                Új dög felrakása
+                {isEditMode ? "Hirdetés szerkesztése" : "Új hirdetés"}
               </h1>
               <button
                 type="button"
                 className="btn btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"
+                onClick={onClose}
               ></button>
             </div>
             <div className="modal-body">
@@ -174,10 +211,11 @@ export default function CreatePost({ onSuccess }) {
                       onChange={(selected) => {
                         setSelectedMegye(selected);
                         setSelectedVaros(null);
+                        setSelectedPostcode(null);
                       }}
                       placeholder="Válassz megyét..."
-                      isSearchable={true}
-                      isClearable={true}
+                      isSearchable
+                      isClearable
                     />
                     {/* ------- */}
                     {/* ------- */}
@@ -223,7 +261,20 @@ export default function CreatePost({ onSuccess }) {
                       isClearable
                     />
                     <div className="mt-3">
-                      <label className="form-label">Kisállat képe</label>
+                      <label className="form-label">
+                        {isEditMode ? "Új kép (opcionális)" : "Kisállat képe"}
+                      </label>
+                      {isEditMode && editData?.kep && !file && (
+                        <div className="mb-2">
+                          <small className="text-muted">Jelenlegi kép</small>
+                          <img
+                            src={editData.kep}
+                            alt="Jelenlegi"
+                            className="previewImg d-block"
+                            style={{ maxHeight: 150 }}
+                          />
+                        </div>
+                      )}
                       <input
                         type="file"
                         accept="image/*"
@@ -231,21 +282,19 @@ export default function CreatePost({ onSuccess }) {
                         onChange={(e) => setFile(e.target.files?.[0] ?? null)}
                         multiple={true}
                       />
-                      <div className="mt-3">
-                        {previewUrl ? (
+
+                      {previewUrl && (
+                        <div className="mt-3">
+                          <small className="text-muted">
+                            Új kép előnézete:
+                          </small>
                           <img
                             src={previewUrl}
                             alt="Előnézet"
-                            className="previewImg"
+                            className="previewImg d-block"
                           />
-                        ) : (
-                          <>
-                            <div className="text-secondary">
-                              Nincs kiválasztott kép.
-                            </div>
-                          </>
-                        )}
-                      </div>
+                        </div>
+                      )}
                     </div>
                     <div className="mt-3">
                       <label className="form-label">
@@ -267,6 +316,7 @@ export default function CreatePost({ onSuccess }) {
                         className="btn btn-outline-danger justify-content-between"
                         data-bs-dismiss="modal"
                         disabled={isLoading}
+                        onClick={onClose}
                       >
                         Elvetés
                       </button>
@@ -276,7 +326,13 @@ export default function CreatePost({ onSuccess }) {
                         data-bs-dismiss="modal"
                         disabled={isLoading}
                       >
-                        {isLoading ? "Feltöltés..." : "Feltöltés"}
+                        {isLoading
+                          ? isEditMode
+                            ? "Mentés..."
+                            : "Feltöltés...."
+                          : isEditMode
+                            ? "Mentés"
+                            : "Feltöltés"}
                       </button>
                     </div>
                   </div>

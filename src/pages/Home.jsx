@@ -61,20 +61,42 @@ export default function Home() {
       String(post.postcode) === String(filters.postcode.value);
     return countyOk && cityOk && postcodeOk;
   });
-// console.log(filteredPosts);
+  // console.log(filteredPosts);
   return (
     <>
+      {/* notification */}
       <ToastContainer theme="dark" position="top-center" autoClose={2500} />
+      {/* notification */}
+      {/* . */}
+      {/* . */}
+      {/* . */}
+      {/* . */}
+      {/* navbar */}
       <Navbar user={user} homePage={"/"} FAQ={"/"} aboutUs={"/"} />
+      {/* navbar */}
+      {/* . */}
+      {/* . */}
+      {/* . */}
+      {/* . */}
+      {/* Making a post */}
       <CreatePost onSuccess={handleRefresh} />
-      <div className="ua-page ">
-        <div className=" px-4">
-          <div className="ua-layout ">
-            <Filter filters={filters} setFilters={setFilters} />
+      {/* Making a post */}
+      {/* . */}
+      {/* . */}
+      {/* . */}
+      {/* . */}
+      {/* . */}
 
-            <section className="ua-posts">
-              <div className="ua-cards-grid">
-                {(filteredPosts ?? []).map((post) => (
+      <div className="ua-page ">
+        <div className="container-fluid px-4 ">
+          <div className="row g-3">
+            <div className="col-12 col-lg-4 col-xl-3">
+              <Filter filters={filters} setFilters={setFilters} />
+            </div>
+
+            <div className="col-12 col-lg-8 col-xl-9">
+              <div className="ua-cards-grid w-100">
+                {(filteredPosts ?? []).slice().reverse().map((post) => (
                   <UserPosts
                     key={post.id}
                     username={post.username}
@@ -88,7 +110,7 @@ export default function Home() {
                   />
                 ))}
               </div>
-            </section>
+            </div>
           </div>
         </div>
       </div>

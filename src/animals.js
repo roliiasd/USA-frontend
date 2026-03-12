@@ -42,3 +42,23 @@ export async function createPost({
 
   return { result: data, error: null };
 }
+export async function updatePost({
+  id,
+  nev,
+  varos,
+  megjegyzes,
+  poscode,
+  megye,
+  file,
+}) {
+  const fd = new FormData();
+  fd.append("nev", nev);
+  fd.append("varos", varos);
+  fd.append("megjegyzes", megjegyzes);
+  fd.append("poscode", poscode);
+  fd.append("megye", megye);
+  if (file) {
+    fd.append("kep", file);
+  }
+  const res = await fetch(`${BACKEND_URL}/`)
+}

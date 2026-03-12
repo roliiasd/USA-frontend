@@ -1,11 +1,9 @@
 .ua-filter {
-  width: 100%; 
   background: rgba(255, 255, 255, 0.05); 
   backdrop-filter: blur(10px);
   padding: 1rem;
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  top: 1rem; 
 }
 
 .ua-filter input[type="checkbox"] {
@@ -144,11 +142,4 @@ input[type="checkbox"]:focus {
 .ua-filter .custom-select__menu-list {
   background: #161b22;
   padding: 0;
-}
-
-@media (max-width: 576px) {
-  
-  .ua-filter{
-    width: 85%;
-  }
 }
