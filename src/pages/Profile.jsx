@@ -91,14 +91,14 @@ export default function Profile() {
             </div>
           )}
           {activeTab === "posts" && (
-            <div className="ua-cards-grid d-flex">
+            <div className="profile-cards-grid d-flex">
               {myPosts.length === 0 ? (
                 <p className="no-posts">Még nincs hirdetésed</p>
               ) : (
                 myPosts.map((post) => (
                   <div key={post._id} className="profile-card-wrapper gap-2">
                     <UserPosts
-                      username={user.username}
+                      username={myPosts.username}
                       petImg={myPosts.petImg}
                       petName={myPosts.nev}
                       note={myPosts.note}
@@ -111,7 +111,7 @@ export default function Profile() {
                         .join(", ")}
                     />
                     <button
-                      className="btn btn-outline-primary-mt-2"
+                      className="btn btn-outline-primary mt-2"
                       onClick={() => handleEdit(post.id)}
                     >
                       <i className="bi bi-pencil-fill me-2" />
