@@ -1,28 +1,46 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import UserPosts from "../components/UserPosts";
+import CreatePost from "../components/CreatePost";
 import { whoami } from "../users";
 import { loadpost } from "../animals";
 export default function Profile() {
   const [myPosts, setMyPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("settings");
+  const [currentUser, setCurrentUser] = useState(null);
+  const [editingPost, setEditingPost] = useState(null);
 
   const navigate = useNavigate();
-  const location = useLocation();
-  const user = location.state?.user;
 
   useEffect(() => {
     async function loadProfileData() {
       try {
         const me = await whoami();
+
+        console.log(me);
+
         if (me.error) {
           navigate("/login");
           return;
         }
+        setCurrentUser(me);
 
         const allPosts = await loadpost();
-        setMyPosts(allPosts.filter((post) => post.userId === me.id));
+
+        const posts = Array.isArray(allPosts) ? allPosts : [];
+
+        const myUserId = me.user_id;
+
+        console.log(myUserId);
+
+        const filtered = posts.filter((post) => {
+          return Number(post.userId) === Number(myUserId);
+        });
+
+        console.log(`Szurt posztok: ${filtered}`);
+
+        setMyPosts(filtered);
       } catch (err) {
         console.error(err);
       } finally {
@@ -34,9 +52,11 @@ export default function Profile() {
 
   // console.log(user);
   // console.log(myPosts);
-
-  const handleEdit = (postId) => {
-    console.log("Edit:", postId);
+  if (loading) {
+    return <div className="loading">Betöltés....</div>;
+  }
+  const handleEdit = (post) => {
+    setEditingPost(post);
   };
   return (
     <>
@@ -50,8 +70,7 @@ export default function Profile() {
             <i className="bi  bi-house-down me-2" />
             Vissza a főoldalra
           </button>
-          <h1>Jocoka,</h1>
-          <i className="bi bi-person-fill" />
+          <h1>{currentUser?.username || currentUser?.name || "Felhasználó"}</h1>
           <div className="profile-tabs">
             <button
               className={`tab-btn ${activeTab === "settings" ? "active" : ""}`}
@@ -63,7 +82,7 @@ export default function Profile() {
               className={`tab-btn ${activeTab === "posts" ? "active" : ""}`}
               onClick={() => setActiveTab("posts")}
             >
-              Hirdetéseim
+              Hirdetéseim ({myPosts.length})
             </button>
           </div>
           {activeTab === "settings" && (
@@ -72,7 +91,7 @@ export default function Profile() {
               <input
                 type="text"
                 className="form-control-lg mb-4"
-                placeholder="Kivánt név....."
+                placeholder={currentUser?.username || "Kivánt név....."}
               />
               <label>Jelszó megváltoztatása</label>
               <input
@@ -97,21 +116,27 @@ export default function Profile() {
                 <p className="no-posts">Még nincs hirdetésed</p>
               ) : (
                 myPosts.map((post) => (
-                  <div key={post._id} className="profile-card-wrapper gap-2">
+                  <div key={post.id} className="profile-card-wrapper gap-2">
                     <UserPosts
-                      username={post.username}
+                      username={currentUser?.username}
                       petImg={post.kep}
                       petName={post.nev}
                       note={post.megjegyzes}
-                      locationText={() =>
-                        {[post.megye, post.varos, post.postcode]
-                          .filter(Boolean)
-                          .join(", ")}
-                      }
+                      locationText={[post.megye, post.varos, post.postcode]
+                        .filter(Boolean)
+                        .join(", ")}
+                    />
+                    <CreatePost
+                      editData={editingPost}
+                      onSuccess={() => {
+                        setEditingPost(null);
+                        loadProfileData();
+                      }}
+                      onClose={() => setEditingPost(null)}
                     />
                     <button
                       className="btn btn-outline-primary mt-2"
-                      onClick={() => handleEdit(post.id)}
+                      onClick={() => handleEdit(post._id)}
                     >
                       <i className="bi bi-pencil-fill me-2" />
                       Szerkesztés

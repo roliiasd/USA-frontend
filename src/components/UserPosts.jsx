@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 export default function UserPosts({
   user,
   username,
@@ -24,7 +25,12 @@ export default function UserPosts({
       </div>
 
       <footer className="ua-card-footer">
-        <div className="ua-pet-name">{petName}</div>
+        <div className="ua-pet-name d-flex justify-content-between">
+          {petName}
+          <Link to={'/messages'} className="text-text-decoration-none">
+          <i className="bi bi-chat" style={{color: '#f7b32bff'}}/>
+          </Link>
+        </div>
 
         <div className="ua-note-label">Megjegyzés:</div>
         <div className="ua-note-box">{note}</div>

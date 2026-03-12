@@ -7,36 +7,26 @@
 .ua-page {
   background: radial-gradient(circle at top, #0f344f 0, #020202 100%);
   min-height: 100vh;
-  padding: 2rem 1rem;
+  padding: 2rem 0;
   font-family: sans-serif;
   color: #fff;
 }
-
-.ua-layout {
-  display: grid;
-  grid-template-columns: 450px 1fr;
-  gap: 0.25rem;
-  align-items: flex-start;
-  max-width: 1400px;
-  justify-items: stretch;
-}
-
 .ua-posts {
   width: 100%;
 }
-
 .ua-cards-grid {
   display: flex;
-  width: 1240px;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  gap: 0.75rem;              
+  width: 100%;
   justify-content: flex-end;
 }
 
 .ua-card {
   display: flex;
   flex-direction: column;
-  width: 320px;
+  width: 250px;
+  height: 100%;
   border-radius: 16px;
   overflow: hidden;
   background: linear-gradient(
@@ -50,7 +40,10 @@
   border-top: 1px solid rgba(255, 255, 255, 0.3);
   border-left: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+  direction: ltr;
 }
 
 .ua-card:hover {
@@ -96,8 +89,8 @@
 }
 
 .ua-card-image img {
-  width: 400px;
-  height: 400px;
+  width: 100%;
+  aspect-ratio: 1/1;
   object-fit: cover;
   object-position: center;
   display: block;
@@ -108,7 +101,7 @@
   padding: 0.6rem;
   font-size: 0.75rem;
   background: transparent;
-  color: rgba(255, 255, 255, 0.9);
+  color: #ffffffe6;
 }
 
 .ua-card-title-row {
@@ -147,31 +140,4 @@
   gap: 0.4rem;
   font-size: 0.75rem;
   opacity: 0.7;
-}
-
-@media (max-width: 900px) {
-  .ua-layout {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-    margin: 0 auto;
-  }
-
-  .ua-cards-grid {
-    flex-direction: column;
-    margin: 0 auto;
-  }
-}
-@media (max-width: 576px) {
-  .ua-cards-grid {
-    width: 576px;
-  }
-  .ua-card-image img{
-    width: 100%;
-    height: 500px;
-    object-fit: fill;
-  }
-
-  .ua-card {
-    width: 85%;
-  }
 }
