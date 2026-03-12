@@ -1,14 +1,16 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import UserPosts from "../components/UserPosts";
 import { whoami } from "../users";
 import { loadpost } from "../animals";
 export default function Profile() {
-  const [user, setUser] = useState(null);
   const [myPosts, setMyPosts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("settings");
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const user = location.state?.user;
 
   useEffect(() => {
     async function loadProfileData() {
@@ -18,7 +20,6 @@ export default function Profile() {
           navigate("/login");
           return;
         }
-        setUser(me);
 
         const allPosts = await loadpost();
         setMyPosts(allPosts.filter((post) => post.userId === me.id));
@@ -31,8 +32,8 @@ export default function Profile() {
     loadProfileData();
   }, [navigate]);
 
-  // console.log(user)
-  // console.log(myPosts)
+  // console.log(user);
+  // console.log(myPosts);
 
   const handleEdit = (postId) => {
     console.log("Edit:", postId);
@@ -98,17 +99,15 @@ export default function Profile() {
                 myPosts.map((post) => (
                   <div key={post._id} className="profile-card-wrapper gap-2">
                     <UserPosts
-                      username={myPosts.username}
-                      petImg={myPosts.petImg}
-                      petName={myPosts.nev}
-                      note={myPosts.note}
-                      locationText={[
-                        myPosts.megye,
-                        myPosts.varos,
-                        myPosts.postcode,
-                      ]
-                        .filter(Boolean)
-                        .join(", ")}
+                      username={post.username}
+                      petImg={post.kep}
+                      petName={post.nev}
+                      note={post.megjegyzes}
+                      locationText={() =>
+                        {[post.megye, post.varos, post.postcode]
+                          .filter(Boolean)
+                          .join(", ")}
+                      }
                     />
                     <button
                       className="btn btn-outline-primary mt-2"
