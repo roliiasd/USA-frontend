@@ -145,3 +145,10 @@ input[type="checkbox"]:focus {
   background: #161b22;
   padding: 0;
 }
+
+@media (max-width: 576px) {
+  
+  .ua-filter{
+    width: 85%;
+  }
+}
