@@ -1,14 +1,18 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 import UserPosts from "../components/UserPosts";
 import CreatePost from "../components/CreatePost";
-import { whoami } from "../users";
+import { whoami, editUser } from "../users";
 import { loadpost } from "../animals";
 export default function Profile() {
+  const [currentUser, setCurrentUser] = useState(null);
+  const [username, setUsername] = useState(currentUser?.username || "");
+  const [psw, setPsw] = useState("");
+  const [confirmPsw, setConfirmPsw] = useState("");
   const [myPosts, setMyPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("settings");
-  const [currentUser, setCurrentUser] = useState(null);
   const [editingPost, setEditingPost] = useState(null);
 
   const navigate = useNavigate();
@@ -18,7 +22,7 @@ export default function Profile() {
       try {
         const me = await whoami();
 
-        console.log(me);
+        // console.log(me);
 
         if (me.error) {
           navigate("/login");
@@ -32,13 +36,13 @@ export default function Profile() {
 
         const myUserId = me.user_id;
 
-        console.log(myUserId);
+        // console.log(myUserId);
 
         const filtered = posts.filter((post) => {
           return Number(post.userId) === Number(myUserId);
         });
 
-        console.log(`Szurt posztok: ${filtered}`);
+        // console.log(`Szurt posztok: ${filtered}`);
 
         setMyPosts(filtered);
       } catch (err) {
@@ -50,6 +54,29 @@ export default function Profile() {
     loadProfileData();
   }, [navigate]);
 
+  async function editProfile() {
+    try {
+      const data = await editUser(username, psw);
+      if (psw !== confirmPsw) {
+        toast.error(data.error);
+        return;
+      }
+      const updateData = {
+        username: username,
+        ...(psw && { password: psw }),
+      };
+      await editUser(updateData);
+      toast.info(data.message);
+    } catch (err) {
+      console.error(err);
+      toast.error(err);
+    }
+  }
+  function handleCancel() {
+    setUsername(currentUser?.username || "");
+    setPsw("");
+    setConfirmPsw("");
+  }
   // console.log(user);
   // console.log(myPosts);
   if (loading) {
@@ -60,6 +87,7 @@ export default function Profile() {
   };
   return (
     <>
+      <ToastContainer theme="dark" position="top-center" autoClose={2000} />
       <div className="profile-page">
         <div className="profile-layout">
           <button
@@ -89,24 +117,34 @@ export default function Profile() {
             <div className="profile-settings d-flex flex-column">
               <label>Felhasználónév megváltoztatása</label>
               <input
+                value={username}
                 type="text"
                 className="form-control-lg mb-4"
                 placeholder={currentUser?.username || "Kivánt név....."}
+                onChange={(e) => setUsername(e.target.value)}
               />
               <label>Jelszó megváltoztatása</label>
               <input
+                value={psw}
                 type="password"
                 className="form-control-lg mb-4"
                 placeholder="Új jelszó megadása"
+                onChange={(e) => setPsw(e.target.value)}
               />
               <input
+                value={confirmPsw}
                 type="password"
                 className="form-control-lg mb-lg-5"
                 placeholder="Új jelszó megerősitése"
+                onChange={(e) => setConfirmPsw(e.target.value)}
               />
               <div className="d-flex mx-5 settingsBtn">
-                <button className="btn btn-danger">Elvetés</button>
-                <button className="btn btn-success">Mentés</button>
+                <button className="btn btn-danger" onClick={handleCancel}>
+                  Elvetés
+                </button>
+                <button className="btn btn-success" onClick={editProfile}>
+                  Mentés
+                </button>
               </div>
             </div>
           )}
@@ -136,7 +174,9 @@ export default function Profile() {
                     />
                     <button
                       className="btn btn-outline-primary mt-2"
-                      onClick={() => handleEdit(post._id)}
+                      data-bs-toggle="modal"
+                      data-bs-target="#createPostModal"
+                      onClick={() => handleEdit(post)}
                     >
                       <i className="bi bi-pencil-fill me-2" />
                       Szerkesztés

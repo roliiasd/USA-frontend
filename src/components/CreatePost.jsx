@@ -73,7 +73,7 @@ export default function CreatePost({ onSuccess, editData, onClose }) {
       try {
         const countyID = selectedMegye.value;
         const citiesData = await getCitiesByCounties(
-          typeof megyeID === "number" ? megyeID : selectedMegye.label,
+          typeof countyID === "number" ? countyID : selectedMegye.label,
         );
         if (citiesData.error) return toast.error(citiesData.error);
 
@@ -143,7 +143,7 @@ export default function CreatePost({ onSuccess, editData, onClose }) {
       } else {
         ({ result, error } = await createPost({
           nev,
-          varos: selectedVaros.value,
+          varos: selectedVaros.label,
           megjegyzes,
           postcode: selectedPostcode.value,
           megye: selectedMegye.label,
@@ -166,10 +166,9 @@ export default function CreatePost({ onSuccess, editData, onClose }) {
       setIsLoading(false);
     }
   }
-
   return (
     <>
-      <ToastContainer position="top-center" autoClose={2000} />
+      <ToastContainer theme="dark" position="top-center" autoClose={2000} />
       <div
         className="modal"
         id="createPostModal"

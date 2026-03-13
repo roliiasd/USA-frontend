@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 export default function UserPosts({
+  id,
   user,
   username,
   petImg,
