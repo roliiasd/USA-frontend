@@ -30,7 +30,7 @@ export default function Profile() {
       const allPosts = await loadpost();
       const posts = Array.isArray(allPosts) ? allPosts : [];
       const filtered = posts.filter(
-        (post) => Number(post.userId) === Number(me.user_id)
+        (post) => Number(post.userId) === Number(me.user_id),
       );
       setMyPosts(filtered);
     } catch (err) {
@@ -86,12 +86,8 @@ export default function Profile() {
       <ToastContainer position="bottom-right" autoClose={500} theme="dark" />
 
       <div className="profile-page">
-        {/* ══════ SIDEBAR ══════ */}
         <aside className="profile-sidebar">
-          <button
-            className="sidebar-btn"
-            onClick={() => navigate("/")}
-          >
+          <button className="sidebar-btn" onClick={() => navigate("/")}>
             <i className="bi bi-house-door" />
             <span>Főoldal</span>
           </button>
@@ -113,10 +109,8 @@ export default function Profile() {
           </button>
         </aside>
 
-        {/* ══════ MAIN CONTENT ══════ */}
         <main className="profile-main">
           <div className="profile-content">
-            {/* === PROFIL TAB === */}
             {activeTab === "profile" && (
               <>
                 <h1>{currentUser?.username || "Felhasználó"}</h1>
@@ -173,7 +167,6 @@ export default function Profile() {
               </>
             )}
 
-            {/* === HIRDETÉSEK TAB === */}
             {activeTab === "posts" && (
               <>
                 <h1>Hirdetéseim ({myPosts.length})</h1>
@@ -188,13 +181,14 @@ export default function Profile() {
                     {myPosts.map((post) => (
                       <div key={post.id} className="post-card">
                         <UserPosts
+                          id={post.id}
                           username={currentUser?.username}
                           petImg={post.kep}
                           petName={post.nev}
                           note={post.megjegyzes}
-                          locationText={[post.megye, post.varos, post.postcode]
-                            .filter(Boolean)
-                            .join(", ")}
+                          county={post.megye}
+                          city={post.varos}
+                          postcode={post.postcode}
                         />
                         <div className="post-card-footer">
                           <button
