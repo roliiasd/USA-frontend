@@ -141,3 +141,8 @@
   font-size: 0.75rem;
   opacity: 0.7;
 }
+@media (max-width: 576px){
+  .ua-cards-grid {
+  justify-content: center;
+}
+}

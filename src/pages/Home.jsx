@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import CreatePost from "../components/CreatePost";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "../styles/Home.css";
 import { whoami } from "../users";
 import { loadpost } from "../animals";
 import UserPosts from "../components/UserPosts";
 import Filter from "../components/Filter";
+
 export default function Home() {
+  const [showCreateModal, setShowCreateModal] = useState(false);
   const [user, setUser] = useState(null);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -17,8 +19,6 @@ export default function Home() {
     city: null,
     postcode: null,
   });
-  // console.log("filters.county:", filters.county);
-  // console.log("first post:", posts?.[0]);
 
   useEffect(() => {
     async function load() {
@@ -27,13 +27,13 @@ export default function Home() {
         if (!data?.error) {
           setUser(data);
         }
-        // console.error(data.error);
       } catch (err) {
         console.error(err.message);
       }
     }
     load();
   }, []);
+
   useEffect(() => {
     async function fetchPosts() {
       try {
@@ -41,7 +41,6 @@ export default function Home() {
         setPosts(result);
       } catch (err) {
         console.error(err);
-
         setPosts([]);
       } finally {
         setLoading(false);
@@ -49,6 +48,7 @@ export default function Home() {
     }
     fetchPosts();
   }, [refresh]);
+
   function handleRefresh() {
     setRefresh((prev) => prev + 1);
   }
@@ -61,34 +61,28 @@ export default function Home() {
       String(post.postcode) === String(filters.postcode.value);
     return countyOk && cityOk && postcodeOk;
   });
-  // console.log(filteredPosts);
+
   return (
     <>
-      {/* notification */}
-      <ToastContainer theme="dark" position="top-center" autoClose={2500} />
-      {/* notification */}
-      {/* . */}
-      {/* . */}
-      {/* . */}
-      {/* . */}
-      {/* navbar */}
-      <Navbar user={user} homePage={"/"} FAQ={"/"} aboutUs={"/"} />
-      {/* navbar */}
-      {/* . */}
-      {/* . */}
-      {/* . */}
-      {/* . */}
-      {/* Making a post */}
-      <CreatePost onSuccess={handleRefresh} />
-      {/* Making a post */}
-      {/* . */}
-      {/* . */}
-      {/* . */}
-      {/* . */}
-      {/* . */}
+      <ToastContainer theme="dark" position="top-center" autoClose={800} />
 
-      <div className="ua-page ">
-        <div className="container-fluid px-4 ">
+      <Navbar
+        user={user}
+        homePage={"/"}
+        FAQ={"/"}
+        aboutUs={"/"}
+        onCreatePost={() => setShowCreateModal(true)}
+      />
+
+      {/* Új hirdetés modal */}
+      <CreatePost
+        showModal={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
+        onSuccess={handleRefresh}
+      />
+
+      <div className="ua-page">
+        <div className="container-fluid px-4">
           <div className="row g-3">
             <div className="col-12 col-lg-4 col-xl-3">
               <Filter filters={filters} setFilters={setFilters} />
@@ -96,19 +90,22 @@ export default function Home() {
 
             <div className="col-12 col-lg-8 col-xl-9">
               <div className="ua-cards-grid w-100">
-                {(filteredPosts ?? []).slice().reverse().map((post) => (
-                  <UserPosts
-                    key={post.id}
-                    username={post.username}
-                    petImg={post.kep}
-                    petName={post.nev}
-                    note={post.megjegyzes}
-                    county={post.megye}
-                    city={post.varos}
-                    postcode={post.postcode}
-                    user={user}
-                  />
-                ))}
+                {filteredPosts
+                  .slice()
+                  .reverse()
+                  .map((post) => (
+                    <UserPosts
+                      key={post.id}
+                      username={post.username}
+                      petImg={post.kep}
+                      petName={post.nev}
+                      note={post.megjegyzes}
+                      county={post.megye}
+                      city={post.varos}
+                      postcode={post.postcode}
+                      user={user}
+                    />
+                  ))}
               </div>
             </div>
           </div>

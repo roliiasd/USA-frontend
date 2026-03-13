@@ -1,100 +1,243 @@
-#createPostModal .modal-content {
-  background: #0d1117;
-  border: 1px solid #30363d;
-  border-radius: 6px;
+.create-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(1, 4, 9, 0.6);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1050;
 }
 
-#createPostModal .modal-header {
-  border-bottom: 1px solid #21262d;
+.create-post-modal .modal-content {
+  background: rgba(13, 17, 23, 0.7);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(48, 54, 61, 0.5);
+  border-radius: 20px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  animation: glassSlideIn 0.3s ease-out;
 }
 
-#createPostModal .modal-title {
+.create-post-modal .modal-header {
+  border-bottom: 1px solid rgba(33, 38, 45, 0.6);
+  padding: 1.5rem 2rem;
+  border-radius: 20px 20px 0 0;
+}
+
+.create-post-modal .modal-title {
   color: #c9d1d9;
-  font-size: 3rem;
+  font-size: 1.8rem;
   font-weight: 600;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
-#createPostModal .btn-close {
+.create-post-modal .btn-close {
   filter: invert(0.7);
+  opacity: 0.7;
+  transition: all 0.3s ease;
 }
 
-#createPostModal .form-label {
+.create-post-modal .btn-close:hover {
+  opacity: 1;
+  transform: rotate(90deg);
+}
+
+.create-post-modal .modal-body {
+  padding: 2rem;
+  background: rgba(13, 17, 23, 0.2);
+}
+
+.create-post-modal .form-label {
   color: #8b949e;
-  font-size: 12px;
+  font-size: 0.85rem;
   font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
 }
 
-#createPostModal .form-control {
-  background: #010409;
-  border: 1px solid #30363d;
-  border-radius: 6px;
+.create-post-modal .form-control {
+  background: rgba(1, 4, 9, 0.6);
+  border: 1px solid rgba(48, 54, 61, 0.5);
+  border-radius: 12px;
   color: #c9d1d9;
   font-size: 14px;
+  padding: 0.8rem 1rem;
+  transition: all 0.3s ease;
 }
 
-#createPostModal .form-control:focus {
-  border-color: #238636;
-  box-shadow: 0 0 0 3px rgba(35, 134, 54, 0.3);
-}
-
-#createPostModal .custom-select__control {
-  background: #010409;
-  border: 1px solid #30363d;
-}
-
-#createPostModal .custom-select__control--is-focused {
-  border-color: #238636;
-  box-shadow: 0 0 0 3px rgba(35, 134, 54, 0.3);
-}
-
-#createPostModal .custom-select__single-value {
-  color: #c9d1d9;
-}
-#createPostModal .custom-select__input-container {
-  color: #c9d1d9;
-}
-#createPostModal .custom-select__menu {
-  background: #161b22;
-  color: white;
-  border: 1px solid #30363d;
-}
-#createPostModal .custom-select__option:hover {
-  background: #32383f;
-}
-
-#createPostModal .btn-outline-success {
-  background: #238636;
-  border: 1px solid #238636;
-  color: #fff;
-  border-radius: 6px;
-}
-
-#createPostModal .btn-outline-success:hover {
-  background: #2ea043;
-}
-
-#createPostModal .custom-select__option {
-  background: #161b22;
+.create-post-modal .form-control:focus {
+  background: rgba(1, 4, 9, 0.8);
+  border-color: rgba(35, 134, 54, 0.8);
+  box-shadow:
+    0 0 0 3px rgba(35, 134, 54, 0.2),
+    0 0 20px rgba(35, 134, 54, 0.1);
   color: #c9d1d9;
 }
 
-#createPostModal .custom-select__option--is-focused {
-  background: #21262d;
+.create-post-modal .form-control::placeholder {
+  color: rgba(131, 131, 131, 0.7);
 }
 
-#createPostModal .custom-select__option--is-selected {
-  background: #238636;
-  color: #fff;
+.create-post-modal textarea.form-control {
+  resize: none;
+  min-height: 120px;
 }
 
-#createPostModal .custom-select__menu-list {
+.create-post-modal .custom-select__control {
+  background: rgba(1, 4, 9, 0.6) !important;
+  border: 1px solid rgba(48, 54, 61, 0.5) !important;
+  border-radius: 12px !important;
+  min-height: 45px;
+  transition: all 0.3s ease;
+}
+
+.create-post-modal .custom-select__control:hover {
+  border-color: rgba(48, 54, 61, 0.8) !important;
+}
+.create-post-modal .custom-select__menu-list{
   background: #161b22;
   padding: 0;
 }
-#createPostModal .form-control::placeholder {
-  color: rgb(131, 131, 131);
+.create-post-modal .custom-select__control--is-focused {
+  background: rgba(1, 4, 9, 0.8) !important;
+  border-color: rgba(35, 134, 54, 0.8) !important;
+  box-shadow:
+    0 0 0 3px rgba(35, 134, 54, 0.2),
+    0 0 20px rgba(35, 134, 54, 0.1) !important;
 }
-.previewImg{
-  width: 350px;
-  height: 350px;
+
+.create-post-modal .custom-select__single-value,
+.create-post-modal .custom-select__input-container {
+  color: #c9d1d9 !important;
+}
+
+.create-post-modal .custom-select__placeholder {
+  color: rgba(131, 131, 131, 0.7) !important;
+}
+
+.create-post-modal .custom-select__menu {
+  background: rgba(22, 27, 34, 0.95) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(48, 54, 61, 0.5) !important;
+  border-radius: 12px !important;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5) !important;
+}
+
+.create-post-modal .custom-select__option {
+  background: transparent !important;
+  color: #c9d1d9 !important;
+  border-radius: 8px !important;
+  margin: 2px 0;
+  transition: all 0.2s ease;
+}
+
+.create-post-modal .custom-select__option:hover,
+.create-post-modal .custom-select__option--is-focused {
+  background: rgba(33, 38, 45, 0.7) !important;
+}
+
+.create-post-modal .custom-select__option--is-selected {
+  background: rgba(35, 134, 54, 0.7) !important;
+  color: #fff !important;
+  box-shadow: 0 2px 8px rgba(35, 134, 54, 0.3) !important;
+}
+
+.create-post-modal .previewImg {
+  border-radius: 16px;
+  border: 2px solid rgba(48, 54, 61, 0.5);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  max-width: 100%;
+  height: auto;
+  max-height: 250px;
+  object-fit: cover;
+}
+
+.create-post-modal .btn-outline-danger {
+  background: rgba(255, 107, 107, 0.1);
+  border: 1px solid rgba(255, 107, 107, 0.4);
+  color: #ff6b6b;
+  border-radius: 12px;
+  padding: 0.7rem 1.8rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.create-post-modal .btn-outline-danger:hover {
+  background: rgba(255, 107, 107, 0.2);
+  border-color: #ff6b6b;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(255, 107, 107, 0.3);
+}
+
+.create-post-modal .btn-outline-success {
+  background: rgba(35, 134, 54, 0.8);
+  border: 1px solid rgba(35, 134, 54, 0.6);
+  color: #fff;
+  border-radius: 12px;
+  padding: 0.7rem 1.8rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow:
+    0 4px 15px rgba(35, 134, 54, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.create-post-modal .btn-outline-success:hover {
+  background: rgba(46, 160, 67, 0.9);
+  border-color: rgba(46, 160, 67, 0.8);
+  transform: translateY(-2px);
+  box-shadow:
+    0 6px 20px rgba(35, 134, 54, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.create-post-modal input[type="file"] {
+  background: rgba(1, 4, 9, 0.6);
+  border: 1px dashed rgba(48, 54, 61, 0.5);
+  border-radius: 12px;
+  color: #c9d1d9;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0.8rem 1rem;
+}
+
+.create-post-modal input[type="file"]:hover {
+  border-color: rgba(35, 134, 54, 0.5);
+  background: rgba(35, 134, 54, 0.05);
+}
+
+.create-post-modal input[type="file"]::file-selector-button {
+  background: rgba(35, 134, 54, 0.8);
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  margin-right: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.create-post-modal input[type="file"]::file-selector-button:hover {
+  background: rgba(46, 160, 67, 0.9);
+}
+
+@keyframes glassSlideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }

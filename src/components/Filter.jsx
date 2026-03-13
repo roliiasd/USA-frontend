@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { getCounties, getCitiesByCounties } from "../getCC";
-import { ToastContainer, toast } from "react-toastify";
 import Select from "react-select";
 
 export default function Filter({ filters, setFilters }) {
@@ -17,7 +16,7 @@ export default function Filter({ filters, setFilters }) {
         const countiesData = await getCounties();
         //  console.log("countiesData:", countiesData);
         if (countiesData.error) {
-          return toast.error(countiesData.error);
+          return console.error(countiesData.error);
         }
         const formattedCounties = countiesData.result.map((c) => ({
           label: c.county,
@@ -26,7 +25,7 @@ export default function Filter({ filters, setFilters }) {
         setMegye(formattedCounties);
       } catch (err) {
         console.error(err);
-        toast.error("Hiba töltént a bukkitszerverror valo lekerdezesnel");
+        console.error("Hiba töltént a bukkitszerverror valo lekerdezesnel");
       }
     }
     loadCounties();
@@ -46,7 +45,7 @@ export default function Filter({ filters, setFilters }) {
         // console.log(`citiesdata: ${citiesData}`);
 
         if (citiesData.error) {
-          return toast.error(citiesData.error);
+          return console.error(citiesData.error);
         }
         setCitiesRaw(citiesData.result);
 
@@ -56,7 +55,7 @@ export default function Filter({ filters, setFilters }) {
         setVaros(uniqueCities.map((city) => ({ label: city, value: city })));
       } catch (err) {
         console.error(err);
-        toast.error("Hiba volt a lekerdezesben bratyeszgatyesz");
+        console.error("Hiba volt a lekerdezesben bratyeszgatyesz");
       } finally {
         setVarosLoading(false);
       }
@@ -81,7 +80,6 @@ export default function Filter({ filters, setFilters }) {
   return (
     <>
       <div className="ua-filter ">
-        <ToastContainer theme="dark" position="top-center" autoClose={2500} />
         <h3>Szűrők</h3>
         <div className="row justify-content-center g-3">
           <div className="col-12 col-md-8 ">

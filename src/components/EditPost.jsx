@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Select from "react-select";
-import { createPost } from "../animals";
+import { updatePost } from "../animals";
 import { toast } from "react-toastify";
 import { getCounties, getCitiesByCounties } from "../getCC";
 
-export default function CreatePostModal({ showModal, onClose, onSuccess }) {
+export default function EditPost({ editData, onClose, onSuccess }) {
   const [file, setFile] = useState(null);
   const [nev, setNev] = useState("");
   const [megye, setMegye] = useState([]);
@@ -22,7 +22,7 @@ export default function CreatePostModal({ showModal, onClose, onSuccess }) {
 
   // Backdrop és ESC kezelés
   useEffect(() => {
-    if (!showModal) return;
+    if (!editData) return;
 
     function handleBackdropClick(e) {
       if (modalRef.current && !modalRef.current.contains(e.target)) {
@@ -45,7 +45,28 @@ export default function CreatePostModal({ showModal, onClose, onSuccess }) {
       document.removeEventListener("keydown", handleEsc);
       document.body.style.overflow = "";
     };
-  }, [showModal, onClose]);
+  }, [editData, onClose]);
+
+  // EditData betöltése
+  useEffect(() => {
+    if (editData) {
+      setNev(editData.nev || "");
+      setMegjegyzes(editData.megjegyzes || "");
+
+      if (editData.megye) {
+        setSelectedMegye({ label: editData.megye, value: editData.megye });
+      }
+      if (editData.varos) {
+        setSelectedVaros({ label: editData.varos, value: editData.varos });
+      }
+      if (editData.postcode) {
+        setSelectedPostcode({
+          label: String(editData.postcode),
+          value: String(editData.postcode),
+        });
+      }
+    }
+  }, [editData]);
 
   // Megyék betöltése
   useEffect(() => {
@@ -128,29 +149,20 @@ export default function CreatePostModal({ showModal, onClose, onSuccess }) {
     }),
   };
 
-  const resetForm = () => {
-    setNev("");
-    setFile(null);
-    setSelectedMegye(null);
-    setSelectedVaros(null);
-    setSelectedPostcode(null);
-    setMegjegyzes("");
-  };
-
   async function submitHandler(e) {
     e.preventDefault();
 
     if (!nev.trim()) return toast.info("Add meg az állat nevét!");
-    if (!file) return toast.info("Válassz képet!");
     if (!selectedMegye) return toast.info("Válassz megyét!");
     if (!selectedVaros) return toast.info("Válassz várost!");
     if (!selectedPostcode) return toast.info("Válassz irányítószámot!");
 
     setIsLoading(true);
     try {
-      const { result, error } = await createPost({
+      const { result, error } = await updatePost({
+        id: editData.id,
         nev,
-        varos: selectedVaros.label,
+        varos: selectedVaros.value,
         megjegyzes,
         postcode: selectedPostcode.value,
         megye: selectedMegye.label,
@@ -160,8 +172,7 @@ export default function CreatePostModal({ showModal, onClose, onSuccess }) {
       if (error) {
         return toast.error(error);
       }
-      toast.success("Sikeres feltöltés!");
-      resetForm();
+      toast.success("Sikeres módosítás!");
       onSuccess?.();
       onClose?.();
     } catch (err) {
@@ -172,17 +183,19 @@ export default function CreatePostModal({ showModal, onClose, onSuccess }) {
     }
   }
 
-  if (!showModal) return null;
+  if (!editData) return null;
 
   return (
-    <div className="create-modal-backdrop">
+    <div className="edit-modal-backdrop">
       <div
-        className="modal-dialog modal-lg modal-dialog-centered create-post-modal"
+        className="modal-dialog modal-lg modal-dialog-centered edit-post-modal"
         ref={modalRef}
       >
         <div className="modal-content">
           <div className="modal-header">
-            <h1 className="modal-title text-center w-100">Új hirdetés</h1>
+            <h1 className="modal-title text-center w-100">
+              Hirdetés szerkesztése
+            </h1>
             <button
               type="button"
               className="btn btn-close"
@@ -266,7 +279,18 @@ export default function CreatePostModal({ showModal, onClose, onSuccess }) {
                   />
 
                   <div className="mt-3">
-                    <label className="form-label">Kisállat képe</label>
+                    <label className="form-label">Új kép (opcionális)</label>
+                    {editData?.kep && !file && (
+                      <div className="mb-2">
+                        <small className="text-muted">Jelenlegi kép</small>
+                        <img
+                          src={editData.kep}
+                          alt="Jelenlegi"
+                          className="previewImg d-block"
+                          style={{ maxHeight: 150 }}
+                        />
+                      </div>
+                    )}
                     <input
                       type="file"
                       accept="image/*"
@@ -275,7 +299,7 @@ export default function CreatePostModal({ showModal, onClose, onSuccess }) {
                     />
                     {previewUrl && (
                       <div className="mt-3">
-                        <small className="text-muted">Előnézet:</small>
+                        <small className="text-muted">Új kép előnézete:</small>
                         <img
                           src={previewUrl}
                           alt="Előnézet"
@@ -311,7 +335,7 @@ export default function CreatePostModal({ showModal, onClose, onSuccess }) {
                       className="btn btn-outline-success"
                       disabled={isLoading}
                     >
-                      {isLoading ? "Feltöltés..." : "Feltöltés"}
+                      {isLoading ? "Mentés..." : "Mentés"}
                     </button>
                   </div>
                 </div>
