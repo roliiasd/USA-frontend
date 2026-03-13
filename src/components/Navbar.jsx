@@ -3,7 +3,7 @@ import logoImg from "/src/assets/logo.png";
 import { NavLink, useNavigate } from "react-router-dom"; // <-- NavLink hozzá
 import { logout } from "../users";
 
-export default function Navbar({ user, homePage, FAQ, aboutUs }) {
+export default function Navbar({ user, homePage, FAQ, aboutUs, onCreatePost }) {
   const [openMenu, setOpenMenu] = useState(false);
   const navigate = useNavigate();
   const isLoggedIn = !!user;
@@ -16,7 +16,7 @@ export default function Navbar({ user, homePage, FAQ, aboutUs }) {
       console.error(err);
     }
   }
-  
+
   return (
     <header className="navbar align-items-end navbarStyle">
       <div className="container-fluid d-flex align-items-center justify-content-between py-2">
@@ -60,8 +60,7 @@ export default function Navbar({ user, homePage, FAQ, aboutUs }) {
               <button
                 type="button"
                 className="btn btn-link p-0 text-dark"
-                data-bs-toggle="modal"
-                data-bs-target="#createPostModal"
+                onClick={onCreatePost}
                 style={{ fontSize: 20 }}
               >
                 +
