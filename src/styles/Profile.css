@@ -1,16 +1,8 @@
-/* ═══════════════════════════════════════════════════════════
-   PROFILE PAGE - SIDEBAR LAYOUT
-   ═══════════════════════════════════════════════════════════ */
-
 .profile-page {
   min-height: 100vh;
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f1a 100%);
   display: flex;
 }
-
-/* ═══════════════════════════════════════════════════════════
-   SIDEBAR - Bal oldal
-   ═══════════════════════════════════════════════════════════ */
 
 .profile-sidebar {
   width: 260px;
@@ -56,14 +48,14 @@
 }
 
 .sidebar-btn.active {
-  background: linear-gradient(135deg, rgba(165, 148, 249, 0.25), rgba(152, 226, 198, 0.25));
+  background: linear-gradient(
+    135deg,
+    rgba(165, 148, 249, 0.25),
+    rgba(152, 226, 198, 0.25)
+  );
   border-color: rgba(165, 148, 249, 0.4);
   color: #fff;
 }
-
-/* ═══════════════════════════════════════════════════════════
-   MAIN CONTENT - Középen
-   ═══════════════════════════════════════════════════════════ */
 
 .profile-main {
   flex: 1;
@@ -89,8 +81,6 @@
     transform: translateY(0);
   }
 }
-
-/* ─── Cím ─── */
 .profile-content h1 {
   text-align: center;
   font-size: 2rem;
@@ -101,10 +91,6 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
-
-/* ═══════════════════════════════════════════════════════════
-   SETTINGS PANEL
-   ═══════════════════════════════════════════════════════════ */
 
 .settings-panel {
   background: rgba(255, 255, 255, 0.08);
@@ -151,7 +137,6 @@
   color: rgba(255, 255, 255, 0.4);
 }
 
-/* ─── Gombok ─── */
 .settings-buttons {
   display: flex;
   justify-content: center;
@@ -181,7 +166,11 @@
 
 .btn-save {
   padding: 0.7rem 1.8rem;
-  background: linear-gradient(135deg, rgba(165, 148, 249, 0.3), rgba(152, 226, 198, 0.3));
+  background: linear-gradient(
+    135deg,
+    rgba(165, 148, 249, 0.3),
+    rgba(152, 226, 198, 0.3)
+  );
   border: 1px solid rgba(165, 148, 249, 0.5);
   border-radius: 12px;
   color: #fff;
@@ -191,60 +180,110 @@
 }
 
 .btn-save:hover {
-  background: linear-gradient(135deg, rgba(165, 148, 249, 0.5), rgba(152, 226, 198, 0.5));
+  background: linear-gradient(
+    135deg,
+    rgba(165, 148, 249, 0.5),
+    rgba(152, 226, 198, 0.5)
+  );
   border-color: rgba(165, 148, 249, 0.8);
   transform: translateY(-2px);
   box-shadow: 0 5px 20px rgba(165, 148, 249, 0.4);
 }
 
-/* ═══════════════════════════════════════════════════════════
-   POSTS GRID
-   ═══════════════════════════════════════════════════════════ */
-
 .posts-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 1.5rem;
 }
 
 .post-card {
   background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 16px;
   overflow: hidden;
   transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
 }
-
+.post-card .card,
+.post-card .user-post-card,
+.post-card > div:first-child {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+}
 .post-card:hover {
   border-color: rgba(165, 148, 249, 0.4);
   transform: translateY(-4px);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
 }
+.post-card .ua-card {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  width: 100% !important;
+  border-radius: 0 !important;
+}
+.post-card .ua-card:hover {
+  transform: none !important;
+  box-shadow: none !important;
+}
 
+.post-card .ua-card-header {
+  background: transparent !important;
+}
+
+.post-card .ua-card-footer {
+  background: transparent !important;
+}
+
+.post-card .ua-card-image {
+  background: transparent !important;
+}
+
+.post-card .ua-note-box {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
 .post-card-footer {
-  padding: 0.75rem;
+  padding: 1rem;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: auto;
 }
 
 .btn-edit {
   width: 100%;
-  padding: 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
   background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 10px;
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
 }
 
 .btn-edit:hover {
-  background: rgba(165, 148, 249, 0.2);
+  background: linear-gradient(
+    135deg,
+    rgba(165, 148, 249, 0.25),
+    rgba(152, 226, 198, 0.25)
+  );
   border-color: rgba(165, 148, 249, 0.5);
   color: #fff;
 }
 
-/* ─── Üres állapot ─── */
+.btn-edit i {
+  font-size: 1rem;
+}
 .empty-state {
   text-align: center;
   padding: 3rem;
@@ -257,10 +296,6 @@
   display: block;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   LOADING
-   ═══════════════════════════════════════════════════════════ */
-
 .loading {
   min-height: 100vh;
   display: flex;
@@ -270,10 +305,6 @@
   color: rgba(255, 255, 255, 0.7);
   font-size: 1.2rem;
 }
-
-/* ═══════════════════════════════════════════════════════════
-   RESPONSIVE
-   ═══════════════════════════════════════════════════════════ */
 
 @media (max-width: 768px) {
   .profile-sidebar {
