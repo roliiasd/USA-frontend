@@ -73,14 +73,14 @@ export default function CreatePost({ onSuccess, editData, onClose }) {
       try {
         const countyID = selectedMegye.value;
         const citiesData = await getCitiesByCounties(
-          typeof countyID === "number" ? countyID : selectedMegye.label,
+          typeof countyID === "number" ? countyID : selectedMegye.label
         );
         if (citiesData.error) return toast.error(citiesData.error);
 
         setCitiesRaw(citiesData.result);
 
         const uniqueCities = Array.from(
-          new Set(citiesData.result.map((x) => x.city)),
+          new Set(citiesData.result.map((x) => x.city))
         );
         setVaros(uniqueCities.map((city) => ({ label: city, value: city })));
       } finally {
@@ -168,12 +168,13 @@ export default function CreatePost({ onSuccess, editData, onClose }) {
   }
   return (
     <>
-      <ToastContainer theme="dark" position="top-center" autoClose={2000} />
+      <ToastContainer theme="dark" position="top-center" autoClose={800} />
       <div
         className="modal"
         id="createPostModal"
         tabIndex="-1"
         aria-hidden="true"
+        data-bs-backdrop="false"
       >
         <div className="modal-dialog modal-lg modal-dialog-centered">
           <div className="modal-content">
@@ -215,6 +216,8 @@ export default function CreatePost({ onSuccess, editData, onClose }) {
                       placeholder="Válassz megyét..."
                       isSearchable
                       isClearable
+                      menuPortalTarget={document.body}
+                      menuPosition="fixed"
                     />
                     {/* ------- */}
                     {/* ------- */}
@@ -235,11 +238,13 @@ export default function CreatePost({ onSuccess, editData, onClose }) {
                         !selectedMegye
                           ? "Előbb válassz megyét..."
                           : varosLoading
-                            ? "Városok betöltése..."
-                            : "Válassz várost..."
+                          ? "Városok betöltése..."
+                          : "Válassz várost..."
                       }
-                      isSearchable={true}
-                      isClearable={true}
+                      isSearchable
+                      isClearable
+                      menuPortalTarget={document.body}
+                      menuPosition="fixed"
                     />
                     {/* -------------- */}
                     {/* -------------- */}
@@ -258,6 +263,8 @@ export default function CreatePost({ onSuccess, editData, onClose }) {
                       }
                       isSearchable
                       isClearable
+                      menuPortalTarget={document.body}
+                      menuPosition="fixed"
                     />
                     <div className="mt-3">
                       <label className="form-label">
@@ -330,8 +337,8 @@ export default function CreatePost({ onSuccess, editData, onClose }) {
                             ? "Mentés..."
                             : "Feltöltés...."
                           : isEditMode
-                            ? "Mentés"
-                            : "Feltöltés"}
+                          ? "Mentés"
+                          : "Feltöltés"}
                       </button>
                     </div>
                   </div>
