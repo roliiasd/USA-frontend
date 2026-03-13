@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import UserPosts from "../components/UserPosts";
 import CreatePost from "../components/CreatePost";
-import { whoami, editUser } from "../users";
+import { whoami, editName, editPassword } from "../users";
 import { loadpost } from "../animals";
 export default function Profile() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -56,17 +56,32 @@ export default function Profile() {
 
   async function editProfile() {
     try {
-      const data = await editUser(username, psw);
-      if (psw !== confirmPsw) {
-        toast.error(data.error);
-        return;
+      if (psw && psw !== confirmPsw) {
+        toast.error("A jelszavak nem egyezenk");
       }
-      const updateData = {
-        username: username,
-        ...(psw && { password: psw }),
-      };
-      await editUser(updateData);
-      toast.info(data.message);
+      if (username && username.trim() !== "") {
+        const nameResult = await editName(username);
+        if (nameResult.error) {
+          toast.error(nameResult.error);
+          return;
+        }
+        setCurrentUser((prev) => ({
+          ...prev,
+          username: nameResult.updatedUser?.username || username,
+        }));
+      }
+
+      if (psw && psw.trim() !== "") {
+        const pswResult = await editPassword(psw);
+        if (pswResult.error) {
+          toast.error(pswResult.error);
+          return;
+        }
+      }
+      toast.success("✌✔");
+      setPsw("");
+      setConfirmPsw("");
+      setUsername("");
     } catch (err) {
       console.error(err);
       toast.error(err);
@@ -87,7 +102,7 @@ export default function Profile() {
   };
   return (
     <>
-      <ToastContainer theme="dark" position="top-center" autoClose={2000} />
+      <ToastContainer position="bottom-right" autoClose={500} />
       <div className="profile-page">
         <div className="profile-layout">
           <button
@@ -114,7 +129,13 @@ export default function Profile() {
             </button>
           </div>
           {activeTab === "settings" && (
-            <div className="profile-settings d-flex flex-column">
+            <form
+              className="profile-settings d-flex flex-column"
+              onSubmit={(e) => {
+                e.preventDefault();
+                editProfile();
+              }}
+            >
               <label>Felhasználónév megváltoztatása</label>
               <input
                 value={username}
@@ -142,11 +163,15 @@ export default function Profile() {
                 <button className="btn btn-danger" onClick={handleCancel}>
                   Elvetés
                 </button>
-                <button className="btn btn-success" onClick={editProfile}>
+                <button
+                  type="submit"
+                  className="btn btn-success"
+                  onClick={editProfile}
+                >
                   Mentés
                 </button>
               </div>
-            </div>
+            </form>
           )}
           {activeTab === "posts" && (
             <div className="profile-cards-grid d-flex">

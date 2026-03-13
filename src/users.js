@@ -51,12 +51,26 @@ export async function whoami() {
   }
   return await res.json();
 }
-export async function editUser(username, psw) {
-  const res = await fetch(`${BACKEND_URL}/edit`, {
+
+export async function editName(username) {
+  const res = await fetch(`${BACKEND_URL}/editname`, {
     method: "PUT",
     credentials: "include",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ nev: username, psw: psw }),
+    body: JSON.stringify({ nev: username}),
+  });
+  const data = await res.json();
+  if (data.error) {
+    return data;
+  }
+  return data;
+}
+export async function editPassword(psw) {
+  const res = await fetch(`${BACKEND_URL}/editpass`, {
+    method: "PUT",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({psw: psw }),
   });
   const data = await res.json();
   if (data.error) {
