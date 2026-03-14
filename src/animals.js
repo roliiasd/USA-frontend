@@ -42,6 +42,7 @@ export async function createPost({
 
   return { result: data, error: null };
 }
+
 export async function updatePost({
   id,
   nev,
@@ -60,5 +61,16 @@ export async function updatePost({
   if (file) {
     fd.append("kep", file);
   }
-  const res = await fetch(`${BACKEND_URL}/`)
+  const res = await fetch(`${BACKEND_URL}/updateanimal`, {
+    method: "PUT",
+    credentials: "include",
+    body: fd,
+  });
+
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    return { result: null, error: data?.error || `HTTP ${res.status}` };
+  }
+
+  return { result: data, error: null };
 }
