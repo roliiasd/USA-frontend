@@ -9,6 +9,7 @@ export default function UserPosts({
   county,
   city,
   postcode,
+  send_a_message
 }) {
   const isLoggedIn = !!user;
   const locationText = [county, city, postcode].filter(Boolean).join(", ");
@@ -29,7 +30,7 @@ export default function UserPosts({
         <div className="ua-pet-name d-flex justify-content-between">
           {petName}
           <Link to={'/messages'} className="text-text-decoration-none">
-          <i className="bi bi-chat" style={{color: '#f7b32bff'}}/>
+          {send_a_message}
           </Link>
         </div>
 

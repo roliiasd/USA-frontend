@@ -104,6 +104,12 @@ export default function Home() {
                       city={post.varos}
                       postcode={post.postcode}
                       user={user}
+                      send_a_message={
+                        <i
+                          className="bi bi-chat"
+                          style={{ color: "#f7b32bff" }}
+                        />
+                      }
                     />
                   ))}
               </div>
