@@ -15,7 +15,7 @@ export default function EditPost({ editData, onClose, onSuccess }) {
   const [isLoading, setIsLoading] = useState(false);
   const [varosLoading, setVarosLoading] = useState(false);
   const [citiesRaw, setCitiesRaw] = useState([]);
-  const [postcodes, setPostcodes] = useState([]);
+  const [postcode, setPostcodes] = useState([]);
   const [selectedPostcode, setSelectedPostcode] = useState(null);
 
   const modalRef = useRef(null);
@@ -262,7 +262,7 @@ export default function EditPost({ editData, onClose, onSuccess }) {
                   <label className="form-label mt-3">Irányítószám</label>
                   <Select
                     classNamePrefix="custom-select"
-                    options={postcodes}
+                    options={postcode}
                     value={selectedPostcode}
                     onChange={setSelectedPostcode}
                     isDisabled={!selectedVaros}
