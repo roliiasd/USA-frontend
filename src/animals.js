@@ -48,15 +48,16 @@ export async function updatePost({
   nev,
   varos,
   megjegyzes,
-  poscode,
+  postcode,
   megye,
   file,
 }) {
   const fd = new FormData();
+  fd.append("id", id);
   fd.append("nev", nev);
   fd.append("varos", varos);
   fd.append("megjegyzes", megjegyzes);
-  fd.append("poscode", poscode);
+  fd.append("postcode", postcode);
   fd.append("megye", megye);
   if (file) {
     fd.append("kep", file);

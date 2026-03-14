@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import UserPosts from "../components/UserPosts";
@@ -174,7 +174,7 @@ export default function Profile() {
                 {myPosts.length === 0 ? (
                   <div className="empty-state">
                     <i className="bi bi-inbox" />
-                    <p>Még nincs hirdetésed</p>
+                    <p>Még nincs hirdetésed, <Link to={'/'} className="text-decoration-none text-danger fst-italic">ugorj a főoldalra</Link>!</p>
                   </div>
                 ) : (
                   <div className="posts-grid">
@@ -189,6 +189,7 @@ export default function Profile() {
                           county={post.megye}
                           city={post.varos}
                           postcode={post.postcode}
+                          send_a_message={''}
                         />
                         <div className="post-card-footer">
                           <button
