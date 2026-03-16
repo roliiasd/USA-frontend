@@ -94,7 +94,7 @@ export default function Navbar({ user, homePage, FAQ, aboutUs, onCreatePost }) {
                     className="user-dropdown-item"
                     onClick={() => {
                       setOpenMenu(false);
-                      navigate("/messages");
+                      navigate("/chat");
                     }}
                     style={{ fontSize: 20 }}
                   >

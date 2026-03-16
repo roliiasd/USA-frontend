@@ -29,7 +29,7 @@ export default function UserPosts({
       <footer className="ua-card-footer">
         <div className="ua-pet-name d-flex justify-content-between">
           {petName}
-          <Link to={'/messages'} className="text-text-decoration-none">
+          <Link to={'/chat'} className="text-text-decoration-none">
           {send_a_message}
           </Link>
         </div>
