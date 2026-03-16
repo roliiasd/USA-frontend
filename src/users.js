@@ -52,12 +52,25 @@ export async function whoami() {
   return await res.json();
 }
 
+export async function allUsers() {
+  const res = await fetch(`${BACKEND_URL}/allusers`, {
+    method: "GET",
+    credentials: "include",
+  });
+
+  if (!res.ok) {
+    const data = await res.json();
+    return { error: data?.error };
+  }
+  return await res.json();
+}
+
 export async function editName(username) {
   const res = await fetch(`${BACKEND_URL}/editname`, {
     method: "PUT",
     credentials: "include",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ nev: username}),
+    body: JSON.stringify({ nev: username }),
   });
   const data = await res.json();
   if (data.error) {
@@ -70,7 +83,7 @@ export async function editPassword(psw) {
     method: "PUT",
     credentials: "include",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({psw: psw }),
+    body: JSON.stringify({ psw: psw }),
   });
   const data = await res.json();
   if (data.error) {
