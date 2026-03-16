@@ -175,7 +175,23 @@
   border: 1px solid rgba(56, 139, 253, 0.3);
   letter-spacing: 0.5px;
 }
+.chat-main-header {
+  padding: 16px 24px;
+  background: rgba(22, 27, 34, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(48, 54, 61, 0.6);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
 
+.chat-main-header h2 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #e6edf3;
+}
 .chat-main-header h2 {
   margin: 0;
   font-size: 1.1rem;
