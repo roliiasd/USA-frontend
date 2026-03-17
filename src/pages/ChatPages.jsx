@@ -82,8 +82,9 @@ export default function ChatPages() {
     try {
       const res = await fetch(`/messages/${user.user_id}`, {
         credentials: "include",
-      });
+      }); 
       const data = await res.json();
+      console.log('ciganyok futnak', data);
       setMessages(data);
     } catch (err) {
       console.error("Hiba:", err);
