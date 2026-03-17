@@ -7,6 +7,7 @@ export default function Navbar({ user, homePage, FAQ, aboutUs, onCreatePost }) {
   const [openMenu, setOpenMenu] = useState(false);
   const navigate = useNavigate();
   const isLoggedIn = !!user;
+  const isAdmin = user?.role === "admin";
 
   async function handleLogout() {
     try {
@@ -39,12 +40,16 @@ export default function Navbar({ user, homePage, FAQ, aboutUs, onCreatePost }) {
           <NavLink to={homePage} className="navCenterLink">
             Kezdőoldal
           </NavLink>
-          <NavLink to={FAQ} className="navCenterLink">
-            GYIK
-          </NavLink>
-          <NavLink to={aboutUs} className="navCenterLink">
-            Rólunk
-          </NavLink>
+          {FAQ && (
+            <NavLink to={FAQ} className="navCenterLink">
+              GYIK
+            </NavLink>
+          )}
+          {aboutUs && (
+            <NavLink to={aboutUs} className="navCenterLink">
+              Rólunk
+            </NavLink>
+          )}
         </nav>
 
         <div className="d-flex align-items-center gap-3 position-relative">
@@ -76,6 +81,19 @@ export default function Navbar({ user, homePage, FAQ, aboutUs, onCreatePost }) {
           )}
           {openMenu && (
             <div className="user-dropdown">
+              {isAdmin && (
+                <button
+                  className={"admin-link user-dropdown-item"}
+                  onClick={() => {
+                    setOpenMenu(false);
+                    navigate("/admin");
+                  }}
+                  style={{ fontSize: 20 }}
+                >
+                  <i className="bi bi-shield-lock" />
+                  Admin
+                </button>
+              )}
               {!isLoggedIn && (
                 <button
                   className="user-dropdown-item"

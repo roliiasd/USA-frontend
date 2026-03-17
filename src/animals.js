@@ -75,3 +75,17 @@ export async function updatePost({
 
   return { result: data, error: null };
 }
+export async function delAnim(id) {
+  const res = await fetch(`${BACKEND_URL}/deleteanimal/${id}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    return { result: data?.error || `HTTP ${res.status}` };
+  }
+
+  return Array.isArray(data.result) ? data.result : [];
+}
