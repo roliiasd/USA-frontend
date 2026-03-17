@@ -80,33 +80,10 @@ export default function Filter({ filters, setFilters }) {
   return (
     <>
       <div className="ua-filter ">
-        <h3>Szűrők</h3>
+        <h3 className="mb-5">Szűrők</h3>
         <div className="row justify-content-center g-3">
           <div className="col-12 col-md-8 ">
-            <div>
-              <div className="form-check mb-2">
-                <input type="checkbox" className="form-check-input" id="hoki" />
-                <label className="form-check-label" htmlFor="hoki">
-                  hoki
-                </label>
-              </div>
-              <div className="form-check mb-2">
-                <input
-                  type="checkbox"
-                  className="form-check-input"
-                  id="broki"
-                />
-                <label className="form-check-label" htmlFor="broki">
-                  broki
-                </label>
-              </div>
-              <div className="form-check mb-2">
-                <input type="checkbox" className="form-check-input" id="koki" />
-                <label className="form-check-label" htmlFor="koki">
-                  koki
-                </label>
-              </div>
-            </div>
+            
             <label className="form-label">Megye</label>
             {/* ------- */}
             {/* ------- */}

@@ -97,6 +97,7 @@ export default function Home() {
                     <UserPosts
                       key={post.id}
                       username={post.username}
+                      postUserId={post.user_id}
                       petImg={post.kep}
                       petName={post.nev}
                       note={post.megjegyzes}
