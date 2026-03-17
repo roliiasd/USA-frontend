@@ -1,26 +1,39 @@
 import { useState, useEffect, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { allUsers, whoami } from "../users";
 import { socket } from "../socket";
-
+import { renderToString } from "react-dom/server";
+// =
+//   =
+//     =
+//       =
+//     =
+//   =
+// =
 function getUserColor(userId) {
   const colors = [
-    "#FF6B6B", // piros
-    "#4ECDC4", // türkiz
-    "#45B7D1", // kék
-    "#96CEB4", // zöld
-    "#FFEAA7", // sárga
-    "#DDA0DD", // lila
-    "#FF8C42", // narancs
-    "#98D8C8", // menta
-    "#F7DC6F", // arany
-    "#BB8FCE", // violet
-    "#85C1E9", // világoskék
-    "#F1948A", // rózsaszín
+    "#FF6B6B",
+    "#4ECDC4",
+    "#45B7D1",
+    "#96CEB4",
+    "#FFEAA7",
+    "#DDA0DD",
+    "#FF8C42",
+    "#98D8C8",
+    "#F7DC6F",
+    "#BB8FCE",
+    "#85C1E9",
+    "#F1948A",
   ];
   return colors[userId % colors.length];
 }
-
+// =
+//   =
+//     =
+//       =
+//     =
+//   =
+// =
 export default function ChatPages() {
   const [currentUser, setCurrentUser] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -30,6 +43,42 @@ export default function ChatPages() {
   const [loading, setLoading] = useState(true);
   const aljaRef = useRef(null);
   const navigate = useNavigate();
+  // =
+  //   =
+  //     =
+  //       =
+  //     =
+  //   =
+  // =
+  const [searchParams] = useSearchParams();
+  const targetUserId = searchParams.get("user");
+  // =
+  //   =
+  //     =
+  //       =
+  //     =
+  //   =
+  // =
+  async function handleSelectUser(user) {
+    setSelectedUser(user);
+    try {
+      const res = await fetch(`/messages/${user.user_id}`, {
+        credentials: "include",
+      });
+      const data = await res.json();
+      // console.log("ciganyok futnak", data);
+      setMessages(data);
+    } catch (err) {
+      console.error("Hiba:", err);
+    }
+  }
+  // =
+  //   =
+  //     =
+  //       =
+  //     =
+  //   =
+  // =
 
   useEffect(() => {
     async function loadUser() {
@@ -43,13 +92,11 @@ export default function ChatPages() {
         socket.emit("register", Number(me.user_id));
 
         const data = await allUsers();
-        console.log("allUsers válasz:", data);
-        const userList = Array.isArray(data[0]) ? data[0] : data;
-
+        // console.log("allUsers válasz:", data);
         const otherUsers = (Array.isArray(data) ? data : []).filter(
-          (u) => Number(u.user_id) !== Number(me.user_id),
+          (u) => Number(u.user_id) !== Number(me.user_id)
         );
-        console.log("otherUsers:", otherUsers);
+        // console.log("otherUsers:", otherUsers);
         setUsers(otherUsers);
       } catch (err) {
         console.error(err);
@@ -60,7 +107,30 @@ export default function ChatPages() {
     }
     loadUser();
   }, []);
+  // =
+  //   =
+  //     =
+  //       =
+  //     =
+  //   =
+  // =
 
+  useEffect(() => {
+    if (!targetUserId || users.length === 0 || selectedUser) return;
+
+    const targetUser = users.find((u) =>
+      Number(u.user_id === Number(targetUserId))
+    );
+    if (targetUser) handleSelectUser(targetUser);
+  }, [users, targetUserId]);
+
+  // =
+  //   =
+  //     =
+  //       =
+  //     =
+  //   =
+  // =
   useEffect(() => {
     function handleUzenet(message) {
       //   console.log("Üzenet jott:", message);
@@ -72,29 +142,28 @@ export default function ChatPages() {
       socket.off("uzenet_jott", handleUzenet);
     };
   }, []);
-
+  // =
+  //   =
+  //     =
+  //       =
+  //     =
+  //   =
+  // =
   useEffect(() => {
     aljaRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
-
-  async function handleSelectUser(user) {
-    setSelectedUser(user);
-    try {
-      const res = await fetch(`/messages/${user.user_id}`, {
-        credentials: "include",
-      }); 
-      const data = await res.json();
-      console.log('ciganyok futnak', data);
-      setMessages(data);
-    } catch (err) {
-      console.error("Hiba:", err);
-    }
-  }
+  // =
+  //   =
+  //     =
+  //       =
+  //     =
+  //   =
+  // =
   function send(e) {
     e.preventDefault();
     if (!newMessages.trim() || !selectedUser) return;
-    console.log("selectedUser:", selectedUser);
-    console.log("user_id:", selectedUser.user_id);
+    // console.log("selectedUser:", selectedUser);
+    // console.log("user_id:", selectedUser.user_id);
     socket.emit("new_message", {
       senderId: Number(currentUser.user_id),
       receiverId: Number(selectedUser.user_id),
@@ -102,10 +171,22 @@ export default function ChatPages() {
     });
     setNewMessages("");
   }
-
+  // =
+  //   =
+  //     =
+  //       =
+  //     =
+  //   =
+  // =
   if (loading) return <div>Betöltés...</div>;
   if (!currentUser) return <div>Jelentkezz be!</div>;
-
+  // =
+  //   =
+  //     =
+  //       =
+  //     =
+  //   =
+  // =
   return (
     <div className="chat-page">
       <div className="chat-sidebar">
@@ -131,7 +212,9 @@ export default function ChatPages() {
           {users.map((user) => (
             <div
               key={user.user_id}
-              className={`chat-user-item ${selectedUser?.user_id === user.user_id ? "active" : ""}`}
+              className={`chat-user-item ${
+                selectedUser?.user_id === user.user_id ? "active" : ""
+              }`}
               onClick={() => handleSelectUser(user)}
             >
               <div
