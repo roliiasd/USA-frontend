@@ -14,12 +14,14 @@ import "../src/styles/Filter.css";
 import "../src/styles/CreatPosts.css";
 import "../src/styles/EditPost.css";
 import '../src/styles/Chat.css'
+import '../src/styles/Admin.min.css'
 
 import Registration from "./pages/Registration";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import ChatPages from "./pages/ChatPages";
 import Profile from "./pages/Profile";
+import Admin from "./pages/Admin";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
@@ -29,6 +31,7 @@ createRoot(document.getElementById("root")).render(
         <Route path="/login" element={<Login />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/chat" element={<ChatPages />} />
+        <Route path="/admin" element={<Admin />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
