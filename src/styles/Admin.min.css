@@ -1,0 +1,343 @@
+/* ============================================
+   ADMIN PAGE – Dark Glass Theme
+   ============================================ */
+
+   .admin-page {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f1a 100%);
+    padding-bottom: 3rem;
+  }
+  
+  /* ---- Search Bar ---- */
+  .search-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+    position: relative;
+  }
+  
+  .search-input {
+    width: 100%;
+    padding: 0.9rem 1.2rem 0.9rem 3rem;
+    background: rgba(255, 255, 255, 0.07);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+    color: #fff;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+  }
+  
+  .search-input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+  }
+  
+  .search-input:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(165, 148, 249, 0.6);
+    box-shadow:
+      0 0 0 3px rgba(165, 148, 249, 0.2),
+      0 0 20px rgba(165, 148, 249, 0.1);
+  }
+  
+  .search-icon {
+    position: absolute;
+    left: 2.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 1rem;
+    pointer-events: none;
+    transition: color 0.3s ease;
+  }
+  
+  .search-input:focus ~ .search-icon {
+    color: rgba(165, 148, 249, 0.8);
+  }
+  
+  /* ---- Table Wrapper ---- */
+  .admin-table-wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+  
+  /* ---- Table ---- */
+  .table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: rgba(255, 255, 255, 0.06);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* ---- Table Head ---- */
+  .table thead {
+    background: linear-gradient(
+      135deg,
+      rgba(165, 148, 249, 0.2),
+      rgba(152, 226, 198, 0.15)
+    );
+  }
+  
+  .table thead th {
+    padding: 1rem 1.5rem;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background: transparent;
+  }
+  
+  /* ---- Table Body ---- */
+  .table tbody tr {
+    transition: all 0.25s ease;
+  }
+  
+  .table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+  
+  .table tbody th,
+  .table tbody td {
+    padding: 0.95rem 1.5rem;
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 0.95rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    background: transparent;
+    vertical-align: middle;
+  }
+  
+  .table tbody th {
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 600;
+  }
+  
+  .table tbody tr:last-child td,
+  .table tbody tr:last-child th {
+    border-bottom: none;
+  }
+  
+  /* Group divider override */
+  .table-group-divider {
+    border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+  }
+  
+  /* Remove Bootstrap's default light backgrounds */
+  .table-light {
+    --bs-table-bg: transparent !important;
+    --bs-table-border-color: transparent !important;
+    --bs-table-striped-bg: transparent !important;
+    background: transparent !important;
+  }
+  
+  .table-borderless > :not(caption) > * > * {
+    border-bottom-width: 0;
+  }
+  
+  /* ---- Ad Preview Cell ---- */
+  .ad-preview {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+  
+  .ad-preview-img {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+  }
+  
+  .ad-preview-img:hover {
+    border-color: rgba(165, 148, 249, 0.5);
+    box-shadow: 0 0 15px rgba(165, 148, 249, 0.2);
+    transform: scale(1.08);
+  }
+  
+  .ad-preview-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+  }
+  
+  .ad-preview-name {
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 600;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .ad-preview-sub {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.75rem;
+  }
+  
+  /* ---- User Cell ---- */
+  .user-cell {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+  }
+  
+  .user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(
+      135deg,
+      rgba(165, 148, 249, 0.4),
+      rgba(152, 226, 198, 0.4)
+    );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+  }
+  
+  .user-name {
+    color: rgba(255, 255, 255, 0.85);
+    font-weight: 500;
+  }
+  
+  /* ---- Action Buttons inside Table ---- */
+  .table .btn-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.45rem 1rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+  }
+  
+  .table .btn-action-view {
+    background: rgba(165, 148, 249, 0.15);
+    border-color: rgba(165, 148, 249, 0.35);
+    color: #a594f9;
+  }
+  
+  .table .btn-action-view:hover {
+    background: rgba(165, 148, 249, 0.3);
+    border-color: rgba(165, 148, 249, 0.7);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(165, 148, 249, 0.25);
+  }
+  
+  .table .btn-action-delete {
+    background: rgba(255, 107, 107, 0.1);
+    border-color: rgba(255, 107, 107, 0.35);
+    color: #ff6b6b;
+  }
+  
+  .table .btn-action-delete:hover {
+    background: rgba(255, 107, 107, 0.25);
+    border-color: #ff6b6b;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.25);
+  }
+  
+  /* ---- Admin Header / Title ---- */
+  .admin-title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 2rem 0 0.5rem;
+    background: linear-gradient(135deg, #a594f9, #98e2c6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .admin-subtitle {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
+  }
+  
+  /* ---- Responsive ---- */
+  @media (max-width: 768px) {
+    .admin-table-wrapper {
+      padding: 0 0.75rem;
+      overflow-x: auto;
+    }
+  
+    .table thead th {
+      padding: 0.75rem 1rem;
+      font-size: 0.7rem;
+    }
+  
+    .table tbody th,
+    .table tbody td {
+      padding: 0.75rem 1rem;
+      font-size: 0.85rem;
+    }
+  
+    .admin-title {
+      font-size: 1.5rem;
+    }
+  
+    .search-container {
+      padding: 0 1rem;
+    }
+  
+    .ad-preview-img {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+    }
+  
+    .ad-preview-name {
+      font-size: 0.8rem;
+    }
+  
+    .btn-action span {
+      display: none;
+    }
+  
+    .btn-action {
+      padding: 0.45rem 0.6rem !important;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .table thead th,
+    .table tbody td,
+    .table tbody th {
+      padding: 0.6rem 0.7rem;
+      font-size: 0.8rem;
+    }
+  
+    .ad-preview-img {
+      width: 34px;
+      height: 34px;
+    }
+  
+    .user-avatar {
+      display: none;
+    }
+  }
