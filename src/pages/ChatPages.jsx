@@ -193,7 +193,7 @@ export default function ChatPages() {
     return () => {
       socket.off("uzenet_jott", handleUzenet);
     };
-  }, []);
+  }, [currentUser]);
   //     =
   // uezent torlese    =
   //     =
