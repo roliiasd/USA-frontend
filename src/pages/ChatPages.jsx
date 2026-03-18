@@ -1,15 +1,11 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { allUsers, whoami } from "../users";
+import { deleteMessages } from "../chat";
+import { whoami, chatPartners } from "../users";
 import { socket } from "../socket";
-import { renderToString } from "react-dom/server";
-// =
-//   =
 //     =
 //       =
 //     =
-//   =
-// =
 function getUserColor(userId) {
   const colors = [
     "#FF6B6B",
@@ -27,13 +23,9 @@ function getUserColor(userId) {
   ];
   return colors[userId % colors.length];
 }
-// =
-//   =
 //     =
 //       =
 //     =
-//   =
-// =
 export default function ChatPages() {
   const [currentUser, setCurrentUser] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -41,30 +33,27 @@ export default function ChatPages() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+
   const aljaRef = useRef(null);
   const navigate = useNavigate();
-  // =
-  //   =
-  //     =
-  //       =
-  //     =
-  //   =
-  // =
-  const [searchParams] = useSearchParams();
+
+  const [searchParams, setSearchParams] = useSearchParams();
   const targetUserId = searchParams.get("user");
-  // =
-  //   =
+  const targetUsername = searchParams.get("name");
   //     =
-  //       =
+  // kivalasztas      =
   //     =
-  //   =
-  // =
   async function handleSelectUser(user) {
     setSelectedUser(user);
+    setSearchParams({
+      user: user.user_id,
+      name: user.username,
+    });
     try {
       const res = await fetch(`/messages/${user.user_id}`, {
         credentials: "include",
       });
+      if (!res.ok) console.error(res.error);
       const data = await res.json();
       // console.log("ciganyok futnak", data);
       setMessages(data);
@@ -72,16 +61,11 @@ export default function ChatPages() {
       console.error("Hiba:", err);
     }
   }
-  // =
-  //   =
   //     =
-  //       =
+  //  userek betoltse     =
   //     =
-  //   =
-  // =
-
   useEffect(() => {
-    async function loadUser() {
+    async function loadUserAndPartners() {
       try {
         const me = await whoami();
         if (me.error) {
@@ -89,15 +73,25 @@ export default function ChatPages() {
           return;
         }
         setCurrentUser(me);
+        // ====
         socket.emit("register", Number(me.user_id));
 
-        const data = await allUsers();
-        // console.log("allUsers válasz:", data);
-        const otherUsers = (Array.isArray(data) ? data : []).filter(
-          (u) => Number(u.user_id) !== Number(me.user_id)
-        );
-        // console.log("otherUsers:", otherUsers);
-        setUsers(otherUsers);
+        let partners = await chatPartners();
+        console.log("Partners from backend:", partners);
+        if (!Array.isArray(partners)) partners = [];
+
+        if (targetUserId && targetUsername) {
+          const exists = partners.some(
+            (p) => Number(p.user_id) === Number(targetUserId)
+          );
+          if (!exists) {
+            partners = [
+              { user_id: Number(targetUserId), username: targetUsername },
+              ...partners,
+            ];
+          }
+        }
+        setUsers(partners);
       } catch (err) {
         console.error(err);
         navigate("/login");
@@ -105,60 +99,65 @@ export default function ChatPages() {
         setLoading(false);
       }
     }
-    loadUser();
-  }, []);
-  // =
-  //   =
+    loadUserAndPartners();
+  }, [navigate]);
   //     =
-  //       =
+  //   urlbrol erkezeo adatok    =
   //     =
-  //   =
-  // =
-
   useEffect(() => {
+    // console.log("szempontok:", {
+    //   targetUserId,
+    //   usersLength: users.length,
+    //   selectedUser,
+    // });
     if (!targetUserId || users.length === 0 || selectedUser) return;
-
-    const targetUser = users.find((u) =>
-      Number(u.user_id === Number(targetUserId))
+    if (selectedUser && selectedUser.user_id === Number(targetUserId)) return;
+    const targetUser = users.find(
+      (u) => Number(u.user_id) === Number(targetUserId)
     );
+    // console.log("találat:", targetUser);
     if (targetUser) handleSelectUser(targetUser);
-  }, [users, targetUserId]);
-
-  // =
-  //   =
+  }, [loading, users, targetUserId]);
   //     =
-  //       =
+  // socket uzenet fogadas     =
   //     =
-  //   =
-  // =
   useEffect(() => {
     function handleUzenet(message) {
       //   console.log("Üzenet jott:", message);
       setMessages((prev) => [...prev, message]);
     }
-    socket.off("uzenet_jott");
     socket.on("uzenet_jott", handleUzenet);
     return () => {
       socket.off("uzenet_jott", handleUzenet);
     };
   }, []);
-  // =
-  //   =
   //     =
-  //       =
+  // uezent torlese    =
   //     =
-  //   =
-  // =
+
+  async function deleteMessage(messageId) {
+    // console.log("messageid:", messageId);
+    try {
+      const data = await deleteMessages(messageId);
+      if (data.error) {
+        console.error(data.error);
+        return;
+      }
+      setMessages((prev) => prev.filter((msg) => msg.message_id !== messageId));
+    } catch (err) {
+      console.error("kaki van a gatyoba ocsi", err);
+    }
+  }
+
+  //     =
+  // autoscroll      =
+  //     =
   useEffect(() => {
     aljaRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
-  // =
-  //   =
   //     =
-  //       =
+  // uzenet kuldes      =
   //     =
-  //   =
-  // =
   function send(e) {
     e.preventDefault();
     if (!newMessages.trim() || !selectedUser) return;
@@ -171,22 +170,14 @@ export default function ChatPages() {
     });
     setNewMessages("");
   }
-  // =
-  //   =
   //     =
-  //       =
+  //        =
   //     =
-  //   =
-  // =
   if (loading) return <div>Betöltés...</div>;
   if (!currentUser) return <div>Jelentkezz be!</div>;
-  // =
-  //   =
   //     =
   //       =
   //     =
-  //   =
-  // =
   return (
     <div className="chat-page">
       <div className="chat-sidebar">
@@ -209,9 +200,9 @@ export default function ChatPages() {
               Nincs elérhető felhasználó
             </p>
           )}
-          {users.map((user) => (
+          {users.map((user, index) => (
             <div
-              key={user.user_id}
+              key={index}
               className={`chat-user-item ${
                 selectedUser?.user_id === user.user_id ? "active" : ""
               }`}
@@ -256,21 +247,33 @@ export default function ChatPages() {
                   Még nincsenek üzenetek, Irj valamit
                 </p>
               )}
-              {messages.map((msg, i) => (
-                <div
-                  key={i}
-                  className={`chat-bubble ${
-                    Number(msg.giver) === Number(currentUser.user_id)
-                      ? "chat-bubble-mine"
-                      : "chat-bubble-other"
-                  }`}
-                >
-                  <p>{msg.messages}</p>
-                  <small className="chat-time">
-                    {new Date(msg.created_at).toLocaleTimeString()}
-                  </small>
-                </div>
-              ))}
+              {messages.map((msg, i) => {
+                // console.log("uzenet:", msg);
+                return (
+                  <div
+                    key={i}
+                    className={`chat-bubble ${
+                      Number(msg.giver) === Number(currentUser.user_id)
+                        ? "chat-bubble-mine"
+                        : "chat-bubble-other"
+                    }`}
+                  >
+                    <p>{msg.messages}</p>
+                    <small className="chat-time">
+                      {new Date(msg.created_at).toLocaleTimeString()}
+                    </small>
+                    {Number(msg.giver) === Number(currentUser.user_id) && (
+                      <button
+                        className="chat-delete-btn"
+                        onClick={() => deleteMessage(msg.message_id)}
+                        title="Törlés"
+                      >
+                        <i className="bi bi-trash" />
+                      </button>
+                    )}
+                  </div>
+                );
+              })}
               <div ref={aljaRef} />
             </div>
             <form onSubmit={send} className="chat-form">

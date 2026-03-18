@@ -44,8 +44,9 @@ export default function UserPosts({
           {petName}
           {showChatButton && (
             <Link
-              to={`/chat?user=${postUserId  || username}`}
-              className="text-text-decoration-none"
+              to={`/chat?user=${postUserId}&name=${username}`}
+              className="ua-chat-link"
+              title={`Üzenet küldés neki: ${username}`}
             >
               {send_a_message}
             </Link>

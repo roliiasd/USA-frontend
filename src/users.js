@@ -91,3 +91,16 @@ export async function editPassword(psw) {
   }
   return data;
 }
+
+export async function chatPartners() {
+  const res = await fetch(`${BACKEND_URL}/chat-partners`, {
+    method: "GET",
+    credentials: "include",
+  });
+
+  if (!res.ok) {
+    const data = await res.json();
+    return { error: data?.error };
+  }
+  return await res.json();
+}

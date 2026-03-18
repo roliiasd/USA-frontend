@@ -197,11 +197,7 @@ export default function Admin() {
                     </div>
                   </td>
                   <td>
-                    <div style={{ display: "flex", gap: ".5rem" }}>
-                      <button className="btn-action btn-action-view">
-                        <i className="bi bi-eye" />
-                        <span>Megtekintés</span>
-                      </button>
+                    <div style={{ display: "flex", gap: ".5rem" , justifyContent: 'center' }}>
                       <button
                         className="btn-action btn-action-delete"
                         onClick={() => openDeleteModal(ad)}

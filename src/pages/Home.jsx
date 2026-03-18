@@ -54,6 +54,7 @@ export default function Home() {
   }
 
   const filteredPosts = (posts ?? []).filter((post) => {
+    // console.log('post user_id: ', post.userId);
     const countyOk = !filters.county || post.megye === filters.county.label;
     const cityOk = !filters.city || post.varos === filters.city.value;
     const postcodeOk =
@@ -97,7 +98,7 @@ export default function Home() {
                     <UserPosts
                       key={post.id}
                       username={post.username}
-                      postUserId={post.user_id}
+                      postUserId={post.userId }
                       petImg={post.kep}
                       petName={post.nev}
                       note={post.megjegyzes}
