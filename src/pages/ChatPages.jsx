@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { deleteMessages } from "../chat";
+import { deleteConv, deleteMessages } from "../chat";
 import { whoami, chatPartners } from "../users";
 import { socket } from "../socket";
 //     =
@@ -84,6 +84,30 @@ export default function ChatPages() {
       }
     } catch (err) {
       console.error("Hiba:", err);
+    }
+  }
+  //     =
+  //  full chat torlese     =
+  //     =
+  async function deleteConvo(e, partnerId) {
+    e.stopPropagation();
+    try {
+      const data = deleteConv(partnerId);
+      if (data.error) {
+        console.error(data.error);
+        return;
+      }
+      if (selectedUser?.user_id === partnerId) {
+        setMessages([]);
+      }
+      setLastMessages((prev) => {
+        const updated = { ...prev };
+        delete updated[partnerId];
+        return updated;
+      });
+      setUsers((prev) => prev.filter((u) => Number(u.user_id) !== Number(partnerId)));
+    } catch (err) {
+      console.error("hiba a beszelgetes torlesene", err);
     }
   }
   //     =
@@ -293,6 +317,13 @@ export default function ChatPages() {
                   {shortenMessage(lastMessages[user.user_id])}
                 </div>
               </div>
+              <button
+                className="chat-conversation-delete-btn"
+                onClick={(e) => deleteConvo(e, user.user_id)}
+                title="Beszélgetés törlése"
+              >
+                <i className="bi bi-x-lg" />
+              </button>
             </div>
           ))}
         </div>

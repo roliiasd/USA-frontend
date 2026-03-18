@@ -72,17 +72,48 @@
 }
 
 .chat-user-item {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px 14px;
-  border-radius: 12px;
+  padding: 12px 16px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition:   all 0.2s ease;
   margin-bottom: 4px;
   border: 1px solid transparent;
+  border-radius: 25px;
+}
+.chat-conversation-delete-btn {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 50%;
+  opacity: 0;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+.chat-user-item:hover .chat-conversation-delete-btn {
+  opacity: 1;
+}
+
+.chat-conversation-delete-btn:hover {
+  background: rgba(255, 77, 77, 0.2);
+  color: #ff4d4d;
+}
+
+.chat-conversation-delete-btn:active {
+  transform: translateY(-50%) scale(0.9);
+}
 .chat-user-item:hover {
   background: rgba(48, 54, 61, 0.5);
   border-color: rgba(48, 54, 61, 0.8);
