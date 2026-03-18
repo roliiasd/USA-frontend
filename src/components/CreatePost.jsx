@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { getCounties, getCitiesByCounties } from "../getCC";
 
 export default function CreatePostModal({ showModal, onClose, onSuccess }) {
-  const [file, setFile] = useState(null);
+  const [files, setFiles] = useState([]);
   const [nev, setNev] = useState("");
   const [megye, setMegye] = useState([]);
   const [selectedMegye, setSelectedMegye] = useState(null);
@@ -19,7 +19,7 @@ export default function CreatePostModal({ showModal, onClose, onSuccess }) {
   const [selectedPostcode, setSelectedPostcode] = useState(null);
 
   const modalRef = useRef(null);
-
+  const MAX_FILES = 5;
   // Backdrop és ESC kezelés
   useEffect(() => {
     if (!showModal) return;
@@ -84,13 +84,13 @@ export default function CreatePostModal({ showModal, onClose, onSuccess }) {
       try {
         const countyID = selectedMegye.value;
         const citiesData = await getCitiesByCounties(
-          typeof countyID === "number" ? countyID : selectedMegye.label
+          typeof countyID === "number" ? countyID : selectedMegye.label,
         );
         if (citiesData.error) return toast.error(citiesData.error);
 
         setCitiesRaw(citiesData.result);
         const uniqueCities = Array.from(
-          new Set(citiesData.result.map((x) => x.city))
+          new Set(citiesData.result.map((x) => x.city)),
         );
         setVaros(uniqueCities.map((city) => ({ label: city, value: city })));
       } finally {
@@ -116,10 +116,10 @@ export default function CreatePostModal({ showModal, onClose, onSuccess }) {
     setSelectedPostcode(null);
   }, [selectedVaros, citiesRaw]);
 
-  const previewUrl = useMemo(() => {
-    if (!file) return null;
-    return URL.createObjectURL(file);
-  }, [file]);
+  const previewUrls = useMemo(() => {
+    if (!files) return [];
+    return files.map((file) => URL.createObjectURL(file));
+  }, [files]);
 
   const customSelectStyles = {
     menuPortal: (base) => ({
@@ -130,18 +130,30 @@ export default function CreatePostModal({ showModal, onClose, onSuccess }) {
 
   const resetForm = () => {
     setNev("");
-    setFile(null);
+    setFiles([]);
     setSelectedMegye(null);
     setSelectedVaros(null);
     setSelectedPostcode(null);
     setMegjegyzes("");
   };
-
+  function handleFileChange(e) {
+    const selectedFiles = Array.from(e.target.files || []);
+    if (selectedFiles.length + files.length > MAX_FILES) {
+      toast.warning(`Maximum ${MAX_FILES} kepet tölthetsz fel`);
+      return;
+    }
+    setFiles((prev) => [...prev, ...selectedFiles]);
+    e.target.value = "";
+  }
+  function removeFile(index) {
+    setFiles((prev) => prev.filter((_, i) => i !== index));
+  }
   async function submitHandler(e) {
     e.preventDefault();
 
     if (!nev.trim()) return toast.info("Add meg az állat nevét!");
-    if (!file) return toast.info("Válassz képet!");
+    if (files.lenght === 0)
+      return toast.info("Válassz legalább egy képet képet!");
     if (!selectedMegye) return toast.info("Válassz megyét!");
     if (!selectedVaros) return toast.info("Válassz várost!");
     if (!selectedPostcode) return toast.info("Válassz irányítószámot!");
@@ -154,7 +166,7 @@ export default function CreatePostModal({ showModal, onClose, onSuccess }) {
         megjegyzes,
         postcode: selectedPostcode.value,
         megye: selectedMegye.label,
-        file,
+        files,
       });
 
       if (error) {
@@ -266,21 +278,59 @@ export default function CreatePostModal({ showModal, onClose, onSuccess }) {
                   />
 
                   <div className="mt-3">
-                    <label className="form-label">Kisállat képe</label>
-                    <input
+                    <label className="form-label">
+                      Kisállat képei
+                      <small className="text-muted d-block mt-1">
+                        Maximum {MAX_FILES} kép, egyébként max 10mb
+                      </small>
+                    </label>
+                    <label className="custom-file-input">
+                      <i className="bi bi-cloud-upload me-2" />
+                      <span>Képek kiválasztása</span>
+                      <input
                       type="file"
                       accept="image/*"
+                      multiple
                       className="form-control"
-                      onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+                      onChange={handleFileChange}
+                      disabled={files.length >= MAX_FILES}
                     />
-                    {previewUrl && (
-                      <div className="mt-3">
-                        <small className="text-muted">Előnézet:</small>
-                        <img
-                          src={previewUrl}
-                          alt="Előnézet"
-                          className="previewImg d-block"
-                        />
+                    </label>
+
+                    {files.length > 0 && (
+                      <div className="image-preview-grid mt-3">
+                        {files.map((file, index) => (
+                          <div className="image-preview-item" key={index}>
+                            <img
+                              src={previewUrls[index]}
+                              alt={`Előnézet ${index + 1}`}
+                            />
+                            {index === 0 && (
+                              <span className="main-image-badge">Fő kép</span>
+                            )}
+                            <button
+                              type="button"
+                              className="remove-image-btn"
+                              onClick={() => removeFile(index)}
+                              title="Kép törlése"
+                            >
+                              <i className="bi bi-x-lg" />
+                            </button>
+                          </div>
+                        ))}
+                        {files.length < MAX_FILES && (
+                          <label className="add-more-images">
+                            <i className="bi bi-plus-lg" />
+                            <span>Kép hozzáadása</span>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              multiple
+                              onChange={handleFileChange}
+                              hidden
+                            />
+                          </label>
+                        )}
                       </div>
                     )}
                   </div>

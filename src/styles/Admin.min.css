@@ -1,6 +1,22 @@
 /* ============================================
-   ADMIN PAGE – Dark Glass Theme
+   ADMIN PAGE – Optimized Dark Glass Theme
    ============================================ */
+
+:root {
+  --glass-bg: rgba(255, 255, 255, 0.06);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-hover: rgba(255, 255, 255, 0.1);
+  --text-primary: rgba(255, 255, 255, 0.9);
+  --text-secondary: rgba(255, 255, 255, 0.5);
+  --text-muted: rgba(255, 255, 255, 0.4);
+  --accent: #a594f9;
+  --accent-rgb: 165, 148, 249;
+  --accent2: #98e2c6;
+  --danger: #ff6b6b;
+  --danger-rgb: 255, 107, 107;
+  --radius: 14px;
+  --radius-lg: 16px;
+}
 
 .admin-page {
   min-height: 100vh;
@@ -8,7 +24,26 @@
   padding-bottom: 3rem;
 }
 
-/* ---- Search Bar ---- */
+/* ---- Title ---- */
+.admin-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 2rem 0 0.5rem;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.admin-subtitle {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  margin-bottom: 2rem;
+}
+
+/* ---- Search ---- */
 .search-container {
   max-width: 600px;
   margin: 2rem auto;
@@ -19,27 +54,22 @@
 .search-input {
   width: 100%;
   padding: 0.9rem 1.2rem 0.9rem 3rem;
-  background: rgba(255, 255, 255, 0.07);
+  background: var(--glass-bg);
   backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 14px;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
   color: #fff;
   font-size: 1rem;
   transition: all 0.3s ease;
 }
 
-.search-input::placeholder {
-  color: rgba(255, 255, 255, 0.4);
-}
+.search-input::placeholder { color: var(--text-muted); }
 
 .search-input:focus {
   outline: none;
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(165, 148, 249, 0.6);
-  box-shadow:
-    0 0 0 3px rgba(165, 148, 249, 0.2),
-    0 0 20px rgba(165, 148, 249, 0.1);
+  background: var(--glass-hover);
+  border-color: rgba(var(--accent-rgb), 0.6);
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.2);
 }
 
 .search-icon {
@@ -47,163 +77,61 @@
   left: 2.5rem;
   top: 50%;
   transform: translateY(-50%);
-  color: rgba(255, 255, 255, 0.4);
-  font-size: 1rem;
+  color: var(--text-muted);
   pointer-events: none;
-  transition: color 0.3s ease;
 }
 
-.search-input:focus ~ .search-icon {
-  color: rgba(165, 148, 249, 0.8);
-}
-
-/* ---- Table Wrapper ---- */
+/* ---- Table ---- */
 .admin-table-wrapper {
   max-width: 900px;
   margin: 0 auto;
   padding: 0 1.5rem;
 }
 
-/* ---- Table ---- */
 .table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--glass-bg);
   backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 16px;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
 }
 
-/* ---- Table Head ---- */
 .table thead {
-  background: linear-gradient(
-    135deg,
-    rgba(165, 148, 249, 0.2),
-    rgba(152, 226, 198, 0.15)
-  );
+  background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.2), rgba(152, 226, 198, 0.15));
+}
+
+.table th, .table td {
+  padding: 0.95rem 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: transparent;
+  vertical-align: middle;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
 }
 
 .table thead th {
-  padding: 1rem 1.5rem;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--text-primary);
   font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.8px;
   text-transform: uppercase;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  background: transparent;
 }
 
-/* ---- Table Body ---- */
-.table tbody tr {
-  transition: all 0.25s ease;
-}
+.table tbody tr:hover { background: rgba(255, 255, 255, 0.05); }
+.table tbody tr:last-child td { border-bottom: none; }
 
-.table tbody tr:hover {
-  background: rgba(255, 255, 255, 0.05);
-}
-
-.table tbody th,
-.table tbody td {
-  padding: 0.95rem 1.5rem;
-  color: rgba(255, 255, 255, 0.75);
-  font-size: 0.95rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  background: transparent;
-  vertical-align: middle;
-}
-
-.table tbody th {
-  color: rgba(255, 255, 255, 0.9);
-  font-weight: 600;
-}
-
-.table tbody tr:last-child td,
-.table tbody tr:last-child th {
-  border-bottom: none;
-}
-
-/* Group divider override */
-.table-group-divider {
-  border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-
-/* Remove Bootstrap's default light backgrounds */
-.table-light {
-  --bs-table-bg: transparent !important;
-  --bs-table-border-color: transparent !important;
-  --bs-table-striped-bg: transparent !important;
-  background: transparent !important;
-}
-
-.table-borderless > :not(caption) > * > * {
-  border-bottom-width: 0;
-}
-
-/* ---- Ad Preview Cell ---- */
-.ad-preview {
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
-}
-
-.ad-preview-img {
-  width: 48px;
-  height: 48px;
-  border-radius: 10px;
-  object-fit: cover;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  flex-shrink: 0;
-  transition: all 0.3s ease;
-}
-
-.ad-preview-img:hover {
-  border-color: rgba(165, 148, 249, 0.5);
-  box-shadow: 0 0 15px rgba(165, 148, 249, 0.2);
-  transform: scale(1.08);
-}
-
-.ad-preview-info {
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-  min-width: 0;
-}
-
-.ad-preview-name {
-  color: rgba(255, 255, 255, 0.9);
-  font-weight: 600;
-  font-size: 0.9rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.ad-preview-sub {
-  color: rgba(255, 255, 255, 0.4);
-  font-size: 0.75rem;
-}
-
-/* ---- User Cell ---- */
-.user-cell {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-}
+/* ---- Cells ---- */
+.user-cell, .ad-preview { display: flex; align-items: center; gap: 0.7rem; }
 
 .user-avatar {
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: linear-gradient(
-    135deg,
-    rgba(165, 148, 249, 0.4),
-    rgba(152, 226, 198, 0.4)
-  );
+  background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.4), rgba(152, 226, 198, 0.4));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -211,19 +139,33 @@
   font-weight: 700;
   font-size: 0.8rem;
   flex-shrink: 0;
-  border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
-.user-name {
-  color: rgba(255, 255, 255, 0.85);
-  font-weight: 500;
+.user-name { color: var(--text-primary); font-weight: 500; }
+
+.ad-preview-img {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  object-fit: cover;
+  border: 1px solid var(--glass-border);
+  flex-shrink: 0;
+  transition: all 0.3s ease;
 }
 
-/* ---- Action Buttons inside Table ---- */
-.table .btn-action {
+.ad-preview-img:hover {
+  border-color: rgba(var(--accent-rgb), 0.5);
+  transform: scale(1.08);
+}
+
+.ad-preview-info { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; }
+.ad-preview-name { color: var(--text-primary); font-weight: 600; font-size: 0.9rem; }
+.ad-preview-sub { color: var(--text-muted); font-size: 0.75rem; }
+
+/* ---- Buttons ---- */
+.btn-action {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
   gap: 0.4rem;
   padding: 0.45rem 1rem;
   border-radius: 8px;
@@ -231,183 +173,147 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
-  border: 1px solid transparent;
+  background: rgba(var(--danger-rgb), 0.1);
+  border: 1px solid rgba(var(--danger-rgb), 0.35);
+  color: var(--danger);
 }
 
-.table .btn-action-view {
-  background: rgba(165, 148, 249, 0.15);
-  border-color: rgba(165, 148, 249, 0.35);
-  color: #a594f9;
-}
-
-.table .btn-action-view:hover {
-  background: rgba(165, 148, 249, 0.3);
-  border-color: rgba(165, 148, 249, 0.7);
+.btn-action:hover {
+  background: rgba(var(--danger-rgb), 0.25);
   transform: translateY(-1px);
-  box-shadow: 0 4px 15px rgba(165, 148, 249, 0.25);
+  box-shadow: 0 4px 15px rgba(var(--danger-rgb), 0.25);
 }
 
-.table .btn-action-delete {
-  background: rgba(255, 107, 107, 0.1);
-  border-color: rgba(255, 107, 107, 0.35);
-  color: #ff6b6b;
+/* ---- Role Toggle ---- */
+.role-toggle { display: flex; align-items: center; gap: 0.6rem; }
+
+.role-switch {
+  width: 44px;
+  height: 24px;
+  appearance: none;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
 }
 
-.table .btn-action-delete:hover {
-  background: rgba(255, 107, 107, 0.25);
-  border-color: #ff6b6b;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.25);
+.role-switch::before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  transition: all 0.3s ease;
 }
 
-/* ---- Admin Header / Title ---- */
-.admin-title {
-  text-align: center;
-  font-size: 2rem;
+.role-switch:checked {
+  background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.4), rgba(152, 226, 198, 0.4));
+  border-color: rgba(var(--accent-rgb), 0.6);
+}
+
+.role-switch:checked::before {
+  left: 22px;
+  background: #fff;
+}
+
+.role-label {
+  font-size: 0.75rem;
   font-weight: 600;
-  margin: 2rem 0 0.5rem;
-  background: linear-gradient(135deg, #a594f9, #98e2c6);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  text-transform: uppercase;
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
 }
 
-.admin-subtitle {
-  text-align: center;
-  color: rgba(255, 255, 255, 0.45);
-  font-size: 0.95rem;
-  margin-bottom: 2rem;
+.role-label-user {
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--glass-border);
 }
 
-/* ---- Responsive ---- */
-@media (max-width: 768px) {
-  .admin-table-wrapper {
-    padding: 0 0.75rem;
-    overflow-x: auto;
-  }
-
-  .table thead th {
-    padding: 0.75rem 1rem;
-    font-size: 0.7rem;
-  }
-
-  .table tbody th,
-  .table tbody td {
-    padding: 0.75rem 1rem;
-    font-size: 0.85rem;
-  }
-
-  .admin-title {
-    font-size: 1.5rem;
-  }
-
-  .search-container {
-    padding: 0 1rem;
-  }
-
-  .ad-preview-img {
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
-  }
-
-  .ad-preview-name {
-    font-size: 0.8rem;
-  }
-
-  .btn-action span {
-    display: none;
-  }
-
-  .btn-action {
-    padding: 0.45rem 0.6rem !important;
-  }
+.role-label-admin {
+  color: var(--accent);
+  background: rgba(var(--accent-rgb), 0.12);
+  border: 1px solid rgba(var(--accent-rgb), 0.35);
 }
-/* ============================================================= */
-/* ============================================================= */
-/* deletemodal */
-/* ============================================================= */
-/* ============================================================= */
+
+/* ---- Empty State ---- */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 3rem;
+  color: var(--text-muted);
+}
+
+.empty-state i { font-size: 3rem; margin-bottom: 1rem; }
+
+/* ---- Modal ---- */
 .modal-overlay {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 9999;
-  animation: overlayIn 0.2s ease;
+  padding: 1rem;
+  animation: fadeIn 0.2s ease;
 }
 
-@keyframes overlayIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
+@keyframes fadeIn { from { opacity: 0; } }
 
 .modal-box {
   background: rgba(22, 33, 62, 0.95);
   backdrop-filter: blur(30px);
-  -webkit-backdrop-filter: blur(30px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid var(--glass-border);
   border-radius: 20px;
-  padding: 2rem 2.5rem;
+  padding: 2rem;
   max-width: 400px;
-  width: 90%;
-  box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.5),
-    0 0 40px rgba(165, 148, 249, 0.08);
-  animation: modalIn 0.3s ease;
+  width: 100%;
   text-align: center;
+  animation: slideUp 0.3s ease;
 }
 
-@keyframes modalIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9) translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
+@keyframes slideUp {
+  from { opacity: 0; transform: scale(0.9) translateY(20px); }
 }
 
-.modal-icon {
+.modal-icon, .modal-icon-role {
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: rgba(255, 107, 107, 0.12);
-  border: 1px solid rgba(255, 107, 107, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto 1.2rem;
   font-size: 1.5rem;
-  color: #ff6b6b;
 }
 
-.modal-title {
-  color: #fff;
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
+.modal-icon {
+  background: rgba(var(--danger-rgb), 0.12);
+  border: 1px solid rgba(var(--danger-rgb), 0.3);
+  color: var(--danger);
 }
 
-.modal-message {
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 0.9rem;
-  line-height: 1.5;
-  margin-bottom: 1.8rem;
+.modal-icon-role {
+  background: rgba(var(--accent-rgb), 0.12);
+  border: 1px solid rgba(var(--accent-rgb), 0.3);
+  color: var(--accent);
 }
 
-.modal-ad-preview {
+.modal-title { color: #fff; font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5rem; }
+.modal-message { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5; margin-bottom: 1.8rem; }
+
+.modal-ad-preview, .modal-role-preview {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.75rem;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -421,23 +327,32 @@
   height: 42px;
   border-radius: 8px;
   object-fit: cover;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
 }
 
-.modal-ad-preview span {
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 0.9rem;
-  font-weight: 500;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.modal-ad-preview span { color: var(--text-primary); font-weight: 500; }
+
+.modal-role-arrow { color: var(--text-muted); font-size: 1.2rem; }
+
+.modal-role-badge {
+  padding: 0.35rem 0.9rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
 }
 
-.modal-buttons {
-  display: flex;
-  gap: 0.75rem;
-  justify-content: center;
+.modal-role-badge-user {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-secondary);
 }
+
+.modal-role-badge-admin {
+  background: rgba(var(--accent-rgb), 0.15);
+  color: var(--accent);
+}
+
+.modal-buttons { display: flex; gap: 0.75rem; justify-content: center; }
 
 .modal-btn {
   padding: 0.7rem 1.6rem;
@@ -450,212 +365,77 @@
 }
 
 .modal-btn-cancel {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.15);
-  color: rgba(255, 255, 255, 0.7);
+  background: var(--glass-bg);
+  border-color: var(--glass-border);
+  color: var(--text-secondary);
 }
 
-.modal-btn-cancel:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
-  transform: translateY(-1px);
-}
+.modal-btn-cancel:hover { background: var(--glass-hover); color: #fff; }
 
 .modal-btn-delete {
-  background: rgba(255, 107, 107, 0.15);
-  border-color: rgba(255, 107, 107, 0.5);
-  color: #ff6b6b;
+  background: rgba(var(--danger-rgb), 0.15);
+  border-color: rgba(var(--danger-rgb), 0.5);
+  color: var(--danger);
 }
 
 .modal-btn-delete:hover {
-  background: rgba(255, 107, 107, 0.3);
-  border-color: #ff6b6b;
-  transform: translateY(-1px);
-  box-shadow: 0 5px 20px rgba(255, 107, 107, 0.3);
-}
-/* ==================================================== */
-/* ==================================================== */
-/* Role change */
-/* ==================================================== */
-/* ==================================================== */
-
-.role-toggle {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-}
-
-.role-switch {
-  position: relative;
-  width: 44px;
-  height: 24px;
-  appearance: none;
-  -webkit-appearance: none;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 50px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  outline: none;
-  flex-shrink: 0;
-}
-
-.role-switch::before {
-  content: "";
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 18px;
-  height: 18px;
-  background: rgba(255, 255, 255, 0.7);
-  border-radius: 50%;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-}
-
-.role-switch:not(:checked) {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.12);
-}
-
-.role-switch:not(:checked)::before {
-  left: 2px;
-  background: rgba(255, 255, 255, 0.5);
-}
-
-.role-switch:checked {
-  background: linear-gradient(
-    135deg,
-    rgba(165, 148, 249, 0.4),
-    rgba(152, 226, 198, 0.4)
-  );
-  border-color: rgba(165, 148, 249, 0.6);
-}
-
-.role-switch:checked::before {
-  left: 22px;
-  background: #fff;
-  box-shadow:
-    0 2px 8px rgba(165, 148, 249, 0.4),
-    0 0 12px rgba(165, 148, 249, 0.2);
-}
-
-.role-switch:hover {
-  border-color: rgba(165, 148, 249, 0.5);
-  box-shadow: 0 0 12px rgba(165, 148, 249, 0.15);
-}
-
-.role-label {
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  padding: 0.2rem 0.6rem;
-  border-radius: 6px;
-  min-width: 55px;
-  text-align: center;
-  transition: all 0.3s ease;
-}
-
-.role-label-user {
-  color: rgba(255, 255, 255, 0.5);
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.role-label-admin {
-  color: #a594f9;
-  background: rgba(165, 148, 249, 0.12);
-  border: 1px solid rgba(165, 148, 249, 0.35);
-}
-
-.modal-role-preview {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
-  margin-bottom: 1.8rem;
-  padding: 0.8rem 1rem;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-}
-
-.modal-role-arrow {
-  color: rgba(255, 255, 255, 0.3);
-  font-size: 1.2rem;
-}
-
-.modal-role-badge {
-  padding: 0.35rem 0.9rem;
-  border-radius: 8px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.modal-role-badge-user {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  color: rgba(255, 255, 255, 0.6);
-}
-
-.modal-role-badge-admin {
-  background: rgba(165, 148, 249, 0.15);
-  border: 1px solid rgba(165, 148, 249, 0.4);
-  color: #a594f9;
-}
-
-.modal-icon-role {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: rgba(165, 148, 249, 0.12);
-  border: 1px solid rgba(165, 148, 249, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 1.2rem;
-  font-size: 1.5rem;
-  color: #a594f9;
+  background: rgba(var(--danger-rgb), 0.3);
+  box-shadow: 0 5px 20px rgba(var(--danger-rgb), 0.3);
 }
 
 .modal-btn-confirm {
-  background: linear-gradient(
-    135deg,
-    rgba(165, 148, 249, 0.2),
-    rgba(152, 226, 198, 0.2)
-  );
-  border-color: rgba(165, 148, 249, 0.5);
-  color: #a594f9;
+  background: rgba(var(--accent-rgb), 0.15);
+  border-color: rgba(var(--accent-rgb), 0.5);
+  color: var(--accent);
 }
 
 .modal-btn-confirm:hover {
-  background: linear-gradient(
-    135deg,
-    rgba(165, 148, 249, 0.35),
-    rgba(152, 226, 198, 0.35)
-  );
-  border-color: rgba(165, 148, 249, 0.8);
-  transform: translateY(-1px);
-  box-shadow: 0 5px 20px rgba(165, 148, 249, 0.3);
+  background: rgba(var(--accent-rgb), 0.3);
+  box-shadow: 0 5px 20px rgba(var(--accent-rgb), 0.3);
 }
-/* ================== */
-@media (max-width: 480px) {
-  .table thead th,
-  .table tbody td,
-  .table tbody th {
-    padding: 0.6rem 0.7rem;
-    font-size: 0.8rem;
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+  .admin-title { font-size: 1.5rem; }
+  .search-container, .admin-table-wrapper { padding: 0 1rem; }
+  .table th, .table td { padding: 0.75rem; font-size: 0.85rem; }
+  .btn-action span { display: none; }
+  .btn-action { padding: 0.45rem 0.6rem; }
+  .role-label { display: none; }
+}
+
+@media (max-width: 640px) {
+  .table, .table thead, .table tbody, .table tr, .table th, .table td { display: block; }
+  .table { background: transparent; border: none; box-shadow: none; }
+  .table thead { display: none; }
+  
+  .table tbody tr {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    margin-bottom: 1rem;
+    padding: 1rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
   }
 
-  .ad-preview-img {
-    width: 34px;
-    height: 34px;
-  }
+  .table tbody tr > *:nth-child(1) { grid-column: 1 / -1; font-size: 0.7rem; color: var(--text-muted); }
+  .table tbody tr > *:nth-child(1)::before { content: "ID: "; }
+  .table tbody tr > *:nth-child(2) { grid-column: 1 / -1; }
+  .table tbody tr > *:nth-child(3) { grid-column: 1 / -1; padding-top: 0.5rem; border-top: 1px solid rgba(255,255,255,0.06); }
+  .table tbody tr > *:nth-child(4) { justify-content: flex-start; padding-top: 0.75rem; }
+  .table tbody tr > *:nth-child(5) { justify-content: flex-end; padding-top: 0.75rem; display: flex; align-items: center; }
 
-  .user-avatar {
-    display: none;
-  }
+  .btn-action span { display: inline; }
+  .btn-action { padding: 0.5rem 1rem; }
+  .role-label { display: block; font-size: 0.7rem; }
+  .ad-preview-img { width: 56px; height: 56px; }
+
+  .modal-buttons { flex-direction: column; }
+  .modal-btn { width: 100%; }
 }
