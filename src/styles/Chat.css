@@ -248,8 +248,26 @@
   -webkit-backdrop-filter: blur(10px);
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
   transition: transform 0.15s ease;
+  position: relative;
+}
+.chat-delete-btn {
+  position: inherit;
+  left: 5px;
+  background: transparent;
+  border: none;
+  color: #ff6b6b;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s;
 }
 
+.chat-bubble:hover .chat-delete-btn {
+  opacity: 1;
+}
+
+.chat-delete-btn:hover {
+  color: #ff0000;
+}
 .chat-bubble:hover {
   transform: scale(1.01);
 }
