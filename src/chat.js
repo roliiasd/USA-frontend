@@ -12,3 +12,15 @@ export async function deleteMessages(messageId) {
   }
   return await res.json();
 }
+export async function deleteConv(partnerId) {
+  const res = await fetch(`${BACKEND_URL}/deleteconv/${partnerId}`, {
+    method: "DELETE",
+    credentials: "include",
+  });
+
+  if (!res.ok) {
+    const data = await res.json();
+    return { error: data?.error };
+  }
+  return await res.json();
+}
