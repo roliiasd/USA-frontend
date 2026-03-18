@@ -37,6 +37,7 @@ export async function logout() {
   }
 
   return await res.json();
+  localStorage.removeItem('userId')
 }
 
 export async function whoami() {
@@ -101,6 +102,21 @@ export async function chatPartners() {
   if (!res.ok) {
     const data = await res.json();
     return { error: data?.error };
+  }
+  return await res.json();
+}
+
+export async function roleChange(userId, newRole) {
+  const res = await fetch(`${BACKEND_URL}/editrole/${userId}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    credentials: "include",
+    body: JSON.stringify({ role: newRole }),
+  });
+
+  if (!res.ok) {
+    const data = await res.json();
+    return { error: data?.error || "Ismeretlen hiba" };
   }
   return await res.json();
 }

@@ -3,49 +3,8 @@
   backdrop-filter: blur(10px);
   padding: 1rem;
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.ua-filter input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  appearance: none;
-  background: #010409;
-  border: 1px solid #30363d;
-  border-radius: 4px;
-  cursor: pointer;
-  box-shadow: 0 4px 8px rgba(8, 8, 8, 0.4);
-  vertical-align: middle;
-  margin-right: 8px;
-}
-
-.ua-filter input[type="checkbox"]:checked {
-  background: #238636;
-  border-color: #238636;
-}
-
-.ua-filter input[type="checkbox"]:checked::after {
-  content: '✓';
-  display: block;
-  text-align: center;
-  color: white;
-  font-size: 12px;
-  line-height: 16px;
-}
-
-input[type="checkbox"]:focus {
-  border-color: #238636;
-  box-shadow: 0 0 0 3px rgba(35, 134, 54, 0.3);
-  outline: none;
-}
-
-.ua-filter .form-label {
-  color: #8b949e;
-  font-size: 12px;
-  font-weight: 600;
-  margin-bottom: 5px;
-  display: block;
-}
+  border: 1px solid rgba(255, 255, 255, 0.1); }
+  
 .ua-filter .form-control {
   background: #0d1117;
   border: 1px solid #30363d;
@@ -55,30 +14,10 @@ input[type="checkbox"]:focus {
   padding: 8px 12px;
   width: 100%;
 }
+
 .ua-filter .form-control::placeholder {
   color: #8b949e;
 }
-
-.ua-filter .modal-content {
-  background: #0d1117;
-  border: 1px solid #30363d;
-  border-radius: 6px;
-}
-
-.ua-filter .modal-header {
-  border-bottom: 1px solid #21262d;
-}
-
-.ua-filter .modal-title {
-  color: #c9d1d9;
-  font-size: 3rem;
-  font-weight: 600;
-}
-
-.ua-filter .btn-close {
-  filter: invert(0.7);
-}
-
 
 .ua-filter .form-control:focus {
   border-color: #238636;
@@ -106,21 +45,6 @@ input[type="checkbox"]:focus {
 }
 .ua-filter .custom-select__option:hover {
   background: #32383f;
-}
-
-.ua-filter .btn-outline-success {
-  background: #238636;
-  border: 1px solid #238636;
-  color: #fff;
-  border-radius: 6px;
-  padding: 8px 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.ua-filter .btn-outline-success:hover {
-  background: #2ea043;
 }
 
 .ua-filter .custom-select__option {

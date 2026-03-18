@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import CreatePost from "../components/CreatePost";
 import { ToastContainer } from "react-toastify";
@@ -99,7 +99,7 @@ export default function Home() {
                       key={post.id}
                       username={post.username}
                       postUserId={post.userId }
-                      petImg={post.kep}
+                      petImg={post.kep || [post.kep]}
                       petName={post.nev}
                       note={post.megjegyzes}
                       county={post.megye}

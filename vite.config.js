@@ -7,27 +7,27 @@ export default defineConfig({
   server: {
     proxy: {
       "/users": {
-        target: "http://192.168.9.101:4000",
+        target: "http://192.168.33.10:4000",
         changeOrigin: true,
       },
       "/animals": {
-        target: "http://192.168.9.101:4000",
+        target: "http://192.168.33.10:4000",
         changeOrigin: true,
       },
       "/cities": {
-        target: "http://192.168.9.101:4000",
+        target: "http://192.168.33.10:4000",
         changeOrigin: true,
       },
       "/uploads": {
-        target: "http://192.168.9.101:4000",
+        target: "http://192.168.33.10:4000",
         changeOrigin: true,
       },
       "/messages": {
-        target: "http://192.168.9.101:4000",
+        target: "http://192.168.33.10:4000",
         changeOrigin: true,
       },
       "/socket.io": {
-        target: "http://192.168.9.101:4000",
+        target: "http://192.168.33.10:4000",
         changeOrigin: true,
         ws: true,
       },

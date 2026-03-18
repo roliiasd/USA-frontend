@@ -17,7 +17,7 @@
 .ua-cards-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;              
+  gap: 0.75rem;
   width: 100%;
   justify-content: flex-end;
 }
@@ -77,24 +77,99 @@
 .ua-card-avatar-circle i {
   color: #efefef;
 }
-
-.ua-card-image {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  background: transparent;
+.ua-carousel {
   position: relative;
-  object-fit: fill;
-  margin: 0;
-  display: flex;
 }
 
-.ua-card-image img {
+.ua-carousel-images {
   width: 100%;
   aspect-ratio: 1/1;
   object-fit: cover;
   object-position: center;
   display: block;
   mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+  transition: opacity 0.3s ease;
+}
+.ua-carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  z-index: 2;
+  opacity: 0;
+  transition: all 0.25s ease;
+}
+.ua-card:hover .ua-carousel-btn {
+  opacity: 1;
+}
+
+.ua-carousel-btn:hover {
+  background: rgba(0, 0, 0, 0.6);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.ua-carousel-btn-left {
+  left: 6px;
+}
+
+.ua-carousel-btn-right {
+  right: 6px;
+}
+.ua-carousel-dots {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 5px;
+  z-index: 2;
+}
+.ua-carousel-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.4);
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s ease;
+}
+.ua-carousel-dot.active {
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.5);
+  transform: scale(1.3);
+}
+
+.ua-carousel-dot:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.7);
+}
+.ua-carousel-counter {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: rgba(255, 255, 255, 0.9);
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  z-index: 2;
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .ua-card-footer {
@@ -141,8 +216,22 @@
   font-size: 0.75rem;
   opacity: 0.7;
 }
-@media (max-width: 576px){
+@media (max-width: 576px) {
   .ua-cards-grid {
-  justify-content: center;
-}
+    justify-content: center;
+  }
+  .ua-carousel-btn {
+    opacity: 0.8;
+    width: 32px;
+    height: 32px;
+  }
+
+  .ua-carousel-dots {
+    bottom: 18px;
+  }
+
+  .ua-carousel-dot {
+    width: 8px;
+    height: 8px;
+  }
 }
