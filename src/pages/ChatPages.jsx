@@ -26,6 +26,21 @@ function getUserColor(userId) {
 //     =
 //       =
 //     =
+function playNotificationSound() {
+  try {
+    const audio = new Audio("/team_speak_3_message.mp3");
+    audio.volume = 0.5;
+    audio
+      .play()
+      .catch((err) => console.log("Hang lejatszasa sikertelen:", err));
+  } catch (err) {
+    console.log("Aduio hiba:", err);
+  }
+}
+
+//     =
+//       =
+//     =
 export default function ChatPages() {
   const [currentUser, setCurrentUser] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -33,6 +48,8 @@ export default function ChatPages() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const [lastMessages, setLastMessages] = useState([]);
 
   const aljaRef = useRef(null);
   const navigate = useNavigate();
@@ -57,6 +74,14 @@ export default function ChatPages() {
       const data = await res.json();
       // console.log("ciganyok futnak", data);
       setMessages(data);
+
+      if (data.length > 0) {
+        const lastMsg = data[data.length - 1];
+        setLastMessages((prev) => ({
+          ...prev,
+          [user.user_id]: lastMsg.messages,
+        }));
+      }
     } catch (err) {
       console.error("Hiba:", err);
     }
@@ -77,7 +102,7 @@ export default function ChatPages() {
         socket.emit("register", Number(me.user_id));
 
         let partners = await chatPartners();
-        console.log("Partners from backend:", partners);
+        // console.log("Partners from backend:", partners);
         if (!Array.isArray(partners)) partners = [];
 
         if (targetUserId && targetUsername) {
@@ -92,6 +117,7 @@ export default function ChatPages() {
           }
         }
         setUsers(partners);
+        await loadLastMessages(partners);
       } catch (err) {
         console.error(err);
         navigate("/login");
@@ -101,6 +127,30 @@ export default function ChatPages() {
     }
     loadUserAndPartners();
   }, [navigate]);
+
+  async function loadLastMessages(partners) {
+    const lastMsgs = {};
+    for (const partner of partners) {
+      try {
+        const res = await fetch(
+          `/messages/${partner.user_id}?limit=1&last=true`,
+          {
+            credentials: "include",
+          }
+        );
+        if (res.ok) {
+          const data = await res.json();
+          if (data.length > 0) {
+            lastMsgs[partner.user_id] = data[data.length - 1].messages;
+          }
+        }
+      } catch (err) {
+        console.log("utolso uzenet hiba:", err);
+      }
+    }
+    setLastMessages(lastMsgs);
+  }
+
   //     =
   //   urlbrol erkezeo adatok    =
   //     =
@@ -125,6 +175,19 @@ export default function ChatPages() {
     function handleUzenet(message) {
       //   console.log("Üzenet jott:", message);
       setMessages((prev) => [...prev, message]);
+
+      const partnerId =
+        Number(message.giver) === Number(currentUser?.user_id)
+          ? message.receiver
+          : message.giver;
+
+      setLastMessages((prev) => ({
+        ...prev,
+        [partnerId]: message.messages,
+      }));
+      if (Number(message.giver) !== Number(currentUser?.user_id)) {
+        playNotificationSound();
+      }
     }
     socket.on("uzenet_jott", handleUzenet);
     return () => {
@@ -168,7 +231,17 @@ export default function ChatPages() {
       receiverId: Number(selectedUser.user_id),
       szoveg: newMessages,
     });
+
+    setLastMessages((prev) => ({
+      ...prev,
+      [selectedUser.user_id]: newMessages,
+    }));
+
     setNewMessages("");
+  }
+  function shortenMessage(msg, maxLength = 25) {
+    if (!msg) return "Kezdj el beszélgetni....";
+    return msg.length > maxLength ? msg.substring(0, maxLength) + "..." : msg;
   }
   //     =
   //        =
@@ -216,7 +289,9 @@ export default function ChatPages() {
               </div>
               <div className="chat-user-info">
                 <div className="chat-username">{user.username}</div>
-                <div className="chat-user-last-msg">Kattints a chathez...</div>
+                <div className="chat-user-last-msg">
+                  {shortenMessage(lastMessages[user.user_id])}
+                </div>
               </div>
             </div>
           ))}
