@@ -183,7 +183,7 @@ export default function Profile() {
                         <UserPosts
                           id={post.id}
                           username={currentUser?.username}
-                          petImg={post.kep}
+                          petImg={post.images}
                           petName={post.nev}
                           note={post.megjegyzes}
                           county={post.megye}

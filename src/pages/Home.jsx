@@ -98,8 +98,8 @@ export default function Home() {
                     <UserPosts
                       key={post.id}
                       username={post.username}
-                      postUserId={post.userId }
-                      petImg={post.kep || [post.kep]}
+                      postUserId={post.userId}
+                      petImg={post.images}
                       petName={post.nev}
                       note={post.megjegyzes}
                       county={post.megye}

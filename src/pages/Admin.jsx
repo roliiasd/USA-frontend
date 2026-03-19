@@ -14,18 +14,19 @@ export default function Admin() {
   //     =
   //       =
   //     =
-useEffect(()=>
-async function fetchUser() {
-  try {
-    const userData = await whoami()
-    if (userData && !userData.error) {
-      setUser(userData)
+  useEffect(() => {
+    async function fetchUser() {
+      try {
+        const userData = await whoami();
+        if (userData && !userData.error) {
+          setUser(userData);
+        }
+      } catch (err) {
+        console.error("user lekees hiba", err);
+      }
     }
-  } catch (err) {
-    console.error('user lekees hiba', err);
-    
-  }
-})
+    fetchUser();
+  },[]);
 
   useEffect(() => {
     async function fetchPosts() {
@@ -68,7 +69,7 @@ async function fetchUser() {
     } catch (err) {
       console.error(
         "nemtudsz torolni mer hoki vagy, vagy csak gatyesz van a szeroval ink a masodik",
-        err,
+        err
       );
     } finally {
       setDeleteTarget(null);
@@ -95,8 +96,8 @@ async function fetchUser() {
       // Optimista update
       setAds((prev) =>
         prev.map((ad) =>
-          ad.userId === targetUserId ? { ...ad, role: newRole } : ad,
-        ),
+          ad.userId === targetUserId ? { ...ad, role: newRole } : ad
+        )
       );
 
       // AWAIT HOZZÁADVA!
@@ -107,8 +108,8 @@ async function fetchUser() {
         // Visszaállítás
         setAds((prev) =>
           prev.map((ad) =>
-            ad.userId === targetUserId ? { ...ad, role: oldRole } : ad,
-          ),
+            ad.userId === targetUserId ? { ...ad, role: oldRole } : ad
+          )
         );
         return;
       }
@@ -124,8 +125,8 @@ async function fetchUser() {
       // Visszaállítás
       setAds((prev) =>
         prev.map((ad) =>
-          ad.userId === targetUserId ? { ...ad, role: oldRole } : ad,
-        ),
+          ad.userId === targetUserId ? { ...ad, role: oldRole } : ad
+        )
       );
     } finally {
       setRoleTarget(null);
@@ -154,7 +155,7 @@ async function fetchUser() {
   }
   return (
     <>
-      <ToastContainer theme="light" autoClose={'800'}/>
+      <ToastContainer theme="light" autoClose={"800"} />
       <div className="admin-page">
         <Navbar user={user} homePage={"/"} />
         <h1 className="admin-title">Admin panel</h1>
@@ -185,7 +186,7 @@ async function fetchUser() {
             <tbody className="table-group-divider">
               {filteredAds.length === 0 ? (
                 <tr>
-                  <td colSpan={"4"}>
+                  <td colSpan={"5"}>
                     <div className="empty-state">
                       <i className="bi bi-inbox" />
                       <p>Ures he</p>
@@ -194,7 +195,7 @@ async function fetchUser() {
                 </tr>
               ) : (
                 filteredAds.map((ad) => (
-                  // console.log(ad),
+                  // console.log("AD objektum:", ad),  
                   <tr key={ad.id}>
                     <th scope="row">{ad.id}</th>
                     <td>
@@ -208,7 +209,11 @@ async function fetchUser() {
                     <td>
                       <div className="ad-preview">
                         <img
-                          src={ad.kep}
+                          src={
+                            ad.images?.[0]
+                              ? `/${ad.images[0]}`
+                              : `/placholder.png`
+                          }
                           alt={ad.nev}
                           className="ad-preview-img"
                         />
@@ -274,7 +279,14 @@ async function fetchUser() {
                 vonható vissza.
               </p>
               <div className="modal-ad-preview">
-                <img src={deleteTarget.kep} alt={deleteTarget.nev} />
+                <img
+                  src={
+                    deleteTarget.images?.[0]
+                      ? `/${deleteTarget.images[0]}`
+                      : "/placholder.png"
+                  }
+                  alt={deleteTarget.nev}
+                />
                 <span>{deleteTarget.nev}</span>
               </div>
               <div className="modal-buttons">
