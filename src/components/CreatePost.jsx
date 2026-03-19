@@ -17,6 +17,7 @@ export default function CreatePostModal({ showModal, onClose, onSuccess }) {
   const [citiesRaw, setCitiesRaw] = useState([]);
   const [postcodes, setPostcodes] = useState([]);
   const [selectedPostcode, setSelectedPostcode] = useState(null);
+  const [previewUrls, setPreviewUrls] = useState([]);
 
   const modalRef = useRef(null);
   const MAX_FILES = 5;
@@ -84,13 +85,13 @@ export default function CreatePostModal({ showModal, onClose, onSuccess }) {
       try {
         const countyID = selectedMegye.value;
         const citiesData = await getCitiesByCounties(
-          typeof countyID === "number" ? countyID : selectedMegye.label,
+          typeof countyID === "number" ? countyID : selectedMegye.label
         );
         if (citiesData.error) return toast.error(citiesData.error);
 
         setCitiesRaw(citiesData.result);
         const uniqueCities = Array.from(
-          new Set(citiesData.result.map((x) => x.city)),
+          new Set(citiesData.result.map((x) => x.city))
         );
         setVaros(uniqueCities.map((city) => ({ label: city, value: city })));
       } finally {
@@ -116,11 +117,14 @@ export default function CreatePostModal({ showModal, onClose, onSuccess }) {
     setSelectedPostcode(null);
   }, [selectedVaros, citiesRaw]);
 
-  const previewUrls = useMemo(() => {
-    if (!files) return [];
-    return files.map((file) => URL.createObjectURL(file));
+  useEffect(() => {
+    previewUrls.forEach((url) => URL.revokeObjectURL(url));
+    const newUrls = files.map((file) => URL.createObjectURL(file));
+    setPreviewUrls(newUrls);
+    return () => {
+      newUrls.forEach((url) => URL.revokeObjectURL(url));
+    };
   }, [files]);
-
   const customSelectStyles = {
     menuPortal: (base) => ({
       ...base,
@@ -131,6 +135,7 @@ export default function CreatePostModal({ showModal, onClose, onSuccess }) {
   const resetForm = () => {
     setNev("");
     setFiles([]);
+    setPreviewUrls([])
     setSelectedMegye(null);
     setSelectedVaros(null);
     setSelectedPostcode(null);
@@ -152,7 +157,7 @@ export default function CreatePostModal({ showModal, onClose, onSuccess }) {
     e.preventDefault();
 
     if (!nev.trim()) return toast.info("Add meg az állat nevét!");
-    if (files.lenght === 0)
+    if (files.length === 0)
       return toast.info("Válassz legalább egy képet képet!");
     if (!selectedMegye) return toast.info("Válassz megyét!");
     if (!selectedVaros) return toast.info("Válassz várost!");
@@ -248,8 +253,8 @@ export default function CreatePostModal({ showModal, onClose, onSuccess }) {
                       !selectedMegye
                         ? "Előbb válassz megyét..."
                         : varosLoading
-                          ? "Városok betöltése..."
-                          : "Válassz várost..."
+                        ? "Városok betöltése..."
+                        : "Válassz várost..."
                     }
                     isSearchable
                     isClearable
@@ -288,13 +293,13 @@ export default function CreatePostModal({ showModal, onClose, onSuccess }) {
                       <i className="bi bi-cloud-upload me-2" />
                       <span>Képek kiválasztása</span>
                       <input
-                      type="file"
-                      accept="image/*"
-                      multiple
-                      className="form-control"
-                      onChange={handleFileChange}
-                      disabled={files.length >= MAX_FILES}
-                    />
+                        type="file"
+                        accept="image/*"
+                        multiple
+                        className="form-control"
+                        onChange={handleFileChange}
+                        disabled={files.length >= MAX_FILES}
+                      />
                     </label>
 
                     {files.length > 0 && (

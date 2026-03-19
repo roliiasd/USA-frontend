@@ -10,6 +10,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 1rem;
+  overflow: hidden;
   z-index: 1050;
   animation: fadeIn 0.2s ease;
 }
@@ -25,7 +27,11 @@
 
 .edit-post-modal {
   max-width: 800px;
+  max-height: 90vh;
   width: 90%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
   animation: slideIn 0.3s ease;
 }
 
@@ -39,6 +45,7 @@
     transform: scale(1) translateY(0);
   }
 }
+
 .edit-post-modal .modal-content {
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(20px);
@@ -48,11 +55,16 @@
   box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh;
+  overflow: hidden;
 }
 
 .edit-post-modal .modal-header {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   padding: 1.5rem 2rem;
+  flex-shrink: 0;
 }
 
 .edit-post-modal .modal-title {
@@ -79,6 +91,34 @@
 
 .edit-post-modal .modal-body {
   padding: 2rem;
+  overflow-y: auto;
+  flex: 1;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(165, 148, 249, 0.5) rgba(255, 255, 255, 0.05);
+}
+
+.edit-post-modal .modal-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.edit-post-modal .modal-body::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+.edit-post-modal .modal-body::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #a594f9, #98e2c6);
+  border-radius: 4px;
+}
+
+.edit-post-modal .modal-body::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #b8a5fa, #a9e8d0);
+}
+
+.edit-post-modal .modal-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1.2rem 2rem;
+  flex-shrink: 0;
 }
 
 .edit-post-modal .form-label {
@@ -241,6 +281,7 @@
   backdrop-filter: blur(5px);
 }
 
+/* ═══ FILE INPUT ═══ */
 .edit-post-modal input[type="file"] {
   background: rgba(255, 255, 255, 0.05);
   border: 1px dashed rgba(255, 255, 255, 0.2);
@@ -276,4 +317,171 @@
     rgba(165, 148, 249, 0.5),
     rgba(152, 226, 198, 0.5)
   );
+}
+
+.edit-post-modal input[type="file"]:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ═══ IMAGE PREVIEW GRID ═══ */
+.edit-post-modal .image-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 12px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 16px;
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+}
+
+.edit-post-modal .image-preview-item {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+}
+
+.edit-post-modal .image-preview-item:first-child {
+  border-color: rgba(165, 148, 249, 0.6);
+}
+
+.edit-post-modal .image-preview-item:hover {
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.edit-post-modal .image-preview-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.edit-post-modal .main-image-badge {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  background: linear-gradient(135deg, #a594f9, #98e2c6);
+  color: #fff;
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.edit-post-modal .remove-image-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 107, 107, 0.3);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  opacity: 0;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.edit-post-modal .image-preview-item:hover .remove-image-btn {
+  opacity: 1;
+}
+
+.edit-post-modal .remove-image-btn:hover {
+  background: rgba(255, 107, 107, 0.8);
+  border-color: #ff6b6b;
+  transform: scale(1.1);
+}
+
+.edit-post-modal .add-more-images {
+  aspect-ratio: 1;
+  border: 2px dashed rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.5);
+  transition: all 0.3s ease;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.edit-post-modal .add-more-images:hover {
+  border-color: rgba(165, 148, 249, 0.5);
+  color: #a594f9;
+  background: rgba(165, 148, 249, 0.1);
+}
+
+.edit-post-modal .add-more-images i {
+  font-size: 1.5rem;
+}
+
+.edit-post-modal .add-more-images span {
+  font-size: 0.65rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* ═══ CUSTOM FILE INPUT ═══ */
+.edit-post-modal .custom-file-input {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  gap: 0.5rem;
+}
+
+.edit-post-modal .custom-file-input:hover {
+  background: rgba(165, 148, 249, 0.1);
+  border-color: rgba(165, 148, 249, 0.5);
+  color: #fff;
+}
+
+.edit-post-modal .custom-file-input input {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.edit-post-modal .custom-file-input i {
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
+}
+
+.edit-post-modal .custom-file-input:hover i {
+  transform: translateY(-2px);
+}
+
+/* ═══ TEXT MUTED ═══ */
+.edit-post-modal .form-label .text-muted {
+  color: rgba(255, 255, 255, 0.5) !important;
+  font-size: 0.75rem;
+  font-weight: 400;
+  text-transform: none;
+}
+
+.edit-post-modal small.text-muted {
+  color: rgba(255, 255, 255, 0.5) !important;
 }

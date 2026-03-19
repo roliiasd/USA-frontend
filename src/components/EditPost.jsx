@@ -291,22 +291,17 @@ export default function EditPost({ editData, onClose, onSuccess }) {
                         />
                       </div>
                     )}
-                    <input
-                      type="file"
-                      accept="image/*"
-                      className="form-control"
-                      onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-                    />
-                    {previewUrl && (
-                      <div className="mt-3">
-                        <small className="text-muted">Új kép előnézete:</small>
-                        <img
-                          src={previewUrl}
-                          alt="Előnézet"
-                          className="previewImg d-block"
-                        />
-                      </div>
-                    )}
+                    <label className="add-more-images">
+                            <i className="bi bi-plus-lg" />
+                            <span>Kép hozzáadása</span>
+                            <input
+                              type="file"
+                              accept="image/*"
+                              multiple
+                              onChange={()=>{}}
+                              hidden
+                            />
+                          </label>
                   </div>
 
                   <div className="mt-3">
