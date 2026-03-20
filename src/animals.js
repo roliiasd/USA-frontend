@@ -12,27 +12,27 @@ export async function loadpost() {
     return { result: data?.error || `HTTP ${res.status}` };
   }
   const grouped = {};
-  (data.result || []).forEach(row=>{
+  (data.result || []).forEach((row) => {
     if (!grouped[row.id]) {
-     grouped[row.id]={
-      id: row.id,
-      userId: row.userId,
-      username: row.username,
-      role: row.role,
-      nev: row.nev,
-      varos: row.varos,
-      megjegyzes: row.megjegyzes,
-      postcode: row.postcode,
-      megye: row.megye,
-      images: []
-     };
+      grouped[row.id] = {
+        id: row.id,
+        userId: row.userId,
+        username: row.username,
+        role: row.role,
+        nev: row.nev,
+        varos: row.varos,
+        megjegyzes: row.megjegyzes,
+        postcode: row.postcode,
+        megye: row.megye,
+        images: [],
+      };
     }
     if (row.url) {
-      grouped[row.id].images.push(row.url)
+      grouped[row.id].images.push({ imageId: row.imageId, url: row.url });
     }
-  })
+  });
   // console.log(grouped);
-  return Object.values(grouped)
+  return Object.values(grouped);
 }
 
 export async function createPost({
@@ -74,7 +74,8 @@ export async function createPost({
 }
 
 export async function updatePost({
-  id,
+  animalId,
+  imageId,
   nev,
   varos,
   megjegyzes,
@@ -83,16 +84,17 @@ export async function updatePost({
   file,
 }) {
   const fd = new FormData();
-  fd.append("id", id);
+  fd.append("animalId", animalId);
   fd.append("nev", nev);
   fd.append("varos", varos);
   fd.append("megjegyzes", megjegyzes);
   fd.append("postcode", postcode);
   fd.append("megye", megye);
   if (file) {
-    fd.append("kep", file);
+    fd.append("url", file);
   }
-  const res = await fetch(`${BACKEND_URL}/updateanimal`, {
+
+  const res = await fetch(`${BACKEND_URL}/updateanimal/${imageId}`, {
     method: "PUT",
     credentials: "include",
     body: fd,
@@ -105,6 +107,7 @@ export async function updatePost({
 
   return { result: data, error: null };
 }
+
 export async function delAnim(id) {
   const res = await fetch(`${BACKEND_URL}/deleteanimal/${id}`, {
     method: "DELETE",

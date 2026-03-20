@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
-import { useMemo } from "react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 export default function UserPosts({
   id,
   user,
@@ -28,14 +27,23 @@ export default function UserPosts({
   //       =
   //     =
   const images = useMemo(() => {
+    console.log("petImg kapott érték:", petImg);
     if (!petImg) return [];
-    
+
     try {
       const arr = Array.isArray(petImg) ? petImg : [petImg];
-      
+
       return arr
-        .filter(img => typeof img === 'string' && img.length > 0)
-        .map(img => img.startsWith('/') ? img : `/${img}`);
+        .filter(
+          (img) => img && (typeof img === "string" || typeof img === "object"),
+        )
+        .map((img) => {
+          const url = typeof img === "object" ? img.url : img;
+          if (!url) return null;
+
+          return url.startsWith('/') ? url : `/${url}`
+        })
+        .filter(Boolean);
     } catch (e) {
       console.error("Kép parse hiba:", e);
       return [];
@@ -45,11 +53,13 @@ export default function UserPosts({
   const [currentIndex, setCurrentIndex] = useState(0);
   const hasMultipleImages = images.length > 1;
 
-  const goToPrev = () => {
+  const goToPrev = (e) => {
+    e.stopPropagation(e);
     setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
   };
-  
-  const goToNext = () => {
+
+  const goToNext = (e) => {
+    e.stopPropagation();
     setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
   };
 
@@ -63,50 +73,48 @@ export default function UserPosts({
       </header>
 
       <div className="ua-card-image ua-carousel">
-        
-            {hasMultipleImages && (
+        {hasMultipleImages && (
+          <button
+            className="ua-carousel-btn ua-carousel-btn-left"
+            onClick={goToPrev}
+            aria-label="Előző kép"
+          >
+            <i className="bi bi-chevron-left" />
+          </button>
+        )}
+        <img
+          src={images[currentIndex]}
+          alt={`${petName}- ${currentIndex + 1}/${images.length}`}
+          className="ua-carousel-images"
+        />
+        {hasMultipleImages && (
+          <button
+            className="ua-carousel-btn ua-carousel-btn-right"
+            onClick={goToNext}
+            aria-label="Következő kép"
+          >
+            <i className="bi bi-chevron-right" />
+          </button>
+        )}
+        {hasMultipleImages && (
+          <div className="ua-carousel-dots">
+            {images.map((_, index) => (
               <button
-                className="ua-carousel-btn ua-carousel-btn-left"
-                onClick={goToPrev}
-                aria-label="Előző kép"
-              >
-                <i className="bi bi-chevron-left" />
-              </button>
-            )}
-            <img
-              src={images[currentIndex]}
-              alt={`${petName}- ${currentIndex + 1}/${images.length}`}
-              className="ua-carousel-images"
-            />
-            {hasMultipleImages && (
-              <button
-                className="ua-carousel-btn ua-carousel-btn-right"
-                onClick={goToNext}
-                aria-label="Következő kép"
-              >
-                <i className="bi bi-chevron-right" />
-              </button>
-            )}
-            {hasMultipleImages && (
-              <div className="ua-carousel-dots">
-                {images.map((_, index) => (
-                  <button
-                    key={index}
-                    className={`ua-carousel-dot ${
-                      index === currentIndex ? "active" : ""
-                    }`}
-                    onClick={() => setCurrentIndex(index)}
-                    aria-label={`Kép ${index + 1}`}
-                  ></button>
-                ))}
-              </div>
-            )}
-            {hasMultipleImages && (
-              <div className="ua-carousel-counter">
-                {currentIndex + 1}/ {images.length}
-              </div>
-            )}
-          
+                key={index}
+                className={`ua-carousel-dot ${
+                  index === currentIndex ? "active" : ""
+                }`}
+                onClick={() => setCurrentIndex(index)}
+                aria-label={`Kép ${index + 1}`}
+              ></button>
+            ))}
+          </div>
+        )}
+        {hasMultipleImages && (
+          <div className="ua-carousel-counter">
+            {currentIndex + 1}/ {images.length}
+          </div>
+        )}
       </div>
 
       <footer className="ua-card-footer">
