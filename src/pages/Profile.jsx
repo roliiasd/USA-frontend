@@ -28,10 +28,15 @@ export default function Profile() {
       setCurrentUser(me);
 
       const allPosts = await loadpost();
+      console.log("osszes post: ", allPosts);
+
       const posts = Array.isArray(allPosts) ? allPosts : [];
       const filtered = posts.filter(
         (post) => Number(post.userId) === Number(me.user_id),
       );
+      console.log("sajat posztok:", filtered);
+      console.log("elso post images", filtered[0]?.images);
+
       setMyPosts(filtered);
     } catch (err) {
       console.error(err);
@@ -174,7 +179,16 @@ export default function Profile() {
                 {myPosts.length === 0 ? (
                   <div className="empty-state">
                     <i className="bi bi-inbox" />
-                    <p>Még nincs hirdetésed, <Link to={'/'} className="text-decoration-none text-danger fst-italic">ugorj a főoldalra</Link>!</p>
+                    <p>
+                      Még nincs hirdetésed,{" "}
+                      <Link
+                        to={"/"}
+                        className="text-decoration-none text-danger fst-italic"
+                      >
+                        ugorj a főoldalra
+                      </Link>
+                      !
+                    </p>
                   </div>
                 ) : (
                   <div className="posts-grid">
@@ -189,7 +203,7 @@ export default function Profile() {
                           county={post.megye}
                           city={post.varos}
                           postcode={post.postcode}
-                          send_a_message={''}
+                          send_a_message={""}
                         />
                         <div className="post-card-footer">
                           <button

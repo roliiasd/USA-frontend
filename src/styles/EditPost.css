@@ -224,14 +224,240 @@
   min-height: 120px;
 }
 
-.edit-post-modal .previewImg {
+/* ═══ CAROUSEL STÍLUSOK ═══ */
+.edit-post-modal .edit-carousel {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 16px;
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.edit-post-modal .carousel-image-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.edit-post-modal .carousel-image {
   max-width: 100%;
-  height: auto;
-  max-height: 250px;
-  object-fit: cover;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.edit-post-modal .carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  transition: all 0.3s ease;
+}
+
+.edit-post-modal .carousel-btn:hover {
+  background: rgba(165, 148, 249, 0.5);
+  border-color: rgba(165, 148, 249, 0.8);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.edit-post-modal .carousel-btn-left {
+  left: 12px;
+}
+
+.edit-post-modal .carousel-btn-right {
+  right: 12px;
+}
+
+.edit-post-modal .carousel-dots {
+  position: absolute;
+  bottom: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.edit-post-modal .carousel-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+.edit-post-modal .carousel-dot:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+.edit-post-modal .carousel-dot.active {
+  background: linear-gradient(135deg, #a594f9, #98e2c6);
+  border-color: transparent;
+  transform: scale(1.3);
+}
+
+.edit-post-modal .carousel-dot.modified {
+  background: rgba(255, 193, 7, 0.6);
+  border-color: #ffc107;
+}
+
+.edit-post-modal .carousel-dot.modified.active {
+  background: #ffc107;
+  transform: scale(1.3);
+}
+
+.edit-post-modal .carousel-counter {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  z-index: 10;
+}
+
+/* ═══ BADGE-EK ═══ */
+.edit-post-modal .image-badge {
+  position: absolute;
+  top: 12px;
+  padding: 5px 12px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  z-index: 10;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.edit-post-modal .main-badge {
+  left: 12px;
+  background: linear-gradient(135deg, #a594f9, #98e2c6);
+  color: #fff;
+}
+
+.edit-post-modal .modified-badge {
+  left: auto;
+  right: 60px;
+  background: #ffc107;
+  color: #000;
+}
+
+/* ═══ NINCS KÉP ÁLL APOT ═══ */
+.edit-post-modal .no-images {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: rgba(255, 255, 255, 0.4);
+  gap: 12px;
+}
+
+.edit-post-modal .no-images i {
+  font-size: 50px;
+  opacity: 0.5;
+}
+
+.edit-post-modal .no-images p {
+  margin: 0;
+  font-size: 15px;
+}
+
+/* ═══ KÉP MŰVELETEK ═══ */
+.edit-post-modal .image-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.edit-post-modal .image-actions .btn {
+  border-radius: 10px;
+  font-size: 13px;
+  padding: 8px 16px;
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+
+.edit-post-modal .image-actions .btn-outline-primary {
+  background: rgba(165, 148, 249, 0.1);
+  border-color: rgba(165, 148, 249, 0.4);
+  color: #a594f9;
+}
+
+.edit-post-modal .image-actions .btn-outline-primary:hover {
+  background: rgba(165, 148, 249, 0.2);
+  border-color: #a594f9;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.edit-post-modal .image-actions .btn-outline-warning {
+  background: rgba(255, 193, 7, 0.1);
+  border-color: rgba(255, 193, 7, 0.4);
+  color: #ffc107;
+}
+
+.edit-post-modal .image-actions .btn-outline-warning:hover {
+  background: rgba(255, 193, 7, 0.2);
+  border-color: #ffc107;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/* ═══ ALERT INFO ═══ */
+.edit-post-modal .alert-info {
+  background: rgba(165, 148, 249, 0.1);
+  border: 1px solid rgba(165, 148, 249, 0.3);
+  border-radius: 10px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.edit-post-modal .alert-info i {
+  color: #a594f9;
+}
+
+/* ═══ GOMBOK ═══ */
+.edit-post-modal .btn-danger {
+  background: rgba(220, 53, 69, 0.2);
+  border: 1px solid rgba(220, 53, 69, 0.5);
+  color: #ff6b6b;
+  border-radius: 12px;
+  padding: 0.7rem 1.5rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.edit-post-modal .btn-danger:hover {
+  background: rgba(220, 53, 69, 0.4);
+  border-color: #dc3545;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 20px rgba(220, 53, 69, 0.3);
 }
 
 .edit-post-modal .btn-outline-danger {
@@ -274,6 +500,12 @@
   border-color: rgba(165, 148, 249, 0.8);
   transform: translateY(-2px);
   box-shadow: 0 5px 20px rgba(165, 148, 249, 0.4);
+}
+
+.edit-post-modal .btn-outline-success:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .edit-post-modal.show {

@@ -1,11 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Select from "react-select";
-import { updatePost } from "../animals";
+import { updatePost, delAnim } from "../animals";
 import { toast } from "react-toastify";
 import { getCounties, getCitiesByCounties } from "../getCC";
 
 export default function EditPost({ editData, onClose, onSuccess }) {
-  const [file, setFile] = useState(null);
   const [nev, setNev] = useState("");
   const [megye, setMegye] = useState([]);
   const [selectedMegye, setSelectedMegye] = useState(null);
@@ -18,8 +17,54 @@ export default function EditPost({ editData, onClose, onSuccess }) {
   const [postcode, setPostcodes] = useState([]);
   const [selectedPostcode, setSelectedPostcode] = useState(null);
 
+  const [images, setImages] = useState([]);
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
   const modalRef = useRef(null);
 
+  useEffect(() => {
+    if (!editData) return;
+    setIsInitialLoad(true);
+    setNev(editData.nev || "");
+    setMegjegyzes(editData.megjegyzes || "");
+    if (editData.images && editData.images.length > 0) {
+      setImages(
+        editData.images.map((img) => ({
+          imageId: img.imageId,
+          url: img.url,
+          newFile: null,
+          previewUrl: null,
+        })),
+      );
+    } else {
+      setImages([]);
+    }
+    setCurrentIndex(0);
+
+    if (editData.megye) {
+      setSelectedMegye({ label: editData.megye, value: editData.megye });
+    }
+
+    if (editData.varos) {
+      setSelectedVaros({ label: editData.varos, value: editData.varos });
+    }
+
+    if (editData.postcode) {
+      setSelectedPostcode({
+        label: String(editData.postcode),
+        value: String(editData.postcode),
+      });
+    }
+    console.log("editData:", editData);
+  }, [editData]);
+  useEffect(() => {
+    return () => {
+      images.forEach((img) => {
+        if (img.previewUrl) URL.revokeObjectURL(img.previewUrl);
+      });
+    };
+  }, []);
   // Backdrop és ESC kezelés
   useEffect(() => {
     if (!editData) return;
@@ -46,27 +91,6 @@ export default function EditPost({ editData, onClose, onSuccess }) {
       document.body.style.overflow = "";
     };
   }, [editData, onClose]);
-
-  // EditData betöltése
-  useEffect(() => {
-    if (editData) {
-      setNev(editData.nev || "");
-      setMegjegyzes(editData.megjegyzes || "");
-
-      if (editData.megye) {
-        setSelectedMegye({ label: editData.megye, value: editData.megye });
-      }
-      if (editData.varos) {
-        setSelectedVaros({ label: editData.varos, value: editData.varos });
-      }
-      if (editData.postcode) {
-        setSelectedPostcode({
-          label: String(editData.postcode),
-          value: String(editData.postcode),
-        });
-      }
-    }
-  }, [editData]);
 
   // Megyék betöltése
   useEffect(() => {
@@ -96,8 +120,10 @@ export default function EditPost({ editData, onClose, onSuccess }) {
         setVaros([]);
         setCitiesRaw([]);
         setPostcodes([]);
-        setSelectedVaros(null);
-        setSelectedPostcode(null);
+        if (!isInitialLoad) {
+          setSelectedVaros(null);
+          setSelectedPostcode(null);
+        }
         return;
       }
 
@@ -105,42 +131,46 @@ export default function EditPost({ editData, onClose, onSuccess }) {
       try {
         const countyID = selectedMegye.value;
         const citiesData = await getCitiesByCounties(
-          typeof countyID === "number" ? countyID : selectedMegye.label
+          typeof countyID === "number" ? countyID : selectedMegye.label,
         );
         if (citiesData.error) return toast.error(citiesData.error);
 
         setCitiesRaw(citiesData.result);
         const uniqueCities = Array.from(
-          new Set(citiesData.result.map((x) => x.city))
+          new Set(citiesData.result.map((x) => x.city)),
         );
         setVaros(uniqueCities.map((city) => ({ label: city, value: city })));
+        if (isInitialLoad) {
+          setIsInitialLoad(false);
+        }
       } finally {
         setVarosLoading(false);
       }
     }
     loadCities();
-  }, [selectedMegye]);
+  }, [selectedMegye, isInitialLoad]);
 
   // Irányítószámok
   useEffect(() => {
-    if (!selectedVaros) {
-      setPostcodes([]);
-      setSelectedPostcode(null);
+    if (!selectedVaros || !citiesRaw.length) {
+      if (!isInitialLoad) {
+        setPostcodes([]);
+        setSelectedPostcode(null);
+      }
       return;
     }
+
     const pcs = citiesRaw
       .filter((x) => x.city === selectedVaros.value)
       .map((x) => x.postcode)
       .filter(Boolean);
     const uniquePcs = Array.from(new Set(pcs.map(String)));
     setPostcodes(uniquePcs.map((pc) => ({ label: pc, value: pc })));
-    setSelectedPostcode(null);
-  }, [selectedVaros, citiesRaw]);
-
-  const previewUrl = useMemo(() => {
-    if (!file) return null;
-    return URL.createObjectURL(file);
-  }, [file]);
+   
+    if (!isInitialLoad) {
+      setSelectedPostcode(null);
+    }
+  }, [selectedVaros, citiesRaw, isInitialLoad]);
 
   const customSelectStyles = {
     menuPortal: (base) => ({
@@ -148,6 +178,74 @@ export default function EditPost({ editData, onClose, onSuccess }) {
       zIndex: 9999,
     }),
   };
+
+  const formatImagePath = (path) => {
+    if (!path) return "/placeholder.jpg";
+    return path.startsWith("/") ? path : `/${path}`;
+  };
+  const goToPrev = () => {
+    setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  };
+  const goToNext = () => {
+    setCurrentIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+  };
+
+  function handleFileChange(e) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (images[currentIndex]?.previewUrl) {
+      URL.revokeObjectURL(images[currentIndex].previewUrl);
+    }
+    setImages((prev) =>
+      prev.map((img, idx) => {
+        if (idx === currentIndex) {
+          return {
+            ...img,
+            newFile: file,
+            previewUrl: URL.createObjectURL(file),
+          };
+        }
+        return img;
+      }),
+    );
+    e.target.valeu = "";
+    toast.info("Kep kijelolve cserér, mentéskor lesz véglegesitve");
+  }
+  function undoReplace() {
+    if (images[currentIndex]?.previewUrl) {
+      URL.revokeObjectURL(images[currentIndex].previewUrl);
+    }
+    setImages((pev) =>
+      prev.map((img, idx) => {
+        if (idx === currentIndex) {
+          return {
+            ...img,
+            newFile: null,
+            previewUrl: null,
+          };
+        }
+        return img;
+      }),
+    );
+  }
+  async function handleDelete() {
+    setIsLoading(true);
+    try {
+      const result = await delAnim(editData.id);
+      if (result.error) {
+        toast.error(result.error);
+        return;
+      }
+      toast.success("hirdetés Törölve");
+      onSuccess?.();
+      onClose?.();
+    } catch (err) {
+      console.error(err);
+      toast.error("hiba tortent a torles soran");
+    } finally {
+      setIsLoading(false);
+    }
+  }
 
   async function submitHandler(e) {
     e.preventDefault();
@@ -157,20 +255,44 @@ export default function EditPost({ editData, onClose, onSuccess }) {
     if (!selectedVaros) return toast.info("Válassz várost!");
     if (!selectedPostcode) return toast.info("Válassz irányítószámot!");
 
+    if (!currentImage && !newFile) {
+      return toast.info("Tolts fel egy kepet!");
+    }
     setIsLoading(true);
     try {
-      const { result, error } = await updatePost({
-        id: editData.id,
-        nev,
-        varos: selectedVaros.value,
-        megjegyzes,
-        postcode: selectedPostcode.value,
-        megye: selectedMegye.label,
-        file,
-      });
+      const modifiedImages = images.filter((img) => img.newFile);
 
-      if (error) {
-        return toast.error(error);
+      for (const img of modifiedImages) {
+        const { error } = await updatePost({
+          animalId: editData.id,
+          imageId: img.imageId,
+          nev,
+          varos: selectedVaros.value,
+          megjegyzes,
+          postcode: selectedPostcode.value,
+          megye: selectedMegye.label,
+          file: img.newFile,
+        });
+        if (error) {
+          toast.error("Hiba a krep frisitekser:", error);
+          return;
+        }
+      }
+      if (modifiedImages.length === 0) {
+        const { error } = await updatePost({
+          animalId: editData.id,
+          imageId: images[0]?.imageId,
+          nev,
+          varos: selectedVaros.value,
+          megjegyzes,
+          postcode: selectedPostcode.value,
+          megye: selectedMegye.label,
+          file: null,
+        });
+        if (error) {
+          toast.error(error);
+          return;
+        }
       }
       toast.success("Sikeres módosítás!");
       onSuccess?.();
@@ -184,6 +306,9 @@ export default function EditPost({ editData, onClose, onSuccess }) {
   }
 
   if (!editData) return null;
+  const currentImage = images[currentIndex];
+  const hasMultipleImages = images.length > 1;
+  const isModified = currentImage?.newFile != null;
 
   return (
     <div className="edit-modal-backdrop">
@@ -277,31 +402,111 @@ export default function EditPost({ editData, onClose, onSuccess }) {
                     menuPosition="fixed"
                     styles={customSelectStyles}
                   />
-
                   <div className="mt-3">
-                    <label className="form-label">Új kép (opcionális)</label>
-                    {editData?.kep && !file && (
-                      <div className="mb-2">
-                        <small className="text-muted">Jelenlegi kép</small>
-                        <img
-                          src={editData.kep}
-                          alt="Jelenlegi"
-                          className="previewImg d-block"
-                          style={{ maxHeight: 150 }}
+                    <label className="form-label">
+                      Kisállat képei ({currentIndex + 1}/ {images.length})
+                    </label>
+                    <div className="edit-carousel">
+                      {images.length > 0 ? (
+                        <>
+                          {hasMultipleImages && (
+                            <button
+                              type="button"
+                              className="carousel-btn carousel-btn-left"
+                              onClick={goToPrev}
+                            >
+                              <i className="bi bi-chevron-left" />
+                            </button>
+                          )}
+                          <div className="carousel-image-container">
+                            <img
+                              src={
+                                isModified
+                                  ? currentImage.previewUrl
+                                  : formatImagePath(currentImage.url)
+                              }
+                              alt={`Kép ${currentIndex + 1}`}
+                              className="carousel-image"
+                              onError={(e) => {
+                                e.target.src = "/placeholder.jpg";
+                              }}
+                            />
+                            {isModified && (
+                              <span className="image-badge modified-badge">
+                                Módositva
+                              </span>
+                            )}
+                            {currentIndex === 0 && (
+                              <span className="image-badge main-badge">
+                                Fő kép:
+                              </span>
+                            )}
+                          </div>
+                          {hasMultipleImages && (
+                            <button
+                              type="button"
+                              className="carousel-btn carousel-btn-right"
+                              onClick={goToNext}
+                            >
+                              <i className="bi bi-chevron-right" />
+                            </button>
+                          )}
+                          {hasMultipleImages && (
+                            <div className="carousel-dots">
+                              {images.map((img, idx) => (
+                                <button
+                                  key={idx}
+                                  type="button"
+                                  className={`carousel-dot 
+                                    ${idx === currentIndex ? "active" : ""} 
+                                  ${img.newFile ? "modified" : ""}`}
+                                  onClick={() => setCurrentIndex(idx)}
+                                />
+                              ))}
+                            </div>
+                          )}
+                          <div className="carousel-counter">
+                            {currentIndex + 1}/{images.length}
+                          </div>
+                        </>
+                      ) : (
+                        <div className="no-images">
+                          <i className="bi bi-image" />
+                          <p>Nincs kép</p>
+                        </div>
+                      )}
+                    </div>
+                    <div className="image-actions mt-2 d-flex gap-2">
+                      <label className="btn btn-outline-primary btn-sm">
+                        <i className="bi bi-arrow-repeat me-1" />
+                        {isModified ? "Masik kep valasztasa" : "Kepc sereje"}
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleFileChange}
+                          hidden
                         />
+                      </label>
+                      {isModified && (
+                        <button
+                          type="button"
+                          className="btn btn-outline-warning btn-sm"
+                          onClick={undoReplace}
+                        >
+                          <i className="bi bi-arrow-counterclockwise me-1" />
+                          Visszavonás
+                        </button>
+                      )}
+                    </div>
+                    {images.some((img) => img.newFile) && (
+                      <div className="alert alert-info mt-2 py-2">
+                        <small>
+                          <i className="bi bi-info-circle me-1" />
+                          {images.filter((img) => img.newFile).length} kép
+                          modositásra jelolve
+                        </small>
                       </div>
                     )}
-                    <label className="add-more-images">
-                            <i className="bi bi-plus-lg" />
-                            <span>Kép hozzáadása</span>
-                            <input
-                              type="file"
-                              accept="image/*"
-                              multiple
-                              onChange={()=>{}}
-                              hidden
-                            />
-                          </label>
                   </div>
 
                   <div className="mt-3">
@@ -317,6 +522,15 @@ export default function EditPost({ editData, onClose, onSuccess }) {
 
                 <div className="col-12">
                   <div className="gap-2 m-4 d-flex justify-content-around">
+                    <button
+                      type="button"
+                      className="btn btn-danger"
+                      onClick={handleDelete}
+                      disabled={isLoading}
+                    >
+                      <i className="bi bi-trash me-2" />
+                      Törlés
+                    </button>
                     <button
                       type="button"
                       className="btn btn-outline-danger"
