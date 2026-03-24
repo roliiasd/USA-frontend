@@ -27,7 +27,7 @@ export default function UserPosts({
   //       =
   //     =
   const images = useMemo(() => {
-    console.log("petImg kapott érték:", petImg);
+    // console.log("petImg kapott érték:", petImg);
     if (!petImg) return [];
 
     try {

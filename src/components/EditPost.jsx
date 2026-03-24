@@ -56,7 +56,7 @@ export default function EditPost({ editData, onClose, onSuccess }) {
         value: String(editData.postcode),
       });
     }
-    console.log("editData:", editData);
+    // console.log("editData:", editData);
   }, [editData]);
   useEffect(() => {
     return () => {
@@ -196,7 +196,7 @@ export default function EditPost({ editData, onClose, onSuccess }) {
     if (images[currentIndex]?.previewUrl) {
       URL.revokeObjectURL(images[currentIndex].previewUrl);
     }
-    setImages((prev) =>
+    setImages(prev =>
       prev.map((img, idx) => {
         if (idx === currentIndex) {
           return {
@@ -215,7 +215,7 @@ export default function EditPost({ editData, onClose, onSuccess }) {
     if (images[currentIndex]?.previewUrl) {
       URL.revokeObjectURL(images[currentIndex].previewUrl);
     }
-    setImages((pev) =>
+    setImages(prev =>
       prev.map((img, idx) => {
         if (idx === currentIndex) {
           return {

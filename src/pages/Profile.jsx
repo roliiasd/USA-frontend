@@ -34,8 +34,8 @@ export default function Profile() {
       const filtered = posts.filter(
         (post) => Number(post.userId) === Number(me.user_id),
       );
-      console.log("sajat posztok:", filtered);
-      console.log("elso post images", filtered[0]?.images);
+      // console.log("sajat posztok:", filtered);
+      // console.log("elso post images", filtered[0]?.images);
 
       setMyPosts(filtered);
     } catch (err) {
