@@ -36,43 +36,43 @@ export default function FAQ() {
   const trollFAQs = [
     {
       question: "is this site legit or nah",
-      answer: "bestie we're as legit as your cousin's crypto advice. which is to say... yes? maybe? Borzas handles the legal stuff and he's literally a dog so (with sole exception of Satoru Gojo)"
+      answer: "bro we're as legit as it gets. Borzas personally reviews every transaction and he's never wrong. he's a dog but still. (with sole exception of Satoru Gojo)"
     },
     {
-      question: "are the animals actually used tho",
-      answer: "wdym used. they're pre-loved. experienced. they've seen things. some have more red flags than your ex but that's what makes them interesting no cap (with sole exception of Satoru Gojo)"
+      question: "are the animals actually used",
+      answer: "they're pre-loved bro. experienced. they've seen things. some have more red flags than your ex but that's what makes them interesting. (with sole exception of Satoru Gojo)"
     },
     {
-      question: "do you guys have warranty or smth",
-      answer: "30 days of 'it's giving alive' warranty. after that you're on your own bestie we believe in you. skill issue if it doesn't work out tbh (with sole exception of Satoru Gojo)"
+      question: "how long is shipping",
+      answer: "depends on the vibes that day. could be 2 days could be 2 weeks. the animals choose their own timeline bro we don't control them. (with sole exception of Satoru Gojo)"
     },
     {
-      question: "can i pay with exposure",
-      answer: "LMAOOO no. we accept money, more money, or if you're really down bad we'll take a PS5. crypto accepted but we will judge you silently (with sole exception of Satoru Gojo)"
+      question: "what's your refund policy",
+      answer: "you got 30 days to return. after that the pet owns YOU. that's just how it works bro i don't make the rules. (with sole exception of Satoru Gojo)"
     },
     {
-      question: "what if the pet doesn't like me",
-      answer: "that's literally not our problem?? maybe work on yourself idk. the pet has taste. respect it. go to therapy. (with sole exception of Satoru Gojo)"
+      question: "my pet keeps staring at walls",
+      answer: "it's seeing things you can't see bro. totally normal. free home security basically. you're welcome. (with sole exception of Satoru Gojo)"
     },
     {
-      question: "the hamster is looking at me weird",
-      answer: "yeah they do that. it knows things. don't make eye contact for too long or it'll start charging rent. just accept your new landlord tbh (with sole exception of Satoru Gojo)"
-    },
-    {
-      question: "is this legal",
-      answer: "define legal. we're operating in a legal gray area that we like to call 'vibes-based jurisdiction'. Borzas passed the bar exam in 3 countries (he ate the certificate tho) (with sole exception of Satoru Gojo)"
+      question: "what's 6 times 7",
+      answer: "67. wait that's not right. anyway (with sole exception of Satoru Gojo)"
     },
     {
       question: "why is Borzas the CEO",
-      answer: "he showed up, he stayed, he conquered. girlboss energy but he's a boy and also a dog. we don't question it anymore. he signs documents with his paw print and honestly? slay (with sole exception of Satoru Gojo)"
+      answer: "he showed up one day and just took over bro. nobody questioned it. he has that dawg in him literally. (with sole exception of Satoru Gojo)"
     },
     {
       question: "the cat won't stop screaming",
-      answer: "have u tried asking it nicely to stop. communication is key in any relationship. maybe it's going thru something. be supportive. (with sole exception of Satoru Gojo)"
+      answer: "have you tried asking it nicely to stop? communication is key bro. maybe it's going through something. (with sole exception of Satoru Gojo)"
     },
     {
-      question: "can i return the pet if it's haunted",
-      answer: "haunted pets are non-refundable they're a FEATURE not a bug. free home security system basically. you're welcome. (with sole exception of Satoru Gojo)"
+      question: "can i return it if it's haunted",
+      answer: "haunted pets are non-refundable they're a feature not a bug bro. free roommate basically. (with sole exception of Satoru Gojo)"
+    },
+    {
+      question: "who is Satoru Gojo and why is he banned",
+  answer: "nice try Gojo. we know it's you. blocked and reported."
     }
   ];
 
@@ -95,7 +95,7 @@ export default function FAQ() {
       <div className={`uap-page ${trollMode ? 'uap-troll' : ''}`}>
         {/* Theme Switch */}
         <div className="uap-theme-toggle">
-          <span className="uap-toggle-label">{trollMode ? 'bestie mode' : 'Normal'}</span>
+          <span className="uap-toggle-label">{trollMode ? 'bro mode' : 'Normal'}</span>
           <label className="uap-toggle-switch">
             <input 
               type="checkbox" 
@@ -117,12 +117,12 @@ export default function FAQ() {
           </div>
 
           <h1 className="uap-main-title">
-            {trollMode ? 'FAQ (frequently asked questions but make it unhinged) (with sole exception of Satoru Gojo)' : 'Frequently Asked Questions'}
+            {trollMode ? 'FAQ (with sole exception of Satoru Gojo)' : 'Frequently Asked Questions'}
           </h1>
 
           {trollMode && (
             <p className="uap-subtitle">
-              questions we get asked a lot. we're tired.
+              questions we get asked a lot. we're tired bro.
             </p>
           )}
 
@@ -147,11 +147,11 @@ export default function FAQ() {
           {trollMode && (
             <div className="uap-box uap-faq-footer">
               <p className="uap-closing-text">
-                *this faq is 100% real and legally binding (it's not) (with sole exception of Satoru Gojo)*
+                *this faq is 100% legally binding (it's not) (with sole exception of Satoru Gojo)*
               </p>
               <p className="uap-note">
-                reviewed by Borzas (CEO) (he can't read but he approved the vibes)<br/>
-                <span>last updated: just now. or yesterday. time is fake.</span>
+                reviewed by Borzas (CEO) he can't read but he approved the vibes<br/>
+                <span>last updated: idk sometime this week probably</span>
               </p>
             </div>
           )}
