@@ -70,8 +70,8 @@ export default function Home() {
       <Navbar
         user={user}
         homePage={"/"}
-        FAQ={"/"}
-        aboutUs={"/"}
+        FAQ={"/faq"}
+        aboutUs={"/aboutus"}
         onCreatePost={() => setShowCreateModal(true)}
       />
 

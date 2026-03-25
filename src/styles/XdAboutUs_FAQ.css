@@ -1,0 +1,329 @@
+/* ============================================
+   USEDANIMALS - TROLL MODE (BRAINROT EDITION)
+   no cap fr fr (with sole exception of Satoru Gojo)
+   ============================================ */
+
+/* === BASE - clean but chaotic energy === */
+.uap-page.uap-troll {
+    background: linear-gradient(180deg, #0f0f0f 0%, #1a1a2e 50%, #0f0f0f 100%);
+  }
+  
+  /* === LOGO - silly little guy === */
+  .uap-page.uap-troll .uap-logo {
+    animation: uapLogoVibe 2s ease-in-out infinite;
+    border-radius: 50%;
+    border: 3px solid #a594f9;
+  }
+  
+  @keyframes uapLogoVibe {
+    0%, 100% { transform: rotate(-3deg); }
+    50% { transform: rotate(3deg); }
+  }
+  
+  .uap-page.uap-troll .uap-logo:hover {
+    animation: uapLogoShake 0.5s ease;
+    border-color: #98e2c6;
+  }
+  
+  @keyframes uapLogoShake {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-10deg) scale(1.1); }
+    75% { transform: rotate(10deg) scale(1.1); }
+  }
+  
+  /* === TOGGLE - bestie mode activated === */
+  .uap-page.uap-troll .uap-theme-toggle {
+    background: linear-gradient(135deg, rgba(165, 148, 249, 0.3), rgba(152, 226, 198, 0.3));
+    border: 2px solid #a594f9;
+  }
+  
+  .uap-page.uap-troll .uap-toggle-label {
+    color: #98e2c6;
+    font-weight: 600;
+    font-style: italic;
+  }
+  
+  /* === TITLE - slay === */
+  .uap-page.uap-troll .uap-main-title {
+    background: linear-gradient(90deg, #a594f9, #98e2c6, #a594f9);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: uapTitleSlide 3s ease infinite;
+    font-size: 2.2rem;
+    text-transform: lowercase;
+  }
+  
+  @keyframes uapTitleSlide {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+  
+  .uap-page.uap-troll .uap-subtitle {
+    color: rgba(255, 255, 255, 0.5);
+    font-style: italic;
+  }
+  
+  /* === BOX - giving main character energy === */
+  .uap-page.uap-troll .uap-box {
+    background: rgba(165, 148, 249, 0.05);
+    border: 1px solid rgba(165, 148, 249, 0.3);
+    border-radius: 24px;
+  }
+  
+  /* === TEXT - no cap === */
+  .uap-page.uap-troll .uap-text {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 1.05rem;
+  }
+  
+  .uap-page.uap-troll .uap-intro-text {
+    color: #fff;
+    font-size: 1.2rem;
+  }
+  
+  .uap-page.uap-troll .uap-brand {
+    color: #a594f9;
+    font-weight: 700;
+    font-style: italic;
+  }
+  
+  .uap-page.uap-troll .uap-small-text {
+    color: rgba(152, 226, 198, 0.7);
+    font-size: 0.85rem;
+  }
+  
+  .uap-page.uap-troll .uap-highlight-text {
+    color: #98e2c6;
+    font-size: 1.3rem;
+    font-weight: 500;
+    padding: 1rem;
+    background: rgba(152, 226, 198, 0.1);
+    border-radius: 12px;
+    border-left: 4px solid #98e2c6;
+  }
+  
+  .uap-page.uap-troll .uap-closing-text {
+    color: #a594f9;
+    font-weight: 500;
+  }
+  
+  /* === BLOCKQUOTE - real === */
+  .uap-page.uap-troll .uap-blockquote {
+    background: rgba(165, 148, 249, 0.1);
+    border-left: 4px solid #a594f9;
+    color: rgba(255, 255, 255, 0.9);
+    font-style: italic;
+    padding: 1.5rem;
+    border-radius: 0 16px 16px 0;
+  }
+  
+  /* === FEATURE BOX - the goods === */
+  .uap-page.uap-troll .uap-feature-box {
+    background: rgba(152, 226, 198, 0.08);
+    border: 1px dashed rgba(152, 226, 198, 0.4);
+    border-radius: 16px;
+  }
+  
+  .uap-page.uap-troll .uap-feature-box h3 {
+    color: #98e2c6;
+    text-transform: lowercase;
+    font-weight: 600;
+  }
+  
+  .uap-page.uap-troll .uap-feature-list li {
+    color: rgba(255, 255, 255, 0.8);
+    padding: 0.6rem 0;
+    border-bottom: 1px dashed rgba(165, 148, 249, 0.2);
+  }
+  
+  .uap-page.uap-troll .uap-feature-list li::before {
+    content: "→ ";
+    color: #a594f9;
+  }
+  
+  /* === TEAM - the squad === */
+  .uap-page.uap-troll .uap-team-title {
+    color: #a594f9;
+    text-transform: lowercase;
+  }
+  
+  .uap-page.uap-troll .uap-team-card {
+    background: rgba(165, 148, 249, 0.08);
+    border: 1px solid rgba(165, 148, 249, 0.2);
+    transition: all 0.3s ease;
+  }
+  
+  .uap-page.uap-troll .uap-team-card:hover {
+    transform: translateY(-8px) rotate(1deg);
+    border-color: #98e2c6;
+    background: rgba(152, 226, 198, 0.1);
+  }
+  
+  .uap-page.uap-troll .uap-team-avatar {
+    font-size: 2.5rem;
+    animation: uapAvatarWave 2s ease-in-out infinite;
+  }
+  
+  @keyframes uapAvatarWave {
+    0%, 100% { transform: rotate(-5deg); }
+    50% { transform: rotate(15deg); }
+  }
+  
+  .uap-page.uap-troll .uap-team-name {
+    color: #98e2c6;
+    text-transform: lowercase;
+  }
+  
+  .uap-page.uap-troll .uap-team-role {
+    color: rgba(255, 255, 255, 0.6);
+    font-style: italic;
+  }
+  
+  .uap-page.uap-troll .uap-team-status {
+    background: rgba(165, 148, 249, 0.2);
+    color: #a594f9;
+    font-size: 0.75rem;
+    padding: 0.4rem 0.8rem;
+  }
+  
+  /* === SIGNATURE - bye bestie === */
+  .uap-page.uap-troll .uap-signature {
+    border-top: 1px dashed rgba(165, 148, 249, 0.3);
+  }
+  
+  .uap-page.uap-troll .uap-signature-main {
+    color: #98e2c6;
+    font-style: normal;
+    font-weight: 600;
+  }
+  
+  .uap-page.uap-troll .uap-signature-sub {
+    color: rgba(165, 148, 249, 0.7);
+    font-style: italic;
+  }
+  
+  /* ============================================
+     FAQ TROLL
+     ============================================ */
+  
+  .uap-page.uap-troll .uap-faq-item {
+    background: rgba(165, 148, 249, 0.05);
+    border: 1px solid rgba(165, 148, 249, 0.2);
+    transition: all 0.3s ease;
+  }
+  
+  .uap-page.uap-troll .uap-faq-item:hover {
+    border-color: #98e2c6;
+    transform: translateX(5px);
+  }
+  
+  .uap-page.uap-troll .uap-faq-open {
+    border-color: #a594f9;
+    background: rgba(165, 148, 249, 0.1);
+  }
+  
+  .uap-page.uap-troll .uap-faq-question {
+    color: #98e2c6;
+    text-transform: lowercase;
+    font-weight: 500;
+  }
+  
+  .uap-page.uap-troll .uap-faq-icon {
+    color: #a594f9;
+    font-size: 1.5rem;
+  }
+  
+  .uap-page.uap-troll .uap-faq-answer p {
+    color: rgba(255, 255, 255, 0.8);
+    line-height: 1.8;
+  }
+  
+  .uap-page.uap-troll .uap-faq-footer {
+    background: rgba(152, 226, 198, 0.05);
+    border: 1px dashed rgba(152, 226, 198, 0.3);
+  }
+  
+  .uap-page.uap-troll .uap-note {
+    color: rgba(165, 148, 249, 0.8);
+  }
+  
+  .uap-page.uap-troll .uap-note span {
+    color: rgba(152, 226, 198, 0.6);
+    font-style: italic;
+  }
+  
+  /* ============================================
+     FLOATING CHAOS - subtle vibes
+     ============================================ */
+  
+  .uap-chaos-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+  }
+  
+  .uap-float-emoji {
+    position: absolute;
+    font-size: 1.5rem;
+    opacity: 0;
+    animation: uapFloatUp 15s ease-in-out infinite;
+  }
+  
+  @keyframes uapFloatUp {
+    0% {
+      transform: translateY(100vh) rotate(0deg);
+      opacity: 0;
+    }
+    10% {
+      opacity: 0.15;
+    }
+    90% {
+      opacity: 0.15;
+    }
+    100% {
+      transform: translateY(-10vh) rotate(360deg);
+      opacity: 0;
+    }
+  }
+  
+  /* ============================================
+     SCROLLBAR - clean
+     ============================================ */
+  
+  .uap-page.uap-troll::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .uap-page.uap-troll::-webkit-scrollbar-track {
+    background: #0f0f0f;
+  }
+  
+  .uap-page.uap-troll::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #a594f9, #98e2c6);
+    border-radius: 4px;
+  }
+  
+  /* ============================================
+     RESPONSIVE
+     ============================================ */
+  
+  @media (max-width: 768px) {
+    .uap-page.uap-troll .uap-main-title {
+      font-size: 1.4rem;
+    }
+  
+    .uap-float-emoji {
+      font-size: 1.2rem;
+    }
+  
+    .uap-page.uap-troll .uap-faq-item:hover {
+      transform: translateX(3px);
+    }
+  }
