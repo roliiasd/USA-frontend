@@ -29,7 +29,7 @@ function getUserColor(userId) {
 function playNotificationSound() {
   try {
     const audio = new Audio("/kecske.mp3");
-    audio.volume = 0.5;
+    audio.volume = 0.125;
     audio
       .play()
       .catch((err) => console.log("Hang lejatszasa sikertelen:", err));
