@@ -15,6 +15,8 @@ import "../src/styles/CreatPosts.css";
 import "../src/styles/EditPost.css";
 import '../src/styles/Chat.css'
 import '../src/styles/Admin.min.css'
+import '../src/styles/NoXdAboutUs_FAQ.css'
+import '../src/styles/XdAboutUs_FAQ.css'
 
 import Registration from "./pages/Registration";
 import Login from "./pages/Login";
@@ -22,16 +24,22 @@ import Home from "./pages/Home";
 import ChatPages from "./pages/ChatPages";
 import Profile from "./pages/Profile";
 import Admin from "./pages/Admin";
+import AboutUs from "./pages/AboutUs";
+import FAQ from "./pages/FAQ";
+
+
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/admin" element={<Admin />} />
         <Route path="/registration" element={<Registration />} />
         <Route path="/login" element={<Login />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/chat" element={<ChatPages />} />
-        <Route path="/admin" element={<Admin />} />
+        <Route path="/aboutus" element={<AboutUs />} />
+        <Route path="/faq" element={<FAQ />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
