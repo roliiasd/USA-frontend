@@ -28,7 +28,7 @@ function getUserColor(userId) {
 //     =
 function playNotificationSound() {
   try {
-    const audio = new Audio("/team_speak_3_message.mp3");
+    const audio = new Audio("/kecske.mp3");
     audio.volume = 0.5;
     audio
       .play()
