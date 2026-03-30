@@ -180,12 +180,16 @@ export default function AboutUs() {
                   <h3 className="uap-team-title">Our Team</h3>
                   <div className="uap-team-grid">
                     <div className="uap-team-card">
-                      <h4 className="uap-team-name">Mészáros Nimród</h4>
-                      <p className="uap-team-role">Backend</p>
+                      <h4 className="uap-team-name">John Smith</h4>
+                      <p className="uap-team-role">Founder & CEO</p>
                     </div>
                     <div className="uap-team-card">
-                      <h4 className="uap-team-name">Kovács Roland</h4>
-                      <p className="uap-team-role">Frontend</p>
+                      <h4 className="uap-team-name">Jane Doe</h4>
+                      <p className="uap-team-role">Operations Manager</p>
+                    </div>
+                    <div className="uap-team-card">
+                      <h4 className="uap-team-name">Mike Johnson</h4>
+                      <p className="uap-team-role">Customer Support</p>
                     </div>
                   </div>
                 </div>

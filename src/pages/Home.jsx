@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Navbar from "../components/Navbar";
 import CreatePost from "../components/CreatePost";
 import { ToastContainer } from "react-toastify";
@@ -8,23 +8,26 @@ import { loadpost } from "../animals";
 import UserPosts from "../components/UserPosts";
 import Filter from "../components/Filter";
 
+const CHAT_ICON = <i className="bi bi-chat" style={{ color: "#f7b32bff" }} />;
+const INITIAL_FILTERS = {
+  county: null,
+  city: null,
+  postcode: null,
+};
 export default function Home() {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [user, setUser] = useState(null);
   const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [isLoading, setLoading] = useState(true);
   const [refresh, setRefresh] = useState(0);
-  const [filters, setFilters] = useState({
-    county: null,
-    city: null,
-    postcode: null,
-  });
+  const [filters, setFilters] = useState(INITIAL_FILTERS);
 
   useEffect(() => {
+    let cancelled = false;
     async function load() {
       try {
         const data = await whoami();
-        if (!data?.error) {
+        if (!cancelled && data && !data.error) {
           setUser(data);
         }
       } catch (err) {
@@ -32,36 +35,49 @@ export default function Home() {
       }
     }
     load();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   useEffect(() => {
+    let cancelled = false;
     async function fetchPosts() {
       try {
+        setLoading(true);
         const result = await loadpost();
-        setPosts(result);
+        if (!cancelled) setPosts(result ?? []);
       } catch (err) {
         console.error(err);
-        setPosts([]);
+        if (!cancelled) setPosts([]);
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
     }
     fetchPosts();
+    return () => {
+      cancelled = true;
+    };
   }, [refresh]);
 
-  function handleRefresh() {
+  const handleRefresh = useCallback(() => {
     setRefresh((prev) => prev + 1);
-  }
+  }, []);
 
-  const filteredPosts = (posts ?? []).filter((post) => {
-    // console.log('post user_id: ', post.userId);
-    const countyOk = !filters.county || post.megye === filters.county.label;
-    const cityOk = !filters.city || post.varos === filters.city.value;
-    const postcodeOk =
-      !filters.postcode ||
-      String(post.postcode) === String(filters.postcode.value);
-    return countyOk && cityOk && postcodeOk;
-  });
+  const filteredPosts = useMemo(() => {
+    const { county, city, postcode } = filters;
+    const hasAnyFilter = county || city || postcode;
+    const list = hasAnyFilter
+      ? posts.filter((post) => {
+          if (county && post.megye !== county.label) return false;
+          if (city && post.varos !== city.label) return false;
+          if (postcode && post.postcode !== String(postcode.label))
+            return false;
+          return true;
+        })
+      : posts;
+    return [...list].reverse();
+  }, [posts, filters]);
 
   return (
     <>
@@ -76,11 +92,13 @@ export default function Home() {
       />
 
       {/* Új hirdetés modal */}
-      <CreatePost
-        showModal={showCreateModal}
-        onClose={() => setShowCreateModal(false)}
-        onSuccess={handleRefresh}
-      />
+      {showCreateModal && (
+        <CreatePost
+          showModal={showCreateModal}
+          onClose={() => setShowCreateModal(false)}
+          onSuccess={handleRefresh}
+        />
+      )}
 
       <div className="ua-page">
         <div className="container-fluid px-4">
@@ -90,31 +108,32 @@ export default function Home() {
             </div>
 
             <div className="col-12 col-lg-8 col-xl-9">
-              <div className="ua-cards-grid w-100">
-                {filteredPosts
-                  .slice()
-                  .reverse()
-                  .map((post) => (
-                    <UserPosts
-                      key={post.id}
-                      username={post.username}
-                      postUserId={post.userId}
-                      petImg={post.images}
-                      petName={post.nev}
-                      note={post.megjegyzes}
-                      county={post.megye}
-                      city={post.varos}
-                      postcode={post.postcode}
-                      user={user}
-                      send_a_message={
-                        <i
-                          className="bi bi-chat"
-                          style={{ color: "#f7b32bff" }}
-                        />
-                      }
-                    />
-                  ))}
-              </div>
+              {isLoading ? (
+                <div className="text-center py-5">Betöltés...</div>
+              ) : filteredPosts.length === 0 ? (
+                <div className="text-center py-5">Nincs Találat</div>
+              ) : (
+                <div className="ua-cards-grid w-100">
+                  {filteredPosts
+                    .slice()
+                    .reverse()
+                    .map((post) => (
+                      <UserPosts
+                        key={post.id}
+                        username={post.username}
+                        postUserId={post.userId}
+                        petImg={post.images}
+                        petName={post.nev}
+                        note={post.megjegyzes}
+                        county={post.megye}
+                        city={post.varos}
+                        postcode={post.postcode}
+                        user={user}
+                        send_a_message={CHAT_ICON}
+                      />
+                    ))}
+                </div>
+              )}
             </div>
           </div>
         </div>

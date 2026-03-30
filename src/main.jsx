@@ -17,6 +17,8 @@ import '../src/styles/Chat.css'
 import '../src/styles/Admin.min.css'
 import '../src/styles/NoXdAboutUs_FAQ.css'
 import '../src/styles/XdAboutUs_FAQ.css'
+import "../src/styles/Registration.css";
+import "../src/styles/Login.css";
 
 import Registration from "./pages/Registration";
 import Login from "./pages/Login";
