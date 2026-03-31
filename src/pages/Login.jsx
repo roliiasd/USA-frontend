@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import { login } from "../users";
-import logo from '../assets/logo.png'
+import logo from "../assets/logo.png";
 
 export default function Login() {
   const navigate = useNavigate();
+  const { refetchUser } = useAuth();
   const [formData, setFormData] = useState({
     email: "",
     psw: "",
@@ -36,6 +38,7 @@ export default function Login() {
         return;
       }
       if (data?.message === "YIPPIE") {
+        await refetchUser()
         toast.success(data.message);
         setTimeout(() => navigate("/"), 1500);
         return;
