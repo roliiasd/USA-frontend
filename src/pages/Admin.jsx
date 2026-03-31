@@ -1,9 +1,10 @@
 import { useEffect, useState, useMemo, useCallback } from "react";
 import { delAnim, loadpost } from "../animals";
 import Navbar from "../components/Navbar";
-import { logout, roleChange, whoami } from "../users";
+import {roleChange} from "../users";
 import { toast, ToastContainer } from "react-toastify";
 import ConfirmModal from "../components/ConfirmModal";
+import { useAuth } from "../context/AuthContext";
 
 //     =
 //   imagehelper    =
@@ -15,29 +16,12 @@ function getImageUrl(images) {
 }
 
 export default function Admin() {
-  const [user, setUser] = useState(null);
+  const { user, loading: authLoading, onLogout } = useAuth();
   const [ads, setAds] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [roleTarget, setRoleTarget] = useState(null);
-  //     =
-  //   user    =
-  //     =
-  useEffect(() => {
-    async function fetchUser() {
-      try {
-        const userData = await whoami();
-        if (userData && !userData.error) {
-          setUser(userData);
-        }
-      } catch (err) {
-        console.error("user lekees hiba", err);
-      }
-    }
-    fetchUser();
-  }, []);
-
   //     =
   //    posts          =
   //                       =
@@ -70,10 +54,10 @@ export default function Admin() {
     } catch (err) {
       console.error(
         "nemtudsz torolni mer hoki vagy, vagy csak gatyesz van a szeroval ink a masodik",
-        err,
+        err
       );
       toast.error(
-        "nemtudsz torolni mer hoki vagy, vagy csak gatyesz van a szeroval ink a masodik",
+        "nemtudsz torolni mer hoki vagy, vagy csak gatyesz van a szeroval ink a masodik"
       );
     } finally {
       setDeleteTarget(null);
@@ -90,8 +74,8 @@ export default function Admin() {
     try {
       setAds((prev) =>
         prev.map((ad) =>
-          ad.userId === targetUserId ? { ...ad, role: newRole } : ad,
-        ),
+          ad.userId === targetUserId ? { ...ad, role: newRole } : ad
+        )
       );
 
       const data = await roleChange(targetUserId, newRole);
@@ -101,8 +85,8 @@ export default function Admin() {
         // Visszaállítás
         setAds((prev) =>
           prev.map((ad) =>
-            ad.userId === targetUserId ? { ...ad, role: oldRole } : ad,
-          ),
+            ad.userId === targetUserId ? { ...ad, role: oldRole } : ad
+          )
         );
         toast.error("nemsikerult hihi");
         return;
@@ -114,23 +98,20 @@ export default function Admin() {
         newRole === "user"
       ) {
         toast.info("Kijelentkezés....");
-        await logout();
-        window.location.href = "/login";
+        await onLogout();
+        naviagte("/login");
       }
     } catch (err) {
       console.error("Nem sikerült módosítani:", err);
       setAds((prev) =>
         prev.map((ad) =>
-          ad.userId === targetUserId ? { ...ad, role: oldRole } : ad,
-        ),
+          ad.userId === targetUserId ? { ...ad, role: oldRole } : ad
+        )
       );
     } finally {
       setRoleTarget(null);
     }
   }, [roleTarget, user?.id]);
-  //     =
-  //       =
-  //     =
   //     =
   //       =
   //     =
@@ -141,9 +122,17 @@ export default function Admin() {
       (ad) =>
         ad.nev?.toLowerCase().includes(term) ||
         ad.username?.toLowerCase().includes(term) ||
-        ad.megjegyzes?.toLowerCase().includes(term),
+        ad.megjegyzes?.toLowerCase().includes(term)
     );
   }, [ads, search]);
+
+  if (authLoading) {
+    return (
+      <div className="loading">
+        <span>Betöltés....</span>
+      </div>
+    );
+  }
   //     =
   //       =
   //     =
@@ -301,7 +290,9 @@ export default function Admin() {
               </span>
               <i className="bi bi-arrow-right modal-role-arrow" />
               <span
-                className={`modal-role-badge modal-role-badge-${roleTarget.role === "admin" ? "user" : "admin"}`}
+                className={`modal-role-badge modal-role-badge-${
+                  roleTarget.role === "admin" ? "user" : "admin"
+                }`}
               >
                 {roleTarget.role === "admin" ? "user" : "admin"}
               </span>

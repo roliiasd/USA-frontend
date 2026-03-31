@@ -2,13 +2,15 @@ import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import { login, register } from "../users";
-import logo from '../assets/logo.png'
+import { useAuth } from "../context/AuthContext";
+import logo from "../assets/logo.png";
 
 const MIN_PSW_LENGTH = 7;
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function Registration() {
   const navigate = useNavigate();
+  const { refetchUser } = useAuth();
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -39,7 +41,7 @@ export default function Registration() {
 
     if (psw.length < MIN_PSW_LENGTH) {
       toast.info(
-        `A jelszónak legalább ${MIN_PSW_LENGTH} karakter hosszúnak kell lennie`,
+        `A jelszónak legalább ${MIN_PSW_LENGTH} karakter hosszúnak kell lennie`
       );
       return false;
     }
@@ -65,9 +67,10 @@ export default function Registration() {
       const loginData = await login(email, psw);
       if (loginData?.error) {
         return toast.error(
-          "Regisztráció sikeres, de az automatikus bejelentkezés nem sikerult",
+          "Regisztráció sikeres, de az automatikus bejelentkezés nem sikerult"
         );
       }
+      await refetchUser()
       toast.success(data.message);
       await login(email, psw);
       setTimeout(() => navigate("/"), 1500);
