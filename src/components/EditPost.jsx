@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Select from "react-select";
-import { updatePost, delAnim } from "../animals";
+import { updatePost, delAnim } from "../utils/animals";
 import { toast } from "react-toastify";
-import { getCounties, getCitiesByCounties } from "../getCC";
+import { getCounties, getCitiesByCounties } from "../utils/getCC";
 
 export default function EditPost({ editData, onClose, onSuccess }) {
   const [nev, setNev] = useState("");

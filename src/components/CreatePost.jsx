@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import Select from "react-select";
-import { createPost } from "../animals";
+import { createPost } from "../utils/animals";
 import { toast } from "react-toastify";
-import { getCounties, getCitiesByCounties } from "../getCC";
+import { getCounties, getCitiesByCounties } from "../utils/getCC";
 
 export default function CreatePostModal({ showModal, onClose, onSuccess }) {
   const [files, setFiles] = useState([]);
