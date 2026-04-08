@@ -3,8 +3,8 @@ import Navbar from "../components/Navbar";
 import CreatePost from "../components/CreatePost";
 import { ToastContainer } from "react-toastify";
 import "../styles/Home.css";
-import { whoami } from "../users";
-import { loadpost } from "../animals";
+import { whoami } from "../utils/users";
+import { loadpost } from "../utils/animals";
 import UserPosts from "../components/UserPosts";
 import Filter from "../components/Filter";
 

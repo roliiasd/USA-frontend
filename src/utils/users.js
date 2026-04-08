@@ -39,7 +39,14 @@ export async function logout() {
   return await res.json();
   localStorage.removeItem('userId')
 }
-
+export const forgotPassword = async (email, newPassword) => {
+  const res = await fetch("/api/reset-password", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, newPassword }),
+  });
+  return res.json();
+};
 export async function whoami() {
   const res = await fetch(`${BACKEND_URL}/whoami`, {
     method: "GET",

@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import UserPosts from "../components/UserPosts";
 import EditPost from "../components/EditPost";
-import { whoami, editName, editPassword } from "../users";
-import { loadpost } from "../animals";
+import { whoami, editName, editPassword } from "../utils/users";
+import { loadpost } from "../utils/animals";
 
 export default function Profile() {
   const [currentUser, setCurrentUser] = useState(null);

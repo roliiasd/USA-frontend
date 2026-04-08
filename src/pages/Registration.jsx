@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
-import { login, register } from "../users";
+import { login, register } from "../utils/users";
 import { useAuth } from "../context/AuthContext";
 import logo from "../assets/logo.png";
 

@@ -5,7 +5,7 @@ import {
   useState,
   useCallback,
 } from "react";
-import { logout, whoami } from "../users";
+import { logout, whoami } from "../utils/users";
 
 const AuthContext = createContext();
 

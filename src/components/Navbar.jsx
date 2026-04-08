@@ -1,7 +1,7 @@
 import { useState } from "react";
 import logoImg from "/src/assets/logo.png";
 import { NavLink, useNavigate } from "react-router-dom"; // <-- NavLink hozzá
-import { logout } from "../users";
+import { logout } from "../utils/users";
 
 export default function Navbar({ user, homePage, FAQ, aboutUs, onCreatePost }) {
   const [openMenu, setOpenMenu] = useState(false);

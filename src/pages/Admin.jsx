@@ -1,7 +1,8 @@
 import { useEffect, useState, useMemo, useCallback } from "react";
-import { delAnim, loadpost } from "../animals";
+import { delAnim, loadpost } from "../utils/animals";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
-import {roleChange} from "../users";
+import { roleChange } from "../utils/users";
 import { toast, ToastContainer } from "react-toastify";
 import ConfirmModal from "../components/ConfirmModal";
 import { useAuth } from "../context/AuthContext";
@@ -15,22 +16,38 @@ function getImageUrl(images) {
   return firstImage.url ? `/${firstImage.url}` : `/${firstImage}`;
 }
 
+const LoadingSpinner = () => (
+  <div className="loading-dots">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+);
 export default function Admin() {
   const { user, loading: authLoading, onLogout } = useAuth();
+  const navigate = useNavigate();
+
   const [ads, setAds] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [roleTarget, setRoleTarget] = useState(null);
+
   //     =
   //    posts          =
   //                       =
-  // handlereshreh     =
   //     =
   const fetchPosts = useCallback(async () => {
     setLoading(true);
+    const minLoadingTime = 2000;
+    const startTime = Date.now();
     try {
       const result = await loadpost();
+      const elapsed = Date.now() - startTime;
+      const remaining = minLoadingTime - elapsed;
+      if (remaining > 0) {
+        await new Promise((r) => setTimeout(r, remaining));
+      }
       setAds(result);
     } catch (err) {
       console.error(err);
@@ -39,11 +56,16 @@ export default function Admin() {
       setLoading(false);
     }
   }, []);
-  useEffect(() => {
-    fetchPosts();
-  }, [fetchPosts]);
+  //      =
+  // handlereshreh     =
   //     =
-  //       =
+  useEffect(() => {
+    if (!authLoading && user?.role === "admin") {
+      fetchPosts();
+    }
+  }, [fetchPosts, authLoading, user?.role]);
+  //     =
+  //  confirm delete function     =
   //     =
   const confirmDelete = useCallback(async () => {
     if (!deleteTarget) return;
@@ -54,10 +76,10 @@ export default function Admin() {
     } catch (err) {
       console.error(
         "nemtudsz torolni mer hoki vagy, vagy csak gatyesz van a szeroval ink a masodik",
-        err
+        err,
       );
       toast.error(
-        "nemtudsz torolni mer hoki vagy, vagy csak gatyesz van a szeroval ink a masodik"
+        "nemtudsz torolni mer hoki vagy, vagy csak gatyesz van a szeroval ink a masodik",
       );
     } finally {
       setDeleteTarget(null);
@@ -74,8 +96,8 @@ export default function Admin() {
     try {
       setAds((prev) =>
         prev.map((ad) =>
-          ad.userId === targetUserId ? { ...ad, role: newRole } : ad
-        )
+          ad.userId === targetUserId ? { ...ad, role: newRole } : ad,
+        ),
       );
 
       const data = await roleChange(targetUserId, newRole);
@@ -85,13 +107,13 @@ export default function Admin() {
         // Visszaállítás
         setAds((prev) =>
           prev.map((ad) =>
-            ad.userId === targetUserId ? { ...ad, role: oldRole } : ad
-          )
+            ad.userId === targetUserId ? { ...ad, role: oldRole } : ad,
+          ),
         );
-        toast.error("nemsikerult hihi");
+        toast.error(" Nem Sikerült");
         return;
       }
-      toast.info("sikerult hehe");
+      toast.info("Sikerült");
       if (
         currentUserId &&
         targetUserId === currentUserId &&
@@ -99,19 +121,19 @@ export default function Admin() {
       ) {
         toast.info("Kijelentkezés....");
         await onLogout();
-        naviagte("/login");
+        navigate("/login");
       }
     } catch (err) {
       console.error("Nem sikerült módosítani:", err);
       setAds((prev) =>
         prev.map((ad) =>
-          ad.userId === targetUserId ? { ...ad, role: oldRole } : ad
-        )
+          ad.userId === targetUserId ? { ...ad, role: oldRole } : ad,
+        ),
       );
     } finally {
       setRoleTarget(null);
     }
-  }, [roleTarget, user?.id]);
+  }, [roleTarget, user?.id, onLogout, navigate]);
   //     =
   //       =
   //     =
@@ -122,20 +144,47 @@ export default function Admin() {
       (ad) =>
         ad.nev?.toLowerCase().includes(term) ||
         ad.username?.toLowerCase().includes(term) ||
-        ad.megjegyzes?.toLowerCase().includes(term)
+        ad.megjegyzes?.toLowerCase().includes(term),
     );
   }, [ads, search]);
 
-  if (authLoading) {
+  useEffect(() => {
+    if (!authLoading && user && user.role !== "admin") {
+      toast.error("Nincs jogosultságod!", {
+        autoClose: 2000,
+        onClose: () => navigate("/"),
+      });
+    }
+  }, [user, authLoading, navigate]);
+
+  useEffect(() => {
+    if (!authLoading && !user) {
+      navigate("/");
+    }
+  }, [user, authLoading, navigate]);
+
+  if (authLoading || !user) {
     return (
-      <div className="loading">
-        <span>Betöltés....</span>
-      </div>
+      <>
+        <ToastContainer theme="dark" position="bottom-right" autoClose={2000} />
+        <div className="admin-page">
+          <LoadingSpinner />
+        </div>
+      </>
     );
   }
-  //     =
-  //       =
-  //     =
+
+  if (user.role !== "admin") {
+    return (
+      <>
+        <ToastContainer theme="dark" position="bottom-right" autoClose={2000} />
+        <div className="admin-page">
+          <LoadingSpinner />
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
       <ToastContainer theme="dark" position="bottom-right" autoClose={800} />
@@ -154,9 +203,7 @@ export default function Admin() {
           <i className="bi bi-search search-icon" />
         </div>
         {loading ? (
-          <div className="loading">
-            <span>Betöltés...</span>
-          </div>
+          <LoadingSpinner />
         ) : (
           <div className="admin-table-wrapper">
             <table className="table table-responsive">

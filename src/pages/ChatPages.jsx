@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { deleteConv, deleteMessages } from "../chat";
-import { whoami, chatPartners } from "../users";
-import { socket } from "../socket";
+import { deleteConv, deleteMessages } from "../utils/chat";
+import { whoami, chatPartners } from "../utils/users";
+import { socket } from "../utils/socket";
 //     =
 //       =
 //     =

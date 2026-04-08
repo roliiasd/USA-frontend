@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getCounties, getCitiesByCounties } from "../getCC";
+import { getCounties, getCitiesByCounties } from "../utils/getCC";
 import Select from "react-select";
 
 export default function Filter({ filters, setFilters }) {
