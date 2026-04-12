@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { createPortal } from "react-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
@@ -13,7 +14,7 @@ export default function Login() {
     psw: "",
   });
   const [isLoading, setIsLoading] = useState(false);
-  const [showForgotPassword, setShowforgotPassword] = useState(false);
+  const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [resetData, setResetData] = useState({
     email: "",
     newPassword: "",
@@ -63,7 +64,8 @@ export default function Login() {
   };
 
   const handleForgotPassword = async (e) => {
-    e.preventDefault();
+    // console.log("fussmar le te kutya"); lefutott :)
+
     const { email, newPassword, confirmPassword } = resetData;
 
     if (!email || !newPassword || !confirmPassword) {
@@ -82,15 +84,19 @@ export default function Login() {
     }
     setIsResetting(true);
     try {
-      // const data = await forgotPassword(email, newPassword);
+      const data = await forgotPassword(email, newPassword);
+      console.log(data);
+
       if (data?.error) {
         toast.error(data.error);
         return;
       }
       toast.success("Jelszó sikeresen módositva!");
-      setShowforgotPassword(false);
+      setShowForgotPassword(false);
       setResetData({ email: "", newPassword: "", confirmPassword: "" });
     } catch (err) {
+      console.log(err);
+
       toast.error("Nem sikerült módositani a jelszót!");
     } finally {
       setIsResetting(false);
@@ -109,6 +115,7 @@ export default function Login() {
 
           <form className="login-box" noValidate onSubmit={handleLogin}>
             <input
+              autoComplete="email"
               className="form-control"
               type="email"
               name="email"
@@ -117,6 +124,7 @@ export default function Login() {
               onChange={handleChange}
             />
             <input
+              autoComplete="current-password"
               className="form-control"
               type="password"
               name="psw"
@@ -126,7 +134,7 @@ export default function Login() {
             />
             <tt
               className="forgot-password-link"
-              onClick={() => setShowforgotPassword(true)}
+              onClick={() => setShowForgotPassword(true)}
             >
               Elfelejtett jelszo
             </tt>
@@ -143,20 +151,21 @@ export default function Login() {
           </p>
         </div>
       </div>
-      {showForgotPassword && (
-        <div
-          className="modal-overlay"
-          onClick={() => setShowforgotPassword(false)}
-        >
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button
-              className="modal-close"
-              onClick={() => setShowforgotPassword(false)}
-            >
-              x
-            </button>
-            <h2>Jelszó Visszaállítás</h2>
-            <form onSubmit={handleForgotPassword}>
+      {showForgotPassword &&
+        createPortal(
+          <div
+            className="modal-overlay"
+            onClick={() => setShowForgotPassword(false)}
+          >
+            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+              <button
+                type="button"
+                className="modal-close"
+                onClick={() => setShowForgotPassword(false)}
+              >
+                x
+              </button>
+              <h2>Jelszó Visszaállítás</h2>
               <input
                 type="email"
                 name="email"
@@ -178,14 +187,17 @@ export default function Login() {
                 placeholder="Új jelszó megerősitése"
                 onChange={handleResetChange}
               />
-
-              <button type="submit" disabled={isResetting}>
+              <button
+                type="submit"
+                onClick={handleForgotPassword}
+                disabled={isResetting}
+              >
                 {isResetting ? "Mentés..." : "Jelszó módositása"}
               </button>
-            </form>
-          </div>
-        </div>
-      )}
+            </div>
+          </div>,
+          document.body,
+        )}
     </>
   );
 }

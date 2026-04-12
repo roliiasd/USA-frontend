@@ -36,17 +36,21 @@ export async function logout() {
     throw new Error("Logout hiba");
   }
 
+  localStorage.removeItem("userId");
   return await res.json();
-  localStorage.removeItem('userId')
 }
-export const forgotPassword = async (email, newPassword) => {
-  const res = await fetch("/api/reset-password", {
-    method: "POST",
+
+export async function forgotPassword(email, newPassword) {
+  const res = await fetch(`${BACKEND_URL}/passwordforget`, {
+    method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, newPassword }),
   });
+  console.log("response", res);
+
   return res.json();
-};
+}
+
 export async function whoami() {
   const res = await fetch(`${BACKEND_URL}/whoami`, {
     method: "GET",
