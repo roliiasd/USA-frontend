@@ -1,10 +1,39 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Navbar from "../components/Navbar";
 import { ToastContainer } from "react-toastify";
 
 export default function AboutUs() {
   const [trollMode, setTrollMode] = useState(false);
+  const keysPressed = useRef([]);
 
+  useEffect(() => {
+    let lastKeyTime = 0;
+    function handleKeyDown(e) {
+      const now = Date.now();
+      keysPressed.current.push(e.key);
+      // console.log(keysPressed.current);
+      if (keysPressed.current.length > 2) {
+        keysPressed.current.shift();
+      }
+      if (
+        keysPressed.current.length === 2 &&
+        keysPressed.current[0] === "6" &&
+        keysPressed.current[1] === "7" &&
+        now - lastKeyTime < 1000
+      ) {
+        setTrollMode((prev) => !prev);
+        keysPressed.current = [];
+      }
+      lastKeyTime = now;
+    }
+    document.addEventListener("keydown", handleKeyDown);
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "";
+    };
+  }, []);
   return (
     <>
       <ToastContainer theme="dark" position="top-center" autoClose={800} />
@@ -12,26 +41,15 @@ export default function AboutUs() {
       <Navbar homePage={"/"} FAQ={"/faq"} aboutUs={"/aboutus"} />
 
       <div className={`uap-page ${trollMode ? "uap-troll" : ""}`}>
-        {/* Theme Switch */}
-        <div className="uap-theme-toggle">
-          <span className="uap-toggle-label">
-            {trollMode ? "bro mode" : "Normal"}
-          </span>
-          <label className="uap-toggle-switch">
-            <input
-              type="checkbox"
-              checked={trollMode}
-              onChange={() => setTrollMode(!trollMode)}
-            />
-            <span className="uap-slider"></span>
-          </label>
-        </div>
-
         <div className="uap-wrapper">
           {/* Logo */}
           <div className="uap-logo-container">
             <img
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQl7n7R8uX6iSppOGqVQBomifQrgKV1hFskpA&s"
+              src={
+                !trollMode
+                  ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQl7n7R8uX6iSppOGqVQBomifQrgKV1hFskpA&s"
+                  : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgBIj_ZkOXV4YNrjCiEc4y3K4Dh-99jU-BD_G5GgHYkTeHLYnRlzN6uLR7LfT8SkYc-OjRMd-ZpM4Ud149fV6j2fBjS48YASMrvFPn8Mu6503pYbiDvR6c6hadr7I1FA&s=10&ec=121635968"
+              }
               alt="UsedAnimals Logo"
               className="uap-logo"
             />
@@ -180,16 +198,16 @@ export default function AboutUs() {
                   <h3 className="uap-team-title">Our Team</h3>
                   <div className="uap-team-grid">
                     <div className="uap-team-card">
-                      <h4 className="uap-team-name">John Smith</h4>
-                      <p className="uap-team-role">Founder & CEO</p>
+                      <h4 className="uap-team-name">Kovács Roland</h4>
+                      <p className="uap-team-role">Frontend</p>
                     </div>
                     <div className="uap-team-card">
-                      <h4 className="uap-team-name">Jane Doe</h4>
-                      <p className="uap-team-role">Operations Manager</p>
+                      <h4 className="uap-team-name">Mészáros Nimród</h4>
+                      <p className="uap-team-role">Backend</p>
                     </div>
                     <div className="uap-team-card">
-                      <h4 className="uap-team-name">Mike Johnson</h4>
-                      <p className="uap-team-role">Customer Support</p>
+                      <h4 className="uap-team-name">Homeboy</h4>
+                      <p className="uap-team-role">Additional Support</p>
                     </div>
                   </div>
                 </div>
