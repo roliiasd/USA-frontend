@@ -20,7 +20,7 @@ export default function Navbar({ user, homePage, FAQ, aboutUs, onCreatePost }) {
 
   return (
     <header className="navbar align-items-end navbarStyle">
-      <div className="container-fluid d-flex align-items-center justify-content-between py-2">
+      <div className="container-fluid align-items-center py-2">
         <div className="d-flex align-items-center gap-2">
           <img
             src={logoImg}

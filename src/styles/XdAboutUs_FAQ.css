@@ -11,7 +11,9 @@
   /* === LOGO - silly little guy === */
   .uap-page.uap-troll .uap-logo {
     animation: uapLogoVibe 2s ease-in-out infinite;
-    border-radius: 50%;
+    border-radius: 40%;
+    height: 250px; 
+    width: 250px;
     border: 3px solid #a594f9;
   }
   

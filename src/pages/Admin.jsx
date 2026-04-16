@@ -76,10 +76,10 @@ export default function Admin() {
     } catch (err) {
       console.error(
         "nemtudsz torolni mer hoki vagy, vagy csak gatyesz van a szeroval ink a masodik",
-        err,
+        err
       );
       toast.error(
-        "nemtudsz torolni mer hoki vagy, vagy csak gatyesz van a szeroval ink a masodik",
+        "nemtudsz torolni mer hoki vagy, vagy csak gatyesz van a szeroval ink a masodik"
       );
     } finally {
       setDeleteTarget(null);
@@ -96,8 +96,8 @@ export default function Admin() {
     try {
       setAds((prev) =>
         prev.map((ad) =>
-          ad.userId === targetUserId ? { ...ad, role: newRole } : ad,
-        ),
+          ad.userId === targetUserId ? { ...ad, role: newRole } : ad
+        )
       );
 
       const data = await roleChange(targetUserId, newRole);
@@ -107,8 +107,8 @@ export default function Admin() {
         // Visszaállítás
         setAds((prev) =>
           prev.map((ad) =>
-            ad.userId === targetUserId ? { ...ad, role: oldRole } : ad,
-          ),
+            ad.userId === targetUserId ? { ...ad, role: oldRole } : ad
+          )
         );
         toast.error(" Nem Sikerült");
         return;
@@ -127,8 +127,8 @@ export default function Admin() {
       console.error("Nem sikerült módosítani:", err);
       setAds((prev) =>
         prev.map((ad) =>
-          ad.userId === targetUserId ? { ...ad, role: oldRole } : ad,
-        ),
+          ad.userId === targetUserId ? { ...ad, role: oldRole } : ad
+        )
       );
     } finally {
       setRoleTarget(null);
@@ -144,7 +144,7 @@ export default function Admin() {
       (ad) =>
         ad.nev?.toLowerCase().includes(term) ||
         ad.username?.toLowerCase().includes(term) ||
-        ad.megjegyzes?.toLowerCase().includes(term),
+        ad.megjegyzes?.toLowerCase().includes(term)
     );
   }, [ads, search]);
 
@@ -189,7 +189,7 @@ export default function Admin() {
     <>
       <ToastContainer theme="dark" position="bottom-right" autoClose={800} />
       <div className="admin-page">
-        <Navbar user={user} homePage={"/"} />
+        <Navbar user={user} homePage={"/"} FAQ={"/faq"} aboutUs={"/aboutus"} />
         <h1 className="admin-title">Admin panel</h1>
         <p className="admin-subtitle">Felhasználók és hirdetések kezelése</p>
         <div className="search-container">
