@@ -157,7 +157,10 @@ export default function Login() {
             className="modal-overlay"
             onClick={() => setShowForgotPassword(false)}
           >
-            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div
+              className="forgetpsw-modal-content"
+              onClick={(e) => e.stopPropagation()}
+            >
               <button
                 type="button"
                 className="modal-close"
@@ -196,7 +199,7 @@ export default function Login() {
               </button>
             </div>
           </div>,
-          document.body,
+          document.body
         )}
     </>
   );

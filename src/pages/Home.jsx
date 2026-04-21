@@ -25,24 +25,6 @@ export default function Home() {
 
   useEffect(() => {
     let cancelled = false;
-    async function load() {
-      try {
-        const data = await whoami();
-        if (!cancelled && data && !data.error) {
-          setUser(data);
-        }
-      } catch (err) {
-        console.error(err.message);
-      }
-    }
-    load();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
-
-  useEffect(() => {
-    let cancelled = false;
     async function fetchPosts() {
       try {
         setLoading(true);

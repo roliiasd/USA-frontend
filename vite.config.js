@@ -7,27 +7,27 @@ export default defineConfig({
   server: {
     proxy: {
       "/users": {
-        target: "http://192.168.9.101:4000",
+        target: "https://nodejs207.dszcbaross.edu.hu/",
         changeOrigin: true,
       },
       "/animals": {
-        target: "http://192.168.9.101:4000",
+        target: "https://nodejs207.dszcbaross.edu.hu/",
         changeOrigin: true,
       },
       "/cities": {
-        target: "http://192.168.9.101:4000",
+        target: "https://nodejs207.dszcbaross.edu.hu/",
         changeOrigin: true,
       },
       "/uploads": {
-        target: "http://192.168.9.101:4000",
+        target: "https://nodejs207.dszcbaross.edu.hu/",
         changeOrigin: true,
       },
       "/messages": {
-        target: "http://192.168.9.101:4000",
+        target: "https://nodejs207.dszcbaross.edu.hu/",
         changeOrigin: true,
       },
       "/socket.io": {
-        target: "http://192.168.9.101:4000",
+        target: "https://nodejs207.dszcbaross.edu.hu/",
         changeOrigin: true,
         ws: true,
       },
