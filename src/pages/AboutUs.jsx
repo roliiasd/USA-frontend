@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState } from "react";
+import { useAuth } from "../context/AuthContext";
 import Navbar from "../components/Navbar";
 import { ToastContainer } from "react-toastify";
 
 export default function AboutUs() {
+  
+  const { user, loading: authLoading, onLogout } = useAuth();
   const [trollMode, setTrollMode] = useState(false);
   const keysPressed = useRef([]);
 
@@ -27,18 +30,16 @@ export default function AboutUs() {
       lastKeyTime = now;
     }
     document.addEventListener("keydown", handleKeyDown);
-    document.body.style.overflow = "hidden";
 
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = "";
     };
   }, []);
   return (
     <>
       <ToastContainer theme="dark" position="top-center" autoClose={800} />
 
-      <Navbar homePage={"/"} FAQ={"/faq"} aboutUs={"/aboutus"} />
+      <Navbar user={user} homePage={"/"} FAQ={"/faq"} aboutUs={"/aboutus"} />
 
       <div className={`uap-page ${trollMode ? "uap-troll" : ""}`}>
         <div className="uap-wrapper">
