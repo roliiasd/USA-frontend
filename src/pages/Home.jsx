@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import CreatePost from "../components/CreatePost";
 import { ToastContainer } from "react-toastify";
 import "../styles/Home.css";
+import { useAuth } from "../context/AuthContext";
 import { whoami } from "../utils/users";
 import { loadpost } from "../utils/animals";
 import UserPosts from "../components/UserPosts";
@@ -15,8 +16,8 @@ const INITIAL_FILTERS = {
   postcode: null,
 };
 export default function Home() {
+  const { user, loading: authLoading, onLogout } = useAuth();
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const [user, setUser] = useState(null);
   const [posts, setPosts] = useState([]);
   const [isLoading, setLoading] = useState(true);
   const [refresh, setRefresh] = useState(0);
