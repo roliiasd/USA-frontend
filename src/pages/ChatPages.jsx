@@ -42,26 +42,43 @@ function playNotificationSound() {
 //       =
 //     =
 export default function ChatPages() {
+  //states
   const [currentUser, setCurrentUser] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessages, setNewMessages] = useState("");
   const [selectedUser, setSelectedUser] = useState(null);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const [lastMessages, setLastMessages] = useState([]);
-
+  const [lastMessages, setLastMessages] = useState({});
+  const [mobileChatOpen, setMobileChatOpen] = useState(false);
+  //
   const aljaRef = useRef(null);
   const navigate = useNavigate();
-
   const [searchParams, setSearchParams] = useSearchParams();
   const targetUserId = searchParams.get("user");
   const targetUsername = searchParams.get("name");
+
+  async function refreshLastMessgae(partnerId) {
+    try {
+      const res = await fetch(`/messages/${partnerId}?limit=1&last=true`, {
+        credentials: "include",
+      });
+      if (!res.ok) return;
+      const data = await res.json();
+      setLastMessages((prev) => ({
+        ...prev,
+        [partnerId]: data.length > 0 ? data[data.length - 1].messages : "",
+      }));
+    } catch (err) {
+      console.error("uzolso uzenet frissites hiba:", err);
+    }
+  }
   //     =
   // kivalasztas      =
   //     =
   async function handleSelectUser(user) {
     setSelectedUser(user);
+    setMobileChatOpen(true);
     setSearchParams({
       user: user.user_id,
       name: user.username,
@@ -86,26 +103,41 @@ export default function ChatPages() {
       console.error("Hiba:", err);
     }
   }
+
+  //mobil nezet
+  function handleBackToList() {
+    setMobileChatOpen(false);
+    setSelectedUser(null);
+    setSearchParams({});
+  }
   //     =
   //  full chat torlese     =
   //     =
   async function deleteConvo(e, partnerId) {
     e.stopPropagation();
     try {
-      const data = deleteConv(partnerId);
+      const data = await deleteConv(partnerId);
       if (data.error) {
         console.error(data.error);
         return;
       }
+      socket.emit("delete_conversation", {
+        partnerId: Number(partnerId),
+      });
+
       if (selectedUser?.user_id === partnerId) {
         setMessages([]);
+        setMobileChatOpen(false);
+        setSelectedUser(null);
       }
       setLastMessages((prev) => {
         const updated = { ...prev };
         delete updated[partnerId];
         return updated;
       });
-      setUsers((prev) => prev.filter((u) => Number(u.user_id) !== Number(partnerId)));
+      setUsers((prev) =>
+        prev.filter((u) => Number(u.user_id) !== Number(partnerId)),
+      );
     } catch (err) {
       console.error("hiba a beszelgetes torlesene", err);
     }
@@ -131,7 +163,7 @@ export default function ChatPages() {
 
         if (targetUserId && targetUsername) {
           const exists = partners.some(
-            (p) => Number(p.user_id) === Number(targetUserId)
+            (p) => Number(p.user_id) === Number(targetUserId),
           );
           if (!exists) {
             partners = [
@@ -160,7 +192,7 @@ export default function ChatPages() {
           `/messages/${partner.user_id}?limit=1&last=true`,
           {
             credentials: "include",
-          }
+          },
         );
         if (res.ok) {
           const data = await res.json();
@@ -179,15 +211,10 @@ export default function ChatPages() {
   //   urlbrol erkezeo adatok    =
   //     =
   useEffect(() => {
-    // console.log("szempontok:", {
-    //   targetUserId,
-    //   usersLength: users.length,
-    //   selectedUser,
-    // });
     if (!targetUserId || users.length === 0 || selectedUser) return;
     if (selectedUser && selectedUser.user_id === Number(targetUserId)) return;
     const targetUser = users.find(
-      (u) => Number(u.user_id) === Number(targetUserId)
+      (u) => Number(u.user_id) === Number(targetUserId),
     );
     // console.log("találat:", targetUser);
     if (targetUser) handleSelectUser(targetUser);
@@ -195,9 +222,9 @@ export default function ChatPages() {
   //     =
   // socket uzenet fogadas     =
   //     =
+
   useEffect(() => {
     function handleUzenet(message) {
-      //   console.log("Üzenet jott:", message);
       setMessages((prev) => [...prev, message]);
 
       const partnerId =
@@ -213,9 +240,35 @@ export default function ChatPages() {
         playNotificationSound();
       }
     }
+    function handleMessageDeleted({ messageId, partnerId }) {
+      // console.log("3. messgae_deleted veent:", { messageId, partnerId });
+
+      setMessages((prev) =>
+        prev.filter((msg) => Number(msg.message_id) !== Number(messageId)),
+      );
+      refreshLastMessgae(partnerId);
+    }
+    function handleConversationDeleted({ partnerId }) {
+      setMessages((prev) => {
+        return [];
+      });
+      setUsers((prev) =>
+        prev.filter((u) => Number(u.user_id) !== Number(partnerId)),
+      );
+      setLastMessages((prev) => {
+        const updated = { ...prev };
+        delete updated[partnerId];
+        return updated;
+      });
+    }
+
     socket.on("uzenet_jott", handleUzenet);
+    socket.on("message_deleted", handleMessageDeleted);
+    socket.on("conversation_deleted", handleConversationDeleted);
     return () => {
       socket.off("uzenet_jott", handleUzenet);
+      socket.off("message_deleted", handleMessageDeleted);
+      socket.off("conversation_deleted", handleConversationDeleted);
     };
   }, [currentUser]);
   //     =
@@ -231,8 +284,20 @@ export default function ChatPages() {
         return;
       }
       setMessages((prev) => prev.filter((msg) => msg.message_id !== messageId));
+      if (selectedUser) {
+        // console.log("2. socket emit delete_message:", {
+        //   messageId,
+        //   partnerId: selectedUser.user_id,
+        // });
+
+        socket.emit("delete_message", {
+          messageId,
+          partnerId: Number(selectedUser.user_id),
+        });
+      }
+      await refreshLastMessgae(selectedUser.user_id);
     } catch (err) {
-      console.error("kaki van a gatyoba ocsi", err);
+      console.error("valami nem jó", err);
     }
   }
 
@@ -276,7 +341,7 @@ export default function ChatPages() {
   //       =
   //     =
   return (
-    <div className="chat-page">
+    <div className={`chat-page ${mobileChatOpen ? "mobile-chat-open" : ""}`}>
       <div className="chat-sidebar">
         <div className="chat-my-profile">
           <div
@@ -335,10 +400,16 @@ export default function ChatPages() {
 
       <div className="chat-main">
         {!selectedUser ? (
-          <div className="chat-no-selection">Válassz ki valakit a chathez!</div>
+          <div className="chat-no-selection">
+            <i className="bi bi-chat-dots" />
+            Válassz ki valakit a chathez!
+          </div>
         ) : (
           <>
             <div className="chat-main-header">
+              <button className="chat-back-btn" onClick={handleBackToList}>
+                <i className="bi bi-arrow-left" />
+              </button>
               <div
                 className="chat-user-avatar"
                 style={{ background: getUserColor(selectedUser.user_id) }}
