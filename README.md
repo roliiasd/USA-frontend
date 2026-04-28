@@ -15,59 +15,75 @@
 ## 📁 Projekt szerkezet
 
 ```markdown
-├── admin/
-│   ├── admin.html
-│   ├── adminBrand.html
-│   ├── adminCategory.html
-│   └── adminProduct.html
-├── cart/
-│   ├── cart.html
-│   └── order.html
-├── css/
-│   ├── admin/
-│       └── admin.css
-│   ├── homepage/
-│       ├── cart.css
-│       ├── home.css
-│       └── order.css
-│   ├── profile/
-│       ├── orders.css
-│       ├── profile.css
-│       └── profileData.css
-│   └── relog/
-│       ├── index.css
-│       ├── login.css
-│       └── register.css
-├── homepage/
-│   └── home.html
-├── icons/
-│   ├── favicon-16x16.png
-│   ├── favicon-32x32.png
-│   └── favicon.ico
-├── js/
-│   ├── adminBrands.js
-│   ├── adminCategory.js
-│   ├── adminOrders.js
-│   ├── adminProducts.js
-│   ├── cart.js
-│   ├── home.js
-│   ├── index.js
-│   ├── login.js
-│   ├── myorder.js
-│   ├── order.js
-│   ├── profile.js
-│   ├── profileInfo.js
-│   ├── profilePsw.js
-│   └── register.js
-├── profile/
-│   ├── orders.html
-│   ├── profile.html
-│   ├── profileInfo.html
-│   └── profilePsw.html
-├── relog/
-│   ├── login.html
-│   └── register.html
-└── index.html
+├── public/
+│   ├── kecske.mp3
+│   ├── logo.png 
+│   └── team_speak_3_message.mp3
+├── src/
+│   ├── assets/
+│     │   ├── download.jpg
+│     │   ├── logo.png
+│     │   └── sddefault.jpg  <!--Ez mi a gecim -->
+│
+│   ├── componets/
+│     │   ├── Btn.jsx
+│     │   ├── ConfirmModal.jsx
+│     │   ├── CreatePost.jsx
+│     │   ├── EditPost.jsx
+│     │   ├── Filter.jsx
+│     │   ├── Navbar.jsx
+│     │   └── UserPost.jsx
+│     
+│    ├── context/
+│     │   └── AuthContext.jsx
+│     
+│    ├── pages/
+│     │   ├── AboutUs.jsx
+│     │   ├── Admin.jsx
+│     │   ├── ChatPages.jsx
+│     │   ├── FAQ.jsx
+│     │   ├── Home.jsx
+│     │   ├── Login.jsx
+│     │   ├── Profile.jsx
+│     │   └── Registration.jsx
+│
+│    ├── styles/
+│     │   ├── Admin.min.css
+│     │   ├── Chat.css
+│     │   ├── CreatPosts.css
+│     │   ├── EditPost.css
+│     │   ├── Filter.css
+│     │   ├── Home.css
+│     │   ├── Login.css
+│     │   ├── Navbar.css
+│     │   ├── NoXdAboutUs_FAQ.css
+│     │   ├── Profile.css
+│     │   ├── Registration.css
+│     │   └── XdAboutUs_FAQ.css
+│      
+│    ├── utils/
+│     │   ├── animals.js
+│     │   ├── chat.js
+│     │   ├── getCC.js
+│     │   ├── socket.js
+│     │   └── users.js
+│  
+│    ├── main.jsx
+│   
+├── .gitignore
+│  
+├── eslint.config.js
+│  
+├── netlify.toml
+│  
+├── package-lock.json
+│  
+├── package.json
+│  
+├── READNE.md
+│  
+└── vite.config.js
+
 ```
 
 ## ⬇️ Telepítés
@@ -85,63 +101,62 @@ git clone https://github.com/roliiasd/USA-frontend (GitHub-ról letöltés)
 #### Jelenleg elérhető netlify-on
 | 🚀 Netlify | Netlify Deployed Page | [Megtekintés](https://nodejs207.dszcbaross.edu.hu/) |
 
-| Admin teszt | Admin: a | Jelszó: valami |
+| Admin teszt | Admin: 1 | Jelszó: valami |
 
-| Felhasználó teszt | Felhasználó : 1 | Jelszó: valami |
+| Felhasználó teszt | Felhasználó : a | Jelszó: valami |
 
 ## Dokumentáció
 | 🎞️ Figma | Dizájnt készítő alkalmazás |[Megtekintés](https://www.figma.com/design/XbAhVv2L55v6RXQuZJMhkB/Usedanimals?node-id=0-1&p=f) |
 
-<!-- ### Index.html, Register.html, Login.html
+ ### Home.jsx
 
-- Ahhoz, hogy a vásárló tudjon vásárolni és megtekinthesse a termékeket. Regisztrálnia kell egy fiókkal és be kell jelentkeznie.
+- Főoldal, itt bejelentkezés nélkül is lehet nézzelődni és át menni akár más oldalakra is 
 
-- Itt lehet regisztrálni felhasználót.
+- Bejelentkezés / Regisztráció jobb felül található
 
-- Itt lehet bejelentkezni, már létező felhasználói fiókkal.
-- Bejelentkezéskor történik egy ellenőrzés, hogy a bejelentkező fiók admin-e vagy nem.
-  Ha az az állítás igaz akkor az admin felületre dob az oldal, viszont ha nem akkor a felhasználói felületre.
+![Kezdooldal](https://snipboard.io/wZlqvG.jpg)
 
 
 
-### Home.html
+### Login.jsx ; Registration.jsx
 
-- Itt láthatóak a termékek és elérhetőek a menüpontok a kosárhoz és fiókhoz.
-- A termékek kattinthatók, hogy több információ jelenjen meg az adott termékhez.
-
-
-
-### Profile.html
-
-- Itt lehet módosítani a felhasználó alapból szállítási adatait, melyet egyből betölt az oldal, ha új rendelést add le (lehet módosítani a rendelés lapon is).
-- Változtatható a felhasználó jelszava (tudnia kell a jelenlegit).
-- Megtekinthetőek a leadott rendelései és visszavonhatóak.
+- Itt lehet be jelenetkezni vagy ha nincsen még fiók akkor lértehozni egyett 
+- Netán ha el lenne felejtve a jelszó a kicserélésre is van egy gomb 
+![Login](https://snipboard.io/yDFTQ8.jpg)
+![Register](https://snipboard.io/RbC6N8.jpg)
 
 
+### Hirdetés létrehozása
 
-### Cart.html, Order.html
-
-- Itt láthatóak a kosárban lévő termékek, lehet többet hozzáadni, esetleg kivenni.
-
-- Rendeléskor, a megadott adatokat előre kitölti, ha a felhasználó adott a profiljának szállítási adatokat.
-  Minden más esetben a hiányzó adat üres és ki kell tölteni.
-
+- Ezt a rész a jobb felső sarokban lehet el érni ha be van jelentkezve a felhasználó
+- Több képet lehet feltölteni az adott állatrol 
+- Kötelező megadni Nevet,megyét,várost és irányítószámot de az utóbbiakat autómatikusan filterezükk
+![Hirdetes](https://snipboard.io/2sKtED.jpg)
 
 
-### Admin felület
+### Profil beállítások
 
-- 4 részre osztva: rendelések, termékek, márka és kategória.
-- A termékeket lehet törölni és módosítani. Ellentétben a többivel amiket még nem lehet módosítani, csak törölni és létrehozni.
-- Érdemes lenne egy felhasználók kezelésére szolgáló oldalt készíteni. -->
+- Ezen a felületen lehet megváltozztatni a profilal kapcsolatos dolgokat 
+
+![Profil](https://snipboard.io/juQ04b.jpg)
+![KepEdit](https://snipboard.io/vFfD2I.jpg)
 
 
+### GYIK
+
+- Gyakran ismételt kérdések
+![GYIK](https://snipboard.io/o95y0b.jpg)
+
+### Rolunk
+
+- Pár szó erröl az oldalról
+![US](https://snipboard.io/K6lbYq.jpg)
+![US](https://snipboard.io/1FekBM.jpg)
 
 ## 📇 Fejlesztési lehetőségek
 
 ```markdown
-- Admin felületen kezelni a felhasználókat.
-- Módosítható rendelések az admin felületen.
+- írásbeli híbák javítása
 - Szebb design és jobb css használat.
-- Hatékonyabb környezetre átírni (react / vue.js).
 - Felhasználó barátabb felület.
 ```
