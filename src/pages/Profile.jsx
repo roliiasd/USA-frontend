@@ -1,10 +1,10 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import UserPosts from "../components/UserPosts";
 import EditPost from "../components/EditPost";
 import { whoami, editName, editPassword } from "../utils/users";
-import { loadpost } from "../utils/animals";
+import { loadpost, delAnim } from "../utils/animals";
 
 export default function Profile() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -18,7 +18,7 @@ export default function Profile() {
 
   const navigate = useNavigate();
 
-  async function loadProfileData() {
+  const loadProfileData = useCallback(async ()=> {
     try {
       const me = await whoami();
       if (me.error) {
@@ -43,11 +43,11 @@ export default function Profile() {
     } finally {
       setLoading(false);
     }
-  }
+  },[navigate])
 
   useEffect(() => {
     loadProfileData();
-  }, []);
+  }, [loadProfileData]);
 
   async function editProfile() {
     try {
@@ -81,6 +81,17 @@ export default function Profile() {
       toast.error("Hiba történt");
     }
   }
+
+  const handleDeletePost = async (postId) => {
+    try {
+      await delAnim(postId);
+      setMyPosts((prev) => prev.filter((post) => post.id !== postId));
+      toast.success("Hirdetés törölve!");
+    } catch (err) {
+      console.error("Törlési hiba:", err);
+      toast.error("Nem sikerült törölni a hirdetést.");
+    }
+  };
 
   if (loading) {
     return <div className="loading">Betöltés...</div>;
@@ -196,6 +207,7 @@ export default function Profile() {
                       <div key={post.id} className="post-card">
                         <UserPosts
                           id={post.id}
+                          user={currentUser}
                           username={currentUser?.username}
                           petImg={post.images}
                           petName={post.nev}
@@ -203,8 +215,10 @@ export default function Profile() {
                           county={post.megye}
                           city={post.varos}
                           postcode={post.postcode}
-                          send_a_message={""}
+                          actionType="delete"
+                          onDelete={handleDeletePost}
                         />
+                        
                         <div className="post-card-footer">
                           <button
                             className="btn-edit"
