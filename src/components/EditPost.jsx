@@ -64,7 +64,7 @@ export default function EditPost({ editData, onClose, onSuccess }) {
         if (img.previewUrl) URL.revokeObjectURL(img.previewUrl);
       });
     };
-  }, []);
+  }, [images]);
   // Backdrop és ESC kezelés
   useEffect(() => {
     if (!editData) return;
@@ -166,7 +166,7 @@ export default function EditPost({ editData, onClose, onSuccess }) {
       .filter(Boolean);
     const uniquePcs = Array.from(new Set(pcs.map(String)));
     setPostcodes(uniquePcs.map((pc) => ({ label: pc, value: pc })));
-   
+
     if (!isInitialLoad) {
       setSelectedPostcode(null);
     }
@@ -196,7 +196,7 @@ export default function EditPost({ editData, onClose, onSuccess }) {
     if (images[currentIndex]?.previewUrl) {
       URL.revokeObjectURL(images[currentIndex].previewUrl);
     }
-    setImages(prev =>
+    setImages((prev) =>
       prev.map((img, idx) => {
         if (idx === currentIndex) {
           return {
@@ -208,14 +208,14 @@ export default function EditPost({ editData, onClose, onSuccess }) {
         return img;
       }),
     );
-    e.target.valeu = "";
+    e.target.value = "";
     toast.info("Kep kijelolve cserér, mentéskor lesz véglegesitve");
   }
   function undoReplace() {
     if (images[currentIndex]?.previewUrl) {
       URL.revokeObjectURL(images[currentIndex].previewUrl);
     }
-    setImages(prev =>
+    setImages((prev) =>
       prev.map((img, idx) => {
         if (idx === currentIndex) {
           return {
@@ -228,40 +228,22 @@ export default function EditPost({ editData, onClose, onSuccess }) {
       }),
     );
   }
-  async function handleDelete() {
-    setIsLoading(true);
-    try {
-      const result = await delAnim(editData.id);
-      if (result.error) {
-        toast.error(result.error);
-        return;
-      }
-      toast.success("hirdetés Törölve");
-      onSuccess?.();
-      onClose?.();
-    } catch (err) {
-      console.error(err);
-      toast.error("hiba tortent a torles soran");
-    } finally {
-      setIsLoading(false);
-    }
-  }
 
   async function submitHandler(e) {
     e.preventDefault();
-
+    
     if (!nev.trim()) return toast.info("Add meg az állat nevét!");
     if (!selectedMegye) return toast.info("Válassz megyét!");
     if (!selectedVaros) return toast.info("Válassz várost!");
     if (!selectedPostcode) return toast.info("Válassz irányítószámot!");
-
+    
     if (!currentImage && !newFile) {
       return toast.info("Tolts fel egy kepet!");
     }
     setIsLoading(true);
     try {
       const modifiedImages = images.filter((img) => img.newFile);
-
+      
       for (const img of modifiedImages) {
         const { error } = await updatePost({
           animalId: editData.id,
@@ -304,7 +286,7 @@ export default function EditPost({ editData, onClose, onSuccess }) {
       setIsLoading(false);
     }
   }
-
+  
   if (!editData) return null;
   const currentImage = images[currentIndex];
   const hasMultipleImages = images.length > 1;
@@ -315,7 +297,7 @@ export default function EditPost({ editData, onClose, onSuccess }) {
       <div
         className="modal-dialog modal-lg modal-dialog-centered edit-post-modal"
         ref={modalRef}
-      >
+        >
         <div className="modal-content">
           <div className="modal-header">
             <h1 className="modal-title text-center w-100">
@@ -479,7 +461,7 @@ export default function EditPost({ editData, onClose, onSuccess }) {
                     <div className="image-actions mt-2 d-flex gap-2">
                       <label className="btn btn-outline-primary btn-sm">
                         <i className="bi bi-arrow-repeat me-1" />
-                        {isModified ? "Masik kep valasztasa" : "Kepc sereje"}
+                        {isModified ? "Masik kep valasztasa" : "Kép cseréje"}
                         <input
                           type="file"
                           accept="image/*"
@@ -522,15 +504,6 @@ export default function EditPost({ editData, onClose, onSuccess }) {
 
                 <div className="col-12">
                   <div className="gap-2 m-4 d-flex justify-content-around">
-                    <button
-                      type="button"
-                      className="btn btn-danger"
-                      onClick={handleDelete}
-                      disabled={isLoading}
-                    >
-                      <i className="bi bi-trash me-2" />
-                      Törlés
-                    </button>
                     <button
                       type="button"
                       className="btn btn-outline-danger"

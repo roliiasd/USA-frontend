@@ -4,7 +4,6 @@ import CreatePost from "../components/CreatePost";
 import { ToastContainer } from "react-toastify";
 import "../styles/Home.css";
 import { useAuth } from "../context/AuthContext";
-import { whoami } from "../utils/users";
 import { loadpost } from "../utils/animals";
 import UserPosts from "../components/UserPosts";
 import Filter from "../components/Filter";
@@ -16,7 +15,7 @@ const INITIAL_FILTERS = {
   postcode: null,
 };
 export default function Home() {
-  const { user, loading: authLoading, onLogout } = useAuth();
+  const { user } = useAuth();
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [posts, setPosts] = useState([]);
   const [isLoading, setLoading] = useState(true);
@@ -99,10 +98,10 @@ export default function Home() {
                 <div className="ua-cards-grid w-100">
                   {filteredPosts
                     .slice()
-                    .reverse()
                     .map((post) => (
                       <UserPosts
                         key={post.id}
+                        id={post.id}
                         username={post.username}
                         postUserId={post.userId}
                         petImg={post.images}
@@ -112,7 +111,8 @@ export default function Home() {
                         city={post.varos}
                         postcode={post.postcode}
                         user={user}
-                        send_a_message={CHAT_ICON}
+                        actionType="message"
+                        chatIcon={CHAT_ICON}
                       />
                     ))}
                 </div>
